@@ -1201,6 +1201,17 @@
                         toggleView('student-dashboard');
                     }, 3000); 
 
+                        // 4. Redirecionar após sucesso
+    await new Promise(resolve => setTimeout(resolve, 1500)); // Espera 1.5s para o usuário ler a mensagem de sucesso
+    
+    // Forçar a atualização dos dados (necessário para o renderDashboard usar o plano novo)
+    const updatedDoc = await db.collection('users').doc(user.uid).get();
+    currentStudent = updatedDoc.data();
+    
+    // Renderizar o dashboard com os dados atualizados e trocar a view
+    renderStudentDashboard(currentStudent); 
+    toggleView('student-dashboard'); 
+
                 } else { 
                     toggleView('personal-dashboard');
                     displayMessage('Perfil de Personal Trainer salvo! Seja bem-vindo.', 'success');
