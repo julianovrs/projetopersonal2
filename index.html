@@ -302,19 +302,6 @@
                     </button>
                 </div>
 
-                  <div id="water-recommendation-card" class="bg-indigo-50 dark:bg-indigo-900/40 p-6 rounded-xl shadow-xl dark:shadow-none border border-indigo-200 dark:border-indigo-600">
-                    <h3 class="text-xl font-semibold mb-2 dark:text-indigo-300 light:text-indigo-800 flex items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15.75L8.5 18l-2.5-2.25V5.75L8.5 3l2.5 2.25V15.75zM15 15.75V5.75L17.5 3l2.5 2.25V15.75L17.5 18l-2.5-2.25z"/></svg>
-                        Hidratação Diária Recomendada
-                    </h3>
-                    <p class="text-base dark:text-gray-200 light:text-gray-800">
-                        Com base no seu peso corporal, sua ingestão mínima diária de água deve ser:
-                    </p>
-                    <p id="daily-water-intake" class="text-4xl font-extrabold text-indigo-600 dark:text-indigo-400 mt-2">
-                        --
-                    </p>
-                </div>
-                <div class="space-y-6">
 
                 <div class="space-y-6">
                     <div class="bg-gray-50 dark:bg-gray-700/70 p-6 rounded-xl shadow-xl dark:shadow-none border border-gray-200 dark:border-pink-500/50">
@@ -446,86 +433,6 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app); 
-
-         // INÍCIO DAS NOVAS FUNÇÕES: Insira aqui
-        // Função para calcular a ingestão de água (35ml por kg)
-        function calculateWaterIntake(weight) {
-            // Adiciona uma margem de segurança na validação do peso
-            if (weight && parseFloat(weight) > 10) {
-                const intakeLiters = (parseFloat(weight) * 35) / 1000;
-                return intakeLiters.toFixed(2).replace('.', ',') + ' Litros';
-            }
-            return 'Recomendamos que insira seu peso para o cálculo.';
-        }
-
-        // Função para gerar planos personalizados (Treino e Dieta)
-        function generatePersonalizedPlan(userData) {
-            const { objective, limitations, foodRestrictions, age, gender } = userData;
-            const plan = {
-                routine: '',
-                diet: ''
-            };
-            
-            // --- Lógica de Personalização do Treino ---
-            const objLabel = objective === 'massa_muscular' ? 'Ganho de Massa Muscular' : (objective === 'emagrecer' ? 'Emagrecimento' : 'Fitness Geral');
-            
-            let routineDetails = `*** PLano de Treino - Sugestão Otimizada ***\n\n`;
-            routineDetails += `**Objetivo Principal:** ${objLabel}.\n`;
-            routineDetails += `**Foco:** Treino de ${gender === 'feminino' ? 'membros inferiores e definição' : 'força e volume total'}, adaptado para ${age} anos.\n`;
-
-            if (limitations && limitations.length > 0) {
-                routineDetails += `**⚠️ Limitações Físicas:** Atenção especial para: ${limitations.join(', ')}. Sugerimos focar em máquinas e exercícios de menor impacto para estas áreas.\n`;
-                routineDetails += `\n**Rotina Sugerida (3x por semana):**\n`;
-                routineDetails += `- Dia A: Corpo Superior (evitando sobrecarga nas áreas limitadas).\n`;
-                routineDetails += `- Dia B: Membros Inferiores (ênfase em exercícios que não exijam amplitude total das articulações limitadas).\n`;
-                routineDetails += `- Dia C: Corpo Total, focado em resistência e alongamento.\n`;
-            } else {
-                routineDetails += `**Status:** Sem limitações físicas reportadas. O treino pode ser mais intenso.\n`;
-                routineDetails += `\n**Rotina Sugerida (${objective === 'massa_muscular' ? '5' : '4'}x por semana):**\n`;
-                if (objective === 'massa_muscular') {
-                    routineDetails += `- Dia 1: Peito e Tríceps - Foco em Carga (Força).\n`;
-                    routineDetails += `- Dia 2: Costas e Bíceps - Foco em Volume (Hipertrofia).\n`;
-                    routineDetails += `- Dia 3: Pernas - Foco em Quadríceps.\n`;
-                    routineDetails += `- Dia 4: Ombros e Trapézio.\n`;
-                    routineDetails += `- Dia 5: Pernas - Foco em Posteriores e Glúteos.\n`;
-                } else {
-                    routineDetails += `- Dia 1: Corpo Superior e Cardio.\n`;
-                    routineDetails += `- Dia 2: Membros Inferiores e Treino em Circuito (foco em queima de gordura).\n`;
-                    routineDetails += `- Dia 3: Descanso Ativo.\n`;
-                    routineDetails += `- Dia 4: Corpo Total (Full Body) com foco em resistência.\n`;
-                }
-            }
-            routineDetails += `\n**AVISO:** Este plano é um rascunho. Seu Personal Trainer deve validá-lo e detalhá-lo no sistema.`;
-            plan.routine = routineDetails;
-
-
-            // --- Lógica de Personalização da Dieta ---
-            let dietDetails = `*** Plano Alimentar - Sugestão Otimizada ***\n\n`;
-            dietDetails += `**Objetivo:** Suporte nutricional para ${objLabel}.\n`;
-            
-            if (objective === 'massa_muscular') {
-                dietDetails += `**Recomendação:** Dieta Hipercalórica com alto teor de Proteínas para recuperação e crescimento muscular.\n`;
-                dietDetails += `**Foco:** Ingerir carboidratos complexos (aveia, arroz integral) antes e depois do treino.\n`;
-            } else if (objective === 'emagrecer') {
-                dietDetails += `**Recomendação:** Dieta com Déficit Calórico controlado e prioridade a Proteínas e Gorduras saudáveis (vegetais).\n`;
-                dietDetails += `**Foco:** Redução de açúcares e alimentos processados. Controle das porções de carboidratos.\n`;
-            }
-
-            if (foodRestrictions && foodRestrictions.length > 0) {
-                dietDetails += `\n🚫 Restrições: O plano deve EXCLUIR RIGOROSAMENTE os seguintes alimentos/ingredientes: ${foodRestrictions.join(', ')}.\n`;
-                dietDetails += `\nDica: Substitua as fontes de proteína/carboidrato restritas por equivalentes permitidos (Ex: se for intolerante a lactose, use leite vegetal).\n`;
-            } else {
-                dietDetails += `\n**✅ Restrições: Nenhuma restrição alimentar cadastrada. Variedade é a chave!\n`;
-            }
-
-            dietDetails += `\n**Distribuição de Macros:** Priorizar 5 a 6 refeições menores ao dia. Consultar um nutricionista para valores calóricos exatos e detalhados.`;
-            plan.diet = dietDetails;
-
-            return plan;
-        }
-        // FIM DAS NOVAS FUNÇÕES
-
-        let currentStudent = null;
 
         // --- Dados de Alimentos ---
         const FOOD_OPTIONS = [
@@ -1019,10 +926,6 @@
             renderDashboardTags(studentDashboardLimitations, data.physicalLimitations, 'blue');
             renderDashboardTags(studentDashboardRestrictions, data.foodRestrictions, 'indigo');
 
-              // [NOVO] Cálculo e exibição da água recomendada - Insira aqui
-            const waterIntake = calculateWaterIntake(user.weight);
-            document.getElementById('daily-water-intake').textContent = waterIntake;
-
             // Rotinas
             studentFoodRoutine.textContent = data.foodRoutine || 'Seu Personal Trainer ainda não definiu um plano alimentar.';
             studentTrainingRoutine.textContent = data.trainingRoutine || 'Seu Personal Trainer ainda não definiu um plano de treino.';
@@ -1169,7 +1072,7 @@
                     generationMessageTitle.textContent = isRegenerate ? 'Regerando Planos...' : 'Gerando Plano de Ação...';
                     generationMessageText.textContent = isRegenerate ? 'Aguarde enquanto criamos novas rotinas com base nas suas informações atuais.' : 'Estamos criando sua rotina alimentar e de treino, baseada em seus dados e restrições. Isso levará apenas alguns segundos.';
 
-                  toggleView('plan-generation-view'); // Usando o ID correto da div de carregamento
+                    toggleView('plan-generation');
                     
                     const planData = generateUniquePlan({
                         ...userData,
@@ -1191,30 +1094,20 @@
 
                 // 2. Salva no Firestore
                 await setDoc(docRef, userData, { merge: true });
-// 3. Redirecionamento e Mensagem
-                if (isAluno) {
-                    // 3A. Mostra a mensagem final na tela de carregamento
-                    generationMessageTitle.textContent = isRegenerate ? 'Novos planos gerados com sucesso!' : 'Plano de Ação gerado com sucesso!';
-                    generationMessageText.textContent = 'Redirecionando para o Dashboard...';
 
-                    // 3B. Espera 1.5s para o usuário ler a mensagem
-                    await new Promise(resolve => setTimeout(resolve, 1500)); 
+                // 3. Redirecionamento e Mensagem
+                if (isAluno) {
+                    setTimeout(() => {
+                        displayMessage(isRegenerate ? 'Novos planos gerados com sucesso!' : 'Plano de Ação gerado com sucesso!', 'success');
+                        const finalClientCode = userData.clientCode || currentData.clientCode || '';
+                        renderStudentDashboard(userData, user.email, finalClientCode);
+                        toggleView('student-dashboard');
+                    }, 3000); 
 
-                    // 3C. Atualiza a variável global e renderiza o dashboard
-                    currentStudent = userData;
-                    renderStudentDashboard(userData);
-                    
-                    // 3D. FECHA A TELA DE CARREGAMENTO E MOSTRA O DASHBOARD
-                    toggleView('student-dashboard');
-
-                    // 3E. Exibe a notificação padrão de sucesso
-                    displayMessage(isRegenerate ? 'Planos atualizados com sucesso!' : 'Plano de Ação gerado!', 'success');
-
-                } else { 
-                    // Lógica para Personal Trainer
-                    toggleView('personal-dashboard');
-                    displayMessage('Perfil de Personal Trainer salvo! Seja bem-vindo.', 'success');
-                }
+                } else { 
+                    toggleView('personal-dashboard');
+                    displayMessage('Perfil de Personal Trainer salvo! Seja bem-vindo.', 'success');
+                }
 
             } catch (error) {
                 console.error("Erro ao salvar informações no Firestore:", error);
