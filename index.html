@@ -1192,26 +1192,25 @@
                 // 2. Salva no Firestore
                 await setDoc(docRef, userData, { merge: true });
 
-                // 3. Redirecionamento e Mensagem
-                if (isAluno) {
-                    setTimeout(() => {
-                        displayMessage(isRegenerate ? 'Novos planos gerados com sucesso!' : 'Plano de Ação gerado com sucesso!', 'success');
-                        const finalClientCode = userData.clientCode || currentData.clientCode || '';
-                        renderStudentDashboard(userData, user.email, finalClientCode);
-                        toggleView('student-dashboard');
-                    }, 3000); 
+             // 3. Redirecionamento e Mensagem
+                if (isAluno) {
+                    // Define a mensagem de sucesso antes do redirecionamento
+                    generationMessageTitle.textContent = isRegenerate ? 'Novos planos gerados com sucesso!' : 'Plano de Ação gerado com sucesso!';
+                    generationMessageText.textContent = 'Redirecionando para o Dashboard...';
 
-                        // 4. Redirecionar após sucesso
-    await new Promise(resolve => setTimeout(resolve, 1500)); // Espera 1.5s para o usuário ler a mensagem de sucesso
-    
-    // Forçar a atualização dos dados (necessário para o renderDashboard usar o plano novo)
-    const updatedDoc = await db.collection('users').doc(user.uid).get();
-    currentStudent = updatedDoc.data();
-    
-    // Renderizar o dashboard com os dados atualizados e trocar a view
-    renderStudentDashboard(currentStudent); 
-    toggleView('student-dashboard'); 
+                    setTimeout(() => {
+                        // Atualiza a variável global do aluno com os dados que acabaram de ser salvos
+                        currentStudent = userData;
+                        
+                        // Renderiza e troca a view, desativando o carregamento
+                        renderStudentDashboard(userData);
+                        toggleView('student-dashboard');
 
+                        // Exibe a notificação de sucesso padrão, se necessário
+                        displayMessage(isRegenerate ? 'Planos atualizados com sucesso!' : 'Plano de Ação gerado!', 'success');
+                    }, 3000); // Mantém o atraso de 3s para o usuário ver a tela de sucesso
+
+                    
                 } else { 
                     toggleView('personal-dashboard');
                     displayMessage('Perfil de Personal Trainer salvo! Seja bem-vindo.', 'success');
