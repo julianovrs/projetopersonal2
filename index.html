@@ -1191,30 +1191,31 @@
 
                 // 2. Salva no Firestore
                 await setDoc(docRef, userData, { merge: true });
-
-             // 3. Redirecionamento e Mensagem
+ // 3. Redirecionamento e Mensagem
                 if (isAluno) {
-                    // Define a mensagem de sucesso antes do redirecionamento
+                    // 3A. Mostra a mensagem de sucesso na tela de carregamento
                     generationMessageTitle.textContent = isRegenerate ? 'Novos planos gerados com sucesso!' : 'Plano de Ação gerado com sucesso!';
                     generationMessageText.textContent = 'Redirecionando para o Dashboard...';
 
-                    setTimeout(() => {
-                        // Atualiza a variável global do aluno com os dados que acabaram de ser salvos
-                        currentStudent = userData;
-                        
-                        // Renderiza e troca a view, desativando o carregamento
-                        renderStudentDashboard(userData);
-                        toggleView('student-dashboard');
+                    // 3B. Espera 1.5s (o suficiente para a mensagem aparecer)
+                    await new Promise(resolve => setTimeout(resolve, 1500)); 
 
-                        // Exibe a notificação de sucesso padrão, se necessário
-                        displayMessage(isRegenerate ? 'Planos atualizados com sucesso!' : 'Plano de Ação gerado!', 'success');
-                    }, 3000); // Mantém o atraso de 3s para o usuário ver a tela de sucesso
+                    // 3C. Atualiza a variável global e renderiza o dashboard
+                    currentStudent = userData;
+                    renderStudentDashboard(userData);
+                    
+                    // 3D. FECHA A TELA DE CARREGAMENTO E MOSTRA O DASHBOARD
+                    toggleView('student-dashboard');
 
-                    
-                } else { 
-                    toggleView('personal-dashboard');
-                    displayMessage('Perfil de Personal Trainer salvo! Seja bem-vindo.', 'success');
-                }
+                    // 3E. Exibe a notificação padrão de sucesso
+                    displayMessage(isRegenerate ? 'Planos atualizados com sucesso!' : 'Plano de Ação gerado!', 'success');
+
+                } else { 
+                    // Lógica para Personal Trainer
+                    toggleView('personal-dashboard');
+                    displayMessage('Perfil de Personal Trainer salvo! Seja bem-vindo.', 'success');
+                }
+
 
             } catch (error) {
                 console.error("Erro ao salvar informações no Firestore:", error);
