@@ -1019,6 +1019,10 @@
             renderDashboardTags(studentDashboardLimitations, data.physicalLimitations, 'blue');
             renderDashboardTags(studentDashboardRestrictions, data.foodRestrictions, 'indigo');
 
+              // [NOVO] Cálculo e exibição da água recomendada - Insira aqui
+            const waterIntake = calculateWaterIntake(user.weight);
+            document.getElementById('daily-water-intake').textContent = waterIntake;
+
             // Rotinas
             studentFoodRoutine.textContent = data.foodRoutine || 'Seu Personal Trainer ainda não definiu um plano alimentar.';
             studentTrainingRoutine.textContent = data.trainingRoutine || 'Seu Personal Trainer ainda não definiu um plano de treino.';
