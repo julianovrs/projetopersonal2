@@ -1169,7 +1169,7 @@
                     generationMessageTitle.textContent = isRegenerate ? 'Regerando Planos...' : 'Gerando Plano de Ação...';
                     generationMessageText.textContent = isRegenerate ? 'Aguarde enquanto criamos novas rotinas com base nas suas informações atuais.' : 'Estamos criando sua rotina alimentar e de treino, baseada em seus dados e restrições. Isso levará apenas alguns segundos.';
 
-                    toggleView('plan-generation');
+                  toggleView('plan-generation-view'); // Usando o ID correto da div de carregamento
                     
                     const planData = generateUniquePlan({
                         ...userData,
@@ -1191,13 +1191,13 @@
 
                 // 2. Salva no Firestore
                 await setDoc(docRef, userData, { merge: true });
- // 3. Redirecionamento e Mensagem
+// 3. Redirecionamento e Mensagem
                 if (isAluno) {
-                    // 3A. Mostra a mensagem de sucesso na tela de carregamento
+                    // 3A. Mostra a mensagem final na tela de carregamento
                     generationMessageTitle.textContent = isRegenerate ? 'Novos planos gerados com sucesso!' : 'Plano de Ação gerado com sucesso!';
                     generationMessageText.textContent = 'Redirecionando para o Dashboard...';
 
-                    // 3B. Espera 1.5s (o suficiente para a mensagem aparecer)
+                    // 3B. Espera 1.5s para o usuário ler a mensagem
                     await new Promise(resolve => setTimeout(resolve, 1500)); 
 
                     // 3C. Atualiza a variável global e renderiza o dashboard
@@ -1215,7 +1215,6 @@
                     toggleView('personal-dashboard');
                     displayMessage('Perfil de Personal Trainer salvo! Seja bem-vindo.', 'success');
                 }
-
 
             } catch (error) {
                 console.error("Erro ao salvar informações no Firestore:", error);
