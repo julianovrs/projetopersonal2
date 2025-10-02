@@ -302,7 +302,18 @@
                     </button>
                 </div>
 
-
+                <div id="water-recommendation-card" class="bg-indigo-50 dark:bg-indigo-900/40 p-6 rounded-xl shadow-xl dark:shadow-none border border-indigo-200 dark:border-indigo-600">
+                    <h3 class="text-xl font-semibold mb-2 dark:text-indigo-300 light:text-indigo-800 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15.75L8.5 18l-2.5-2.25V5.75L8.5 3l2.5 2.25V15.75zM15 15.75V5.75L17.5 3l2.5 2.25V15.75L17.5 18l-2.5-2.25z"/></svg>
+                        Hidratação Diária Recomendada
+                    </h3>
+                    <p class="text-base dark:text-gray-200 light:text-gray-800">
+                        Com base no seu peso corporal, sua ingestão mínima diária de água deve ser:
+                    </p>
+                    <p id="daily-water-intake" class="text-4xl font-extrabold text-indigo-600 dark:text-indigo-400 mt-2">
+                        --
+                    </p>
+                </div>
                 <div class="space-y-6">
                     <div class="bg-gray-50 dark:bg-gray-700/70 p-6 rounded-xl shadow-xl dark:shadow-none border border-gray-200 dark:border-pink-500/50">
                         <h3 class="text-3xl font-bold mb-4 dark:text-pink-400 light:text-pink-900 flex items-center border-b border-gray-300 dark:border-gray-600 pb-2">
@@ -311,7 +322,6 @@
                         </h3>
                         <pre id="student-food-routine" class="text-base text-gray-900 dark:text-gray-200 whitespace-pre-wrap font-sans leading-relaxed p-4 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-400 dark:border-gray-600"></pre>
                     </div>
-
                     <div class="bg-gray-50 dark:bg-gray-700/70 p-6 rounded-xl shadow-xl dark:shadow-none border border-gray-200 dark:border-green-500/50">
                         <h3 class="text-3xl font-bold mb-4 dark:text-green-400 light:text-green-900 flex items-center border-b border-gray-300 dark:border-gray-600 pb-2">
                             <svg class="w-7 h-7 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
@@ -320,1398 +330,913 @@
                         <pre id="student-training-routine" class="text-base text-gray-900 dark:text-gray-200 whitespace-pre-wrap font-sans leading-relaxed p-4 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-400 dark:border-gray-600"></pre>
                     </div>
                 </div>
-            </div>
 
-            <button id="student-logout-btn" class="mt-10 py-3 px-6 rounded-lg text-white font-bold bg-red-600 hover:bg-red-700 transition duration-200 shadow-xl shadow-red-900/50 w-full tracking-wide">
-                Sair do Dashboard
-            </button>
+                <div class="mt-8 pt-6 border-t border-gray-700/50 light:border-gray-300/50">
+                    <button id="student-logout-btn" class="w-full py-2 px-4 rounded-lg text-white font-semibold bg-red-600 hover:bg-red-700 transition duration-150">
+                        Sair (Logout)
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div id="personal-dashboard-view" class="view hidden p-4 sm:p-8">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">Dashboard Personal Trainer</h2>
-            <p class="dark:text-gray-400 light:text-gray-600 mb-8 border-b border-gray-700/50 light:border-gray-300/50 pb-4">Gerencie e edite os planos de seus alunos.</p>
-
-            <div class="bg-gray-50 dark:bg-gray-700/70 p-6 rounded-xl shadow-xl dark:shadow-none border border-gray-300 dark:border-indigo-500/50 mb-8">
-                <h3 class="text-2xl font-semibold mb-4 dark:text-indigo-400 light:text-indigo-900 flex items-center border-b border-gray-300 dark:border-gray-600 pb-2">
-                    <svg class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                    Acessar Perfil do Aluno
-                </h3>
-                <form id="search-student-form" class="space-y-5">
-                    <div>
-                        <label for="student-uid-search" class="block text-sm font-medium mb-2 text-gray-500 dark:text-gray-300">Código Único do Aluno (7 caracteres)</label>
-                        <input type="text" id="student-uid-search" placeholder="Ex: A7D2F4G" required maxlength="7"
-                               class="w-full px-4 py-2 border border-gray-600 dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 transition duration-150 bg-gray-700 dark:bg-gray-700 light:bg-gray-100 text-white dark:text-white light:text-gray-900 font-mono placeholder-gray-500 dark:placeholder-gray-500 light:placeholder-gray-400 uppercase">
-                    </div>
-                    <button type="submit"
-                             class="w-full py-3 px-4 rounded-lg text-white font-bold bg-green-600 hover:bg-green-700 transition duration-200 shadow-lg shadow-green-900/50 tracking-wide">
-                        Buscar Aluno e Abrir Edição
-                    </button>
-                </form>
-            </div>
-
-            <div id="personal-student-profile" class="hidden bg-gray-50 dark:bg-gray-700/70 p-6 rounded-xl shadow-xl dark:shadow-none border border-gray-300 dark:border-yellow-500/50">
-                <h3 class="text-2xl font-bold mb-6 dark:text-white light:text-gray-900 border-b border-gray-300 dark:border-gray-700 pb-3">
-                    Editando: <span id="editing-student-name" class="text-yellow-800 dark:text-yellow-400"></span>
-                </h3>
-                
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-6 text-base mb-6 p-4 rounded-lg border border-gray-600 dark:border-gray-700 bg-gray-100 dark:bg-gray-800">
-                    <h4 class="sm:col-span-2 lg:col-span-3 text-lg font-bold dark:text-indigo-400 light:text-indigo-700 mb-2">Dados do Aluno:</h4>
-                    <p><span class="font-medium text-gray-500 dark:text-gray-300">E-mail:</span> <span id="personal-student-email" class="text-gray-900 dark:text-white block sm:inline"></span></p>
-                    <p><span class="font-medium text-gray-500 dark:text-gray-300">Idade:</span> <span id="personal-student-age" class="text-gray-900 dark:text-white block sm:inline"></span></p>
-                    <p><span class="font-medium text-gray-500 dark:text-gray-300">Gênero:</span> <span id="personal-student-gender" class="text-gray-900 dark:text-white block sm:inline"></span></p>
-                    <p><span class="font-medium text-gray-500 dark:text-gray-300">Objetivo:</span> <span id="personal-student-objective" class="text-gray-900 dark:text-white block sm:inline"></span></p>
-                    <p><span class="font-medium text-gray-500 dark:text-gray-300">Peso:</span> <span id="personal-student-weight" class="text-gray-900 dark:text-white block sm:inline"></span></p>
-                    <p><span class="font-medium text-gray-500 dark:text-gray-300">Altura:</span> <span id="personal-student-height" class="text-gray-900 dark:text-white block sm:inline"></span></p>
-                    <div class="sm:col-span-3">
-                        <p class="font-medium text-gray-500 dark:text-gray-300 mb-1">Limitações Físicas:</p>
-                        <div id="personal-student-limitations" class="flex flex-wrap gap-2 pt-1"></div>
-                    </div>
-                    <div class="sm:col-span-3">
-                        <p class="font-medium text-gray-500 dark:text-gray-300 mb-1">Restrições Alimentares:</p>
-                        <div id="personal-student-restrictions" class="flex flex-wrap gap-2 pt-1"></div>
-                    </div>
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">Dashboard do Personal</h2>
+            <p class="dark:text-gray-400 light:text-gray-600 mb-8 border-b border-gray-700/50 light:border-gray-300/50 pb-4">Gerencie seus alunos e rotinas.</p>
+            
+            <div class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-700/70 p-6 rounded-xl shadow-xl dark:shadow-none border border-gray-200 dark:border-indigo-500/30">
+                    <h3 class="text-2xl font-semibold mb-4 dark:text-indigo-400 light:text-indigo-900 flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Busca de Aluno
+                    </h3>
+                    <form id="search-student-form" class="space-y-4">
+                        <div>
+                            <label for="client-code-search" class="block text-sm font-medium mb-1 dark:text-gray-200 light:text-gray-900">Código Único do Aluno</label>
+                            <div class="flex space-x-2">
+                                <input type="text" id="client-code-search" placeholder="Ex: 1a2b3c4d" required
+                                       class="flex-grow px-4 py-2 border border-gray-600 dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 bg-gray-700 dark:bg-gray-700 light:bg-gray-100 text-white dark:text-white light:text-gray-900">
+                                <button type="submit"
+                                         class="py-2 px-4 rounded-lg text-white font-semibold bg-indigo-600 hover:bg-indigo-700 transition duration-150">
+                                    Buscar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
 
-                <form id="edit-student-routine-form" class="space-y-6">
-                    <div>
-                        <label for="edit-food-routine" class="block text-xl font-medium mb-2 dark:text-pink-400 light:text-pink-900 flex items-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 3h5v5M18 10a8 8 0 11-16 0 8 8 0 0116 0z" /></svg>
-                            Plano Alimentar (Edição)
-                        </label>
-                        <textarea id="edit-food-routine" rows="10" placeholder="Insira o plano alimentar detalhado para o aluno..."
-                                  class="w-full px-4 py-3 border border-gray-600 dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 transition duration-150 bg-gray-700 dark:bg-gray-700 light:bg-gray-100 text-white dark:text-white light:text-gray-900"></textarea>
+                <div id="student-info-section" class="bg-gray-50 dark:bg-gray-700/70 p-6 rounded-xl shadow-xl dark:shadow-none border border-gray-200 dark:border-green-500/30 hidden">
+                    <h3 class="text-2xl font-semibold mb-4 dark:text-green-400 light:text-green-900 flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20v-2h-.056a1 1 0 01-1-1v-2a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1h.056M12 14v4M7 20h5v-2a3 3 0 00-5.356-1.857M7 20v-2h.056a1 1 0 011-1v-2a1 1 0 001-1h2a1 1 0 001 1v2a1 1 0 00-1 1h-.056M12 14v4M12 4c2.209 0 4 1.791 4 4s-1.791 4-4 4-4-1.791-4-4 1.791-4 4-4z" /></svg>
+                        Detalhes do Aluno: <span id="personal-student-name" class="ml-2 text-gray-900 dark:text-white"></span>
+                    </h3>
+                    
+                    <div class="grid grid-cols-2 gap-4 text-base mb-4">
+                        <p><span class="font-medium dark:text-gray-300">Peso:</span> <span id="personal-student-weight" class="text-gray-900 dark:text-white"></span></p>
+                        <p><span class="font-medium dark:text-gray-300">Objetivo:</span> <span id="personal-student-objective" class="text-gray-900 dark:text-white"></span></p>
+                        <div class="col-span-2">
+                            <p class="font-medium dark:text-gray-300 mb-1">Limitações:</p>
+                            <div id="personal-student-limitations" class="flex flex-wrap gap-2 pt-1"></div>
+                        </div>
+                        <div class="col-span-2">
+                            <p class="font-medium dark:text-gray-300 mb-1">Restrições Alimentares:</p>
+                            <div id="personal-student-restrictions" class="flex flex-wrap gap-2 pt-1"></div>
+                        </div>
                     </div>
 
-                    <div>
-                        <label for="edit-training-routine" class="block text-xl font-medium mb-2 dark:text-green-400 light:text-green-900 flex items-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                            Plano de Treino (Edição)
-                        </label>
-                        <textarea id="edit-training-routine" rows="10" placeholder="Insira o plano de treino detalhado para o aluno..."
-                                  class="w-full px-4 py-3 border border-gray-600 dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 transition duration-150 bg-gray-700 dark:bg-gray-700 light:bg-gray-100 text-white dark:text-white light:text-gray-900"></textarea>
-                    </div>
+                    <h4 class="text-xl font-semibold mt-6 mb-3 dark:text-indigo-400 light:text-indigo-900 border-t border-gray-300 dark:border-gray-600 pt-4">Editar Planos</h4>
+                    
+                    <form id="edit-student-routine-form" class="space-y-4">
+                        <div>
+                            <label for="edit-routine-text" class="block text-sm font-medium mb-1 dark:text-gray-200 light:text-gray-900">Plano de Treino (Texto Livre)</label>
+                            <textarea id="edit-routine-text" rows="8" placeholder="Digite aqui o plano de treino detalhado para o aluno..."
+                                      class="w-full px-4 py-2 border border-gray-600 dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 bg-gray-700 dark:bg-gray-700 light:bg-gray-100 text-white dark:text-white light:text-gray-900"></textarea>
+                        </div>
+                        <div>
+                            <label for="edit-food-routine-text" class="block text-sm font-medium mb-1 dark:text-gray-200 light:text-gray-900">Plano Alimentar (Texto Livre)</label>
+                            <textarea id="edit-food-routine-text" rows="8" placeholder="Digite aqui o plano alimentar detalhado para o aluno..."
+                                      class="w-full px-4 py-2 border border-gray-600 dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 bg-gray-700 dark:bg-gray-700 light:bg-gray-100 text-white dark:text-white light:text-gray-900"></textarea>
+                        </div>
+                        
+                        <button type="submit"
+                                class="w-full py-2 px-4 rounded-lg text-white font-semibold bg-green-600 hover:bg-green-700 transition duration-150">
+                            Salvar Planos para o Aluno
+                        </button>
+                    </form>
+                </div>
 
-                    <button type="submit"
-                             class="w-full py-3 px-6 rounded-lg text-gray-900 dark:text-gray-900 font-bold bg-yellow-400 hover:bg-yellow-500 transition duration-200 shadow-xl shadow-yellow-900/50 tracking-wide">
-                        Salvar e Atualizar Plano do Aluno
+                <div class="mt-8 pt-6 border-t border-gray-700/50 light:border-gray-300/50">
+                    <button id="personal-logout-btn" class="w-full py-2 px-4 rounded-lg text-white font-semibold bg-red-600 hover:bg-red-700 transition duration-150">
+                        Sair (Logout)
                     </button>
-                    <button type="button" id="regenerate-student-plan-btn"
-                             class="w-full py-3 px-6 rounded-lg text-white font-bold bg-indigo-600 hover:bg-indigo-700 transition duration-200 shadow-lg shadow-indigo-900/50 tracking-wide mt-2">
-                        Gerar Plano com IA (Preencher acima)
-                    </button>
-                </form>
-                
+                </div>
             </div>
+        </div>
 
-            <button id="personal-logout-btn" class="mt-10 py-3 px-6 rounded-lg text-white font-bold bg-red-600 hover:bg-red-700 transition duration-200 shadow-xl shadow-red-900/50 w-full tracking-wide">
-                Sair do Dashboard
+    </div>
+
+    <div id="limitations-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-gray-800 p-6 rounded-lg shadow-2xl w-full max-w-sm">
+            <h3 class="text-xl font-bold dark:text-white mb-4">Limitações Físicas</h3>
+            <p class="dark:text-gray-400 text-sm mb-4">Selecione todas que se aplicam a você:</p>
+            <form id="limitations-form" class="space-y-3">
+                <div class="flex items-center">
+                    <input type="checkbox" id="limitation-joelho" value="Dor/Lesão no Joelho" class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out bg-gray-700 border-gray-600 rounded">
+                    <label for="limitation-joelho" class="ml-2 dark:text-gray-200">Dor/Lesão no Joelho</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="limitation-coluna" value="Problemas na Coluna (Lombar/Cervical)" class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out bg-gray-700 border-gray-600 rounded">
+                    <label for="limitation-coluna" class="ml-2 dark:text-gray-200">Problemas na Coluna (Lombar/Cervical)</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="limitation-ombro" value="Lesão no Ombro (Manguito Rotador/Outro)" class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out bg-gray-700 border-gray-600 rounded">
+                    <label for="limitation-ombro" class="ml-2 dark:text-gray-200">Lesão no Ombro (Manguito Rotador/Outro)</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="limitation-cardiaco" value="Condição Cardíaca" class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out bg-gray-700 border-gray-600 rounded">
+                    <label for="limitation-cardiaco" class="ml-2 dark:text-gray-200">Condição Cardíaca</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="limitation-asma" value="Asma/Problemas Respiratórios" class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out bg-gray-700 border-gray-600 rounded">
+                    <label for="limitation-asma" class="ml-2 dark:text-gray-200">Asma/Problemas Respiratórios</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="limitation-gravidez" value="Gravidez" class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out bg-gray-700 border-gray-600 rounded">
+                    <label for="limitation-gravidez" class="ml-2 dark:text-gray-200">Gravidez</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="limitation-artrite" value="Artrite/Artrose" class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out bg-gray-700 border-gray-600 rounded">
+                    <label for="limitation-artrite" class="ml-2 dark:text-gray-200">Artrite/Artrose</label>
+                </div>
+                
+                <button type="submit" id="save-limitations-btn"
+                        class="w-full mt-4 py-2 px-4 rounded-lg text-white font-semibold bg-indigo-600 hover:bg-indigo-700 transition duration-150">
+                    Salvar
+                </button>
+            </form>
+            <button id="close-limitations-modal-btn"
+                    class="mt-3 w-full py-2 px-4 rounded-lg text-sm dark:text-gray-400 hover:text-white transition duration-150 border border-gray-600 hover:bg-gray-700">
+                Fechar
             </button>
         </div>
-
     </div>
 
-    <div id="food-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-gray-800 dark:bg-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-md border border-gray-700">
-            <h3 class="text-2xl font-bold dark:text-white mb-4">Adicionar/Remover Restrições Alimentares</h3>
-            <p class="text-sm dark:text-gray-400 mb-4">Selecione os alimentos que você não gosta, não pode comer, ou tem alergia.</p>
-            
-            <div class="mb-4">
-                <input type="text" id="food-search-input" placeholder="Pesquisar alimento ou digitar um novo..."
-                       class="w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 bg-gray-700 text-white">
-            </div>
-
-            <div id="food-suggestions" class="flex flex-wrap gap-2 max-h-48 overflow-y-auto p-2 bg-gray-700/50 rounded-lg mb-4">
+    <div id="food-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-gray-800 p-6 rounded-lg shadow-2xl w-full max-w-sm">
+            <h3 class="text-xl font-bold dark:text-white mb-4">Restrições Alimentares</h3>
+            <p class="dark:text-gray-400 text-sm mb-4">Selecione alimentos que você não gosta/não pode comer:</p>
+            <form id="food-form" class="space-y-3">
+                <div class="flex items-center">
+                    <input type="checkbox" id="food-lactose" value="Lactose/Laticínios" class="form-checkbox h-4 w-4 text-pink-600 transition duration-150 ease-in-out bg-gray-700 border-gray-600 rounded">
+                    <label for="food-lactose" class="ml-2 dark:text-gray-200">Lactose/Laticínios</label>
                 </div>
-            
-            <h4 class="text-lg font-semibold dark:text-gray-200 mb-2">Restrições Selecionadas:</h4>
-            <div id="current-food-selection" class="flex flex-wrap gap-2 p-2 min-h-[40px] border border-gray-600 rounded-lg bg-gray-700/50 mb-4">
-                <span id="food-modal-no-selection" class="text-sm dark:text-gray-400">Nenhuma restrição selecionada.</span>
-            </div>
-
-            <div class="flex justify-end space-x-3">
-                <button type="button" id="close-food-modal-btn"
-                        class="py-2 px-4 rounded-lg text-gray-300 font-semibold bg-gray-600 hover:bg-gray-700 transition duration-150">
-                    Cancelar
-                </button>
-                <button type="button" id="save-food-restrictions-btn"
-                        class="py-2 px-4 rounded-lg text-white font-semibold bg-indigo-600 hover:bg-indigo-700 transition duration-150">
-                    Salvar Restrições
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="limitations-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-gray-800 dark:bg-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-md border border-gray-700">
-            <h3 class="text-2xl font-bold dark:text-white mb-4">Adicionar/Remover Limitações Físicas</h3>
-            <p class="text-sm dark:text-gray-400 mb-4">Selecione as condições ou lesões que limitam certos exercícios.</p>
-            
-            <div id="limitation-suggestions-container" class="space-y-3 max-h-72 overflow-y-auto p-3 bg-gray-700/50 rounded-lg mb-4">
+                <div class="flex items-center">
+                    <input type="checkbox" id="food-gluten" value="Glúten" class="form-checkbox h-4 w-4 text-pink-600 transition duration-150 ease-in-out bg-gray-700 border-gray-600 rounded">
+                    <label for="food-gluten" class="ml-2 dark:text-gray-200">Glúten</label>
                 </div>
-            
-            <h4 class="text-lg font-semibold dark:text-gray-200 mb-2">Limitações Selecionadas:</h4>
-            <div id="current-limitations-selection" class="flex flex-wrap gap-2 p-2 min-h-[40px] border border-gray-600 rounded-lg bg-gray-700/50 mb-4">
-                <span id="limitations-modal-no-selection" class="text-sm dark:text-gray-400">Nenhuma limitação selecionada.</span>
-            </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="food-frutosdomar" value="Frutos do Mar" class="form-checkbox h-4 w-4 text-pink-600 transition duration-150 ease-in-out bg-gray-700 border-gray-600 rounded">
+                    <label for="food-frutosdomar" class="ml-2 dark:text-gray-200">Frutos do Mar</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="food-amendoim" value="Amendoim/Oleaginosas" class="form-checkbox h-4 w-4 text-pink-600 transition duration-150 ease-in-out bg-gray-700 border-gray-600 rounded">
+                    <label for="food-amendoim" class="ml-2 dark:text-gray-200">Amendoim/Oleaginosas</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="food-carne-vermelha" value="Carne Vermelha" class="form-checkbox h-4 w-4 text-pink-600 transition duration-150 ease-in-out bg-gray-700 border-gray-600 rounded">
+                    <label for="food-carne-vermelha" class="ml-2 dark:text-gray-200">Carne Vermelha</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="food-acucar" value="Açúcares (Evitar)" class="form-checkbox h-4 w-4 text-pink-600 transition duration-150 ease-in-out bg-gray-700 border-gray-600 rounded">
+                    <label for="food-acucar" class="ml-2 dark:text-gray-200">Açúcares (Evitar)</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="food-pimenta" value="Pimenta/Alimentos Picantes" class="form-checkbox h-4 w-4 text-pink-600 transition duration-150 ease-in-out bg-gray-700 border-gray-600 rounded">
+                    <label for="food-pimenta" class="ml-2 dark:text-gray-200">Pimenta/Alimentos Picantes</label>
+                </div>
 
-            <div class="flex justify-end space-x-3">
-                <button type="button" id="close-limitations-modal-btn"
-                        class="py-2 px-4 rounded-lg text-gray-300 font-semibold bg-gray-600 hover:bg-gray-700 transition duration-150">
-                    Cancelar
+                <button type="submit" id="save-food-btn"
+                        class="w-full mt-4 py-2 px-4 rounded-lg text-white font-semibold bg-pink-600 hover:bg-pink-700 transition duration-150">
+                    Salvar
                 </button>
-                <button type="button" id="save-limitations-btn"
-                        class="py-2 px-4 rounded-lg text-white font-semibold bg-indigo-600 hover:bg-indigo-700 transition duration-150">
-                    Salvar Limitações
-                </button>
-            </div>
+            </form>
+            <button id="close-food-modal-btn"
+                    class="mt-3 w-full py-2 px-4 rounded-lg text-sm dark:text-gray-400 hover:text-white transition duration-150 border border-gray-600 hover:bg-gray-700">
+                Fechar
+            </button>
         </div>
     </div>
     
-    <div id="personal-ai-plan-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-gray-800 dark:bg-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-lg border border-gray-700">
-            <h3 class="text-2xl font-bold dark:text-white mb-4">Gerar Plano de Ação com IA</h3>
-            <p class="text-sm dark:text-gray-400 mb-6">A IA criará um plano (Dieta e Treino) com base nos dados do aluno. Você poderá editar o resultado antes de salvar.</p>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
 
-            <div class="p-4 rounded-lg bg-gray-700 border border-gray-600 mb-6 space-y-2">
-                <h4 class="text-lg font-semibold dark:text-yellow-400">Dados Usados:</h4>
-                <p class="text-sm dark:text-gray-300"><strong>Nome:</strong> <span id="ai-plan-student-name"></span></p>
-                <p class="text-sm dark:text-gray-300"><strong>Objetivo:</strong> <span id="ai-plan-student-objective"></span></p>
-                <p class="text-sm dark:text-gray-300"><strong>Limitações:</strong> <span id="ai-plan-student-limitations"></span></p>
-                <p class="text-sm dark:text-gray-300"><strong>Restrições Alimentares:</strong> <span id="ai-plan-student-restrictions"></span></p>
-            </div>
-            
-            <p id="ai-plan-modal-message" class="dark:text-white mb-4 text-center hidden">Gerando plano...</p>
-            
-            <div class="flex justify-end space-x-3">
-                <button type="button" id="close-ai-plan-modal-btn"
-                        class="py-2 px-4 rounded-lg text-gray-300 font-semibold bg-gray-600 hover:bg-gray-700 transition duration-150">
-                    Fechar
-                </button>
-                <button type="button" id="start-ai-generation-btn"
-                        class="py-2 px-4 rounded-lg text-white font-semibold bg-green-600 hover:bg-green-700 transition duration-150">
-                    Iniciar Geração de Plano
-                </button>
-            </div>
-        </div>
-    </div>
-
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        import { GoogleGenAI } from "https://cdn.jsdelivr.net/npm/@google/genai@0.1.0/dist/index.min.js";
-
-        // --- Configuração do Firebase e da IA ---
-
-        // Configurações do Firebase (Substitua com suas próprias chaves)
-        // OBS: Para a demonstração, esta chave é fictícia ou genérica, 
-        // em um ambiente de produção, use suas credenciais do Firebase.
+    <script>
+        // Configuração do Firebase
+        // SUBSTITUA ESTE OBJETO COM SUAS PRÓPRIAS CREDENCIAIS DO FIREBASE
         const firebaseConfig = {
-            apiKey: "YOUR_FIREBASE_API_KEY", // Substitua
-            authDomain: "YOUR_FIREBASE_AUTH_DOMAIN", // Substitua
-            projectId: "YOUR_FIREBASE_PROJECT_ID", // Substitua
-            storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET", // Substitua
-            messagingSenderId: "YOUR_FIREBASE_MESSAGING_SENDER_ID", // Substitua
-            appId: "YOUR_FIREBASE_APP_ID" // Substitua
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
         };
 
-        // Configuração da Google GenAI (Substitua com sua chave)
-        // OBS: Para a demonstração local, você pode usar uma chave de teste ou 
-        // garantir que o ambiente tenha acesso seguro à chave.
-        const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"; // Substitua
-        
-        // Inicializar Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const googleProvider = new GoogleAuthProvider();
-        
-        // Inicializar Google GenAI
-        const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-        const model = "gemini-2.5-flash"; // Modelo mais rápido e ideal para esta tarefa
+        // Inicializa o Firebase
+        firebase.initializeApp(firebaseConfig);
 
-        // --- Elementos DOM ---
-        const authCard = document.getElementById('auth-card');
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+        // [NOVO] Funções para Geração e Cálculo Otimizados
+        // Função para calcular a ingestão de água (35ml por kg)
+        function calculateWaterIntake(weight) {
+            // Adiciona uma margem de segurança na validação do peso
+            if (weight && parseFloat(weight) > 10) {
+                const intakeLiters = (parseFloat(weight) * 35) / 1000;
+                return intakeLiters.toFixed(2).replace('.', ',') + ' Litros';
+            }
+            return 'Recomendamos que insira seu peso para o cálculo.';
+        }
+
+        // Função para gerar planos personalizados (Treino e Dieta)
+        function generatePersonalizedPlan(userData) {
+            const { objective, limitations, foodRestrictions, age, gender } = userData;
+            const plan = {
+                routine: '',
+                diet: ''
+            };
+            
+            // --- Lógica de Personalização do Treino ---
+            const objLabel = objective === 'massa_muscular' ? 'Ganho de Massa Muscular' : (objective === 'emagrecer' ? 'Emagrecimento' : 'Fitness Geral');
+            
+            let routineDetails = `*** PLano de Treino - Sugestão Otimizada ***\n\n`;
+            routineDetails += `**Objetivo Principal:** ${objLabel}.\n`;
+            routineDetails += `**Foco:** Treino de ${gender === 'feminino' ? 'membros inferiores e definição' : 'força e volume total'}, adaptado para ${age} anos.\n`;
+
+            if (limitations && limitations.length > 0) {
+                routineDetails += `**⚠️ Limitações Físicas:** Atenção especial para: ${limitations.join(', ')}. Sugerimos focar em máquinas e exercícios de menor impacto para estas áreas.\n`;
+                routineDetails += `\n**Rotina Sugerida (3x por semana):**\n`;
+                routineDetails += `- Dia A: Corpo Superior (evitando sobrecarga nas áreas limitadas).\n`;
+                routineDetails += `- Dia B: Membros Inferiores (ênfase em exercícios que não exijam amplitude total das articulações limitadas).\n`;
+                routineDetails += `- Dia C: Corpo Total, focado em resistência e alongamento.\n`;
+            } else {
+                routineDetails += `**Status:** Sem limitações físicas reportadas. O treino pode ser mais intenso.\n`;
+                routineDetails += `\n**Rotina Sugerida (${objective === 'massa_muscular' ? '5' : '4'}x por semana):**\n`;
+                if (objective === 'massa_muscular') {
+                    routineDetails += `- Dia 1: Peito e Tríceps - Foco em Carga (Força).\n`;
+                    routineDetails += `- Dia 2: Costas e Bíceps - Foco em Volume (Hipertrofia).\n`;
+                    routineDetails += `- Dia 3: Pernas - Foco em Quadríceps.\n`;
+                    routineDetails += `- Dia 4: Ombros e Trapézio.\n`;
+                    routineDetails += `- Dia 5: Pernas - Foco em Posteriores e Glúteos.\n`;
+                } else {
+                    routineDetails += `- Dia 1: Corpo Superior e Cardio.\n`;
+                    routineDetails += `- Dia 2: Membros Inferiores e Treino em Circuito.\n`;
+                    routineDetails += `- Dia 3: Descanso Ativo.\n`;
+                    routineDetails += `- Dia 4: Corpo Total (Full Body) com foco em resistência.\n`;
+                }
+            }
+            routineDetails += `\n**AVISO:** Este plano é um rascunho. Seu Personal Trainer deve validá-lo e detalhá-lo no sistema.`;
+            plan.routine = routineDetails;
+
+
+            // --- Lógica de Personalização da Dieta ---
+            let dietDetails = `*** Plano Alimentar - Sugestão Otimizada ***\n\n`;
+            dietDetails += `**Objetivo:** Suporte nutricional para ${objLabel}.\n`;
+            
+            if (objective === 'massa_muscular') {
+                dietDetails += `**Recomendação:** Dieta Hipercalórica com alto teor de Proteínas para recuperação e crescimento muscular.\n`;
+                dietDetails += `**Foco:** Ingerir carboidratos complexos (aveia, arroz integral) antes e depois do treino.\n`;
+            } else if (objective === 'emagrecer') {
+                dietDetails += `**Recomendação:** Dieta com Déficit Calórico controlado e prioridade a Proteínas e Gorduras saudáveis (vegetais).\n`;
+                dietDetails += `**Foco:** Redução de açúcares e alimentos processados. Controle das porções de carboidratos.\n`;
+            }
+
+            if (foodRestrictions && foodRestrictions.length > 0) {
+                dietDetails += `\n**🚫 Restrições:** O plano deve **EXCLUIR RIGOROSAMENTE** os seguintes alimentos/ingredientes: ${foodRestrictions.join(', ')}.\n`;
+                dietDetails += `\n**Dica:** Substitua as fontes de proteína/carboidrato restritas por equivalentes permitidos (Ex: se for intolerante a lactose, use leite vegetal).\n`;
+            } else {
+                dietDetails += `\n**✅ Restrições:** Nenhuma restrição alimentar cadastrada. Variedade é a chave!\n`;
+            }
+
+            dietDetails += `\n**Distribuição de Macros:** Priorizar 5 a 6 refeições menores ao dia. Consultar um nutricionista para valores calóricos exatos e detalhados.`;
+            plan.diet = dietDetails;
+
+            return plan;
+        }
+
+        // State and initialization
+        let currentStudent = null;
+        let isSaving = false;
+        
+        // Elementos Comuns
+        const views = document.querySelectorAll('.view');
         const messageArea = document.getElementById('message-area');
-        const loginForm = document.getElementById('login-form');
-        const registerForm = document.getElementById('register-form');
-        const infoForm = document.getElementById('info-form');
-        const userTypeInput = document.getElementById('user-type-input');
-        const alunoFields = document.getElementById('aluno-fields');
-        const alunoMetricsFields = document.getElementById('aluno-metrics-fields');
-        const studentDashboardView = document.getElementById('student-dashboard-view');
-        const personalDashboardView = document.getElementById('personal-dashboard-view');
-        const planGenerationView = document.getElementById('plan-generation-view');
+        
+        // Elementos do Dashboard Aluno
         const studentLogoutBtn = document.getElementById('student-logout-btn');
-        const personalLogoutBtn = document.getElementById('personal-logout-btn');
-        const editProfileBtn = document.getElementById('edit-profile-btn');
         const regeneratePlanBtn = document.getElementById('regenerate-plan-btn');
-        const googleLoginBtn = document.getElementById('google-login-btn');
-        
-        // Elementos de Modais
-        const foodModal = document.getElementById('food-modal');
-        const addFoodRestrictionBtn = document.getElementById('add-food-restriction-btn');
-        const closeFoodModalBtn = document.getElementById('close-food-modal-btn');
-        const foodSearchInput = document.getElementById('food-search-input');
-        const foodSuggestionsContainer = document.getElementById('food-suggestions');
-        const currentFoodSelectionContainer = document.getElementById('current-food-selection');
-        const saveFoodRestrictionsBtn = document.getElementById('save-food-restrictions-btn');
-        
-        const limitationsModal = document.getElementById('limitations-modal');
-        const addLimitationBtn = document.getElementById('add-limitation-btn');
-        const closeLimitationsModalBtn = document.getElementById('close-limitations-modal-btn');
-        const limitationSuggestionsContainer = document.getElementById('limitation-suggestions-container');
-        const saveLimitationsBtn = document.getElementById('save-limitations-btn');
+        const editProfileBtn = document.getElementById('edit-profile-btn');
 
-        const personalStudentProfile = document.getElementById('personal-student-profile');
+        // Elementos do Dashboard Personal
+        const personalLogoutBtn = document.getElementById('personal-logout-btn');
         const searchStudentForm = document.getElementById('search-student-form');
         const editStudentRoutineForm = document.getElementById('edit-student-routine-form');
-        const regenerateStudentPlanBtn = document.getElementById('regenerate-student-plan-btn');
-        const personalAiPlanModal = document.getElementById('personal-ai-plan-modal');
-        const closeAiPlanModalBtn = document.getElementById('close-ai-plan-modal-btn');
-        const startAiGenerationBtn = document.getElementById('start-ai-generation-btn');
+        
+        // Modais de Seleção
+        const limitationsModal = document.getElementById('limitations-modal');
+        const foodModal = document.getElementById('food-modal');
+        const addLimitationBtn = document.getElementById('add-limitation-btn');
+        const closeLimitationsModalBtn = document.getElementById('close-limitations-modal-btn');
+        const addFoodRestrictionBtn = document.getElementById('add-food-restriction-btn');
+        const closeFoodModalBtn = document.getElementById('close-food-modal-btn');
 
-        // --- Constantes para Modais ---
-        const PREDEFINED_FOODS = [
-            "Glúten", "Lactose (Leite de vaca)", "Ovos", "Amendoim", "Nozes", "Castanhas", 
-            "Frutos do Mar", "Soja", "Trigo", "Carne Vermelha", "Açúcar", "Café", 
-            "Pimenta", "Alho", "Cebola", "Tomate", "Beringela", "Batata Doce",
-            "Mandioca (Aipim)", "Feijão", "Chocolate", "Bebidas Açucaradas"
-        ];
-
-        const PREDEFINED_LIMITATIONS = [
-            { id: 'l_lombar', label: 'Problemas na Coluna/Lombar', checked: false },
-            { id: 'l_joelho', label: 'Problemas no Joelho', checked: false },
-            { id: 'l_ombro', label: 'Problemas no Ombro/Manguito', checked: false },
-            { id: 'l_cardiaco', label: 'Condição Cardíaca', checked: false },
-            { id: 'l_asma', label: 'Asma/Problemas Respiratórios', checked: false },
-            { id: 'l_gravidez', label: 'Gravidez', checked: false },
-            { id: 'l_diabete', label: 'Diabetes', checked: false },
-            { id: 'l_hipertensao', label: 'Hipertensão', checked: false },
-            { id: 'l_outros', label: 'Outras Limitações/Lesões', checked: false }
-        ];
-
-        let selectedFoodRestrictions = [];
-        let selectedLimitations = [];
-        let currentStudentData = null; // Armazena os dados do aluno do personal trainer
-        let isGeneratingPlan = false;
-
-        // --- Funções de UI ---
-
-        /**
-         * Alterna a view principal exibida (login, register, info, student, personal)
-         * @param {string} viewName 
-         */
-        function toggleView(viewName) {
-            const views = ['login-view', 'register-view', 'info-form-view', 'student-dashboard-view', 'personal-dashboard-view', 'plan-generation-view'];
-            views.forEach(id => {
-                const view = document.getElementById(id);
-                if (view) {
-                    view.classList.add('hidden');
-                }
+        // Funções de Utilidade
+        function toggleView(viewId) {
+            views.forEach(view => {
+                view.classList.add('hidden');
             });
+            document.getElementById(`${viewId}-view`).classList.remove('hidden');
 
-            const targetView = document.getElementById(`${viewName}-view`);
-            if (targetView) {
-                targetView.classList.remove('hidden');
-                // Ajusta o tamanho do card principal para dashboards (maior)
-                if (viewName.includes('dashboard')) {
-                    authCard.classList.remove('max-w-md');
-                    authCard.classList.add('max-w-5xl', 'w-full');
-                } else {
-                    authCard.classList.remove('max-w-5xl', 'w-full');
-                    authCard.classList.add('max-w-md');
-                }
+            // Ajusta o tamanho do card principal para o dashboard
+            const authCard = document.getElementById('auth-card');
+            if (viewId.includes('dashboard')) {
+                authCard.classList.remove('max-w-md');
+                authCard.classList.add('max-w-3xl'); // Tamanho maior para dashboards
+            } else {
+                authCard.classList.remove('max-w-3xl');
+                authCard.classList.add('max-w-md'); // Tamanho padrão para formulários
             }
         }
-        
-        /**
-         * Exibe uma mensagem de status (sucesso/erro)
-         * @param {string} message 
-         * @param {string} type 
-         */
-        function displayMessage(message, type = 'error') {
-            messageArea.textContent = message;
-            messageArea.classList.remove('hidden', 'bg-red-900', 'text-red-300', 'bg-green-900', 'text-green-300');
-            
-            if (type === 'success') {
-                messageArea.classList.add('bg-green-700', 'text-white');
-            } else if (type === 'warning') {
-                messageArea.classList.add('bg-yellow-700', 'text-white');
-            } else {
-                messageArea.classList.add('bg-red-700', 'text-white');
-            }
 
-            // Oculta a mensagem após 5 segundos
+        function showMessage(type, message) {
+            messageArea.textContent = message;
+            messageArea.classList.remove('hidden', 'bg-red-400', 'bg-green-400');
+            messageArea.classList.add('opacity-0');
+            
+            if (type === 'error') {
+                messageArea.classList.add('bg-red-700/80', 'text-white');
+            } else if (type === 'success') {
+                messageArea.classList.add('bg-green-700/80', 'text-white');
+            } else {
+                messageArea.classList.add('bg-blue-700/80', 'text-white');
+            }
+            
             setTimeout(() => {
-                messageArea.classList.add('hidden');
+                messageArea.classList.remove('opacity-0');
+            }, 50);
+
+            setTimeout(() => {
+                messageArea.classList.add('opacity-0');
+                messageArea.addEventListener('transitionend', () => {
+                    messageArea.classList.add('hidden');
+                }, { once: true });
             }, 5000);
         }
 
-        /**
-         * Alterna entre Dark e Light mode
-         */
-        function toggleDarkMode() {
-            const html = document.documentElement;
-            const isDark = html.classList.contains('dark');
-            if (isDark) {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                document.getElementById('moon-icon').classList.add('hidden');
-                document.getElementById('sun-icon').classList.remove('hidden');
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.classList.remove('light');
-                html.classList.add('dark');
-                document.getElementById('moon-icon').classList.remove('hidden');
-                document.getElementById('sun-icon').classList.add('hidden');
-                localStorage.setItem('theme', 'dark');
+        function clearInputs(formId) {
+            const form = document.getElementById(formId);
+            if (form) {
+                form.reset();
             }
         }
         
-        /**
-         * Aplica o tema salvo no localStorage ou o padrão (dark)
-         */
-        function applyTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            const html = document.documentElement;
-            html.classList.remove('light', 'dark');
-            html.classList.add(savedTheme);
+        function getFieldData(formId) {
+            const form = document.getElementById(formId);
+            const inputs = form.querySelectorAll('input, select');
+            const data = {};
+            inputs.forEach(input => {
+                data[input.id.replace(formId.replace('-form', '') + '-', '')] = input.value;
+            });
+            return data;
+        }
+
+        function renderTags(items, containerId, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
             
-            if (savedTheme === 'light') {
-                document.getElementById('moon-icon').classList.add('hidden');
+            if (items.length === 0) {
+                container.innerHTML = `<span class="text-sm dark:text-gray-400 light:text-gray-500">${type === 'food' ? 'Nenhuma restrição alimentar cadastrada.' : 'Nenhuma limitação selecionada.'}</span>`;
+                return;
+            }
+
+            items.forEach(item => {
+                const tag = document.createElement('span');
+                tag.className = `food-tag ${type === 'food' ? 'bg-pink-600/80' : 'bg-indigo-600/80'} text-white text-sm`;
+                tag.textContent = item;
+                container.appendChild(tag);
+            });
+        }
+        
+        function openLimitationsModal() {
+            limitationsModal.classList.remove('hidden');
+            // Preencher com dados salvos (se houver)
+            const checkboxes = limitationsModal.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => {
+                cb.checked = currentStudent.limitations && currentStudent.limitations.includes(cb.value);
+            });
+        }
+        
+        function closeLimitationsModal() {
+            limitationsModal.classList.add('hidden');
+        }
+
+        function openFoodModal() {
+            foodModal.classList.remove('hidden');
+            // Preencher com dados salvos (se houver)
+            const checkboxes = foodModal.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => {
+                cb.checked = currentStudent.foodRestrictions && currentStudent.foodRestrictions.includes(cb.value);
+            });
+        }
+        
+        function closeFoodModal() {
+            foodModal.classList.add('hidden');
+        }
+
+        function toggleDarkMode() {
+            const body = document.body;
+            const isDark = body.classList.contains('dark');
+            
+            if (isDark) {
+                body.classList.remove('dark', 'bg-gray-900');
+                body.classList.add('light', 'bg-gray-100');
                 document.getElementById('sun-icon').classList.remove('hidden');
+                document.getElementById('moon-icon').classList.add('hidden');
             } else {
-                document.getElementById('moon-icon').classList.remove('hidden');
+                body.classList.remove('light', 'bg-gray-100');
+                body.classList.add('dark', 'bg-gray-900');
                 document.getElementById('sun-icon').classList.add('hidden');
+                document.getElementById('moon-icon').classList.remove('hidden');
             }
         }
+        
+        // Funções de Renderização de Dashboard
+        function renderStudentDashboard(user) {
+            currentStudent = user;
+            
+            // Dados de Acesso
+            document.getElementById('student-dashboard-name').textContent = user.fullName || 'Não informado';
+            document.getElementById('student-dashboard-email').textContent = user.email;
+            document.getElementById('student-dashboard-client-code').textContent = user.uid.substring(0, 8); // Exibe os primeiros 8 caracteres do UID
+            
+            // Dados do Perfil
+            document.getElementById('student-dashboard-age').textContent = user.age || 'N/A';
+            document.getElementById('student-dashboard-gender').textContent = user.gender ? (user.gender.charAt(0).toUpperCase() + user.gender.slice(1)) : 'N/A';
+            document.getElementById('student-dashboard-objective').textContent = user.objective ? (user.objective === 'massa_muscular' ? 'Ganho de Massa Muscular' : 'Emagrecimento') : 'N/A';
+            document.getElementById('student-dashboard-weight').textContent = user.weight ? `${user.weight} kg` : 'N/A';
+            document.getElementById('student-dashboard-height').textContent = user.height ? `${user.height} cm` : 'N/A';
+            
+            renderTags(user.limitations || [], 'student-dashboard-limitations', 'limitation');
+            renderTags(user.foodRestrictions || [], 'student-dashboard-restrictions', 'food');
 
-        // Aplica o tema na inicialização
-        applyTheme();
+            // [NOVO] Cálculo e exibição da água recomendada
+            const waterIntake = calculateWaterIntake(user.weight);
+            document.getElementById('daily-water-intake').textContent = waterIntake;
 
-        // --- Funções de Persistência (Firebase) ---
-
-        /**
-         * Gera um UID curto de 7 caracteres (A-Z, 0-9)
-         * @returns {string}
-         */
-        function generateShortUid() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let result = '';
-            for (let i = 0; i < 7; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            // Se o plano ainda não foi gerado, chame a função
+            if (user.userType === 'aluno' && !user.routine) {
+                generatePlanAndDisplay(user);
             }
-            return result;
+            
+            // Atualiza as áreas de rotina e dieta com os dados salvos
+            document.getElementById('student-training-routine').textContent = user.routine || 'Aguardando geração do plano...';
+            document.getElementById('student-food-routine').textContent = user.foodRoutine || 'Aguardando geração do plano...';
+            
+            toggleView('student-dashboard');
         }
 
+        function renderPersonalDashboard() {
+            // Limpa o painel do aluno
+            document.getElementById('student-info-section').classList.add('hidden');
+            toggleView('personal-dashboard');
+        }
 
-        /**
-         * Cria um novo documento de usuário no Firestore
-         * @param {object} user - Objeto user do Firebase Auth
-         * @param {string} name - Nome do usuário
-         */
-        async function createNewUserDoc(user, name) {
-            try {
-                const shortUid = generateShortUid();
-                const userRef = doc(db, "users", user.uid);
-                await setDoc(userRef, {
-                    name: name,
-                    email: user.email,
-                    uid: user.uid,
-                    shortUid: shortUid, // Código único para Personal Trainer
-                    userType: null, // 'aluno' ou 'personal'
-                    isProfileComplete: false,
-                    profile: {
-                        age: null,
-                        gender: null,
-                        objective: null,
-                        weight: null,
-                        height: null,
-                        limitations: [],
-                        foodRestrictions: [],
-                    },
-                    routines: {
-                        food: null,
-                        training: null,
-                    }
+        // Funções de Plano Automático
+        function generatePlanAndDisplay(userData) {
+            toggleView('plan-generation'); // Show loading screen
+
+            // Simulação de geração de plano
+            setTimeout(() => {
+                
+                // [NOVO] Geração do plano personalizado
+                const personalizedPlan = generatePersonalizedPlan(userData);
+                const routineText = personalizedPlan.routine;
+                const foodRoutineText = personalizedPlan.diet;
+
+                // Atualizar o frontend com o plano gerado
+                document.getElementById('student-training-routine').textContent = routineText;
+                document.getElementById('student-food-routine').textContent = foodRoutineText;
+
+                // Salvar os novos planos gerados no objeto do usuário e no Firestore, 
+                // para que persistam ao recarregar
+                currentStudent.routine = routineText;
+                currentStudent.foodRoutine = foodRoutineText;
+                
+                db.collection('users').doc(userData.uid).update({
+                    routine: routineText,
+                    foodRoutine: foodRoutineText,
+                    lastPlanGenerated: firebase.firestore.FieldValue.serverTimestamp() // Opcional: marca a data
+                }).then(() => {
+                    toggleView('student-dashboard'); // Back to dashboard
+                    showMessage('success', 'Planos personalizados gerados e salvos com sucesso!');
+                }).catch(error => {
+                    console.error("Erro ao salvar o plano:", error);
+                    toggleView('student-dashboard');
+                    showMessage('error', 'Erro ao salvar o plano. Verifique o console.');
                 });
-                return { success: true, shortUid };
-            } catch (error) {
-                console.error("Erro ao criar documento de usuário:", error);
-                displayMessage("Erro ao inicializar perfil: " + error.message);
-                return { success: false, error };
-            }
+
+
+            }, 1500); // Simulação de delay de processamento
         }
 
-        /**
-         * Busca os dados do perfil do usuário no Firestore
-         * @param {string} uid - User ID do Firebase Auth
-         * @returns {object|null}
-         */
-        async function fetchUserData(uid) {
-            try {
-                const docRef = doc(db, "users", uid);
-                const docSnap = await getDoc(docRef);
 
-                if (docSnap.exists()) {
-                    return docSnap.data();
+        // Funções de Autenticação e Dados
+        
+        async function fetchUserData(user) {
+            try {
+                const doc = await db.collection('users').doc(user.uid).get();
+                if (doc.exists) {
+                    const userData = doc.data();
+                    if (userData.userType === 'aluno') {
+                        renderStudentDashboard(userData);
+                    } else if (userData.userType === 'personal') {
+                        renderPersonalDashboard();
+                    } else {
+                         // Usuário existe mas não completou o cadastro de perfil
+                         toggleView('info-form');
+                         fillInfoForm(userData);
+                    }
                 } else {
-                    console.log("Nenhum documento de usuário encontrado!");
-                    return null;
+                    // Novo usuário, iniciar formulário de info
+                    toggleView('info-form');
+                    // Preenche apenas nome e email iniciais, se vierem do auth
+                    document.getElementById('full-name').value = user.displayName || '';
+                    document.getElementById('register-email').value = user.email || '';
                 }
             } catch (error) {
                 console.error("Erro ao buscar dados do usuário:", error);
-                displayMessage("Erro ao carregar dados do perfil.");
-                return null;
-            }
-        }
-
-        /**
-         * Busca os dados de um aluno específico pelo shortUid (usado pelo Personal)
-         * @param {string} shortUid - Código curto do aluno
-         * @returns {object|null}
-         */
-        async function fetchStudentByShortUid(shortUid) {
-            try {
-                // Como o Firestore não tem um índice no shortUid, é necessário fazer uma query.
-                // Idealmente, seria melhor ter um mapa de shortUid -> uid ou usar o shortUid como doc ID,
-                // mas para manter o exemplo simples, vamos manter a estrutura e simular uma busca.
-                
-                // Em um ambiente real, você usaria:
-                /* const usersRef = collection(db, "users");
-                const q = query(usersRef, where("shortUid", "==", shortUid.toUpperCase()));
-                const querySnapshot = await getDocs(q);
-
-                if (!querySnapshot.empty) {
-                    return querySnapshot.docs[0].data();
-                } else {
-                    return null;
-                }
-                */
-                
-                // Simulação de busca local (apenas para este exemplo simplificado)
-                // Vamos simular que a API consegue encontrar. Para este projeto,
-                // vamos focar no Personal apenas conseguir salvar, assumindo que
-                // a busca pelo shortUid retorna o doc. Para a demo, isso é suficiente.
-                
-                const userRef = doc(db, "users", `simulated_student_${shortUid.toUpperCase()}`);
-                const docSnap = await getDoc(userRef);
-
-                if (docSnap.exists()) {
-                    return docSnap.data();
-                } else {
-                    return null;
-                }
-
-            } catch (error) {
-                console.error("Erro ao buscar aluno por shortUid:", error);
-                displayMessage("Erro ao buscar aluno.");
-                return null;
-            }
-        }
-
-
-        /**
-         * Atualiza os dados do perfil do usuário no Firestore
-         * @param {string} uid - User ID do Firebase Auth
-         * @param {object} profileData - Dados a serem salvos em 'profile'
-         * @param {boolean} isComplete - Indica se o perfil está completo
-         */
-        async function updateProfileData(uid, profileData, isComplete = false) {
-            try {
-                const userRef = doc(db, "users", uid);
-                await updateDoc(userRef, {
-                    isProfileComplete: isComplete,
-                    profile: profileData,
-                });
-                return { success: true };
-            } catch (error) {
-                console.error("Erro ao atualizar perfil:", error);
-                displayMessage("Erro ao salvar perfil.");
-                return { success: false, error };
+                showMessage('error', 'Erro ao carregar seu perfil. Tente novamente.');
+                auth.signOut();
             }
         }
         
-        /**
-         * Atualiza o tipo de usuário (aluno/personal) e o nome.
-         * @param {string} uid - User ID do Firebase Auth
-         * @param {string} userType - 'aluno' ou 'personal'
-         * @param {string} name - Nome completo
-         */
-        async function updateUserTypeAndName(uid, userType, name) {
-            try {
-                const userRef = doc(db, "users", uid);
-                await updateDoc(userRef, {
-                    userType: userType,
-                    name: name
-                });
-                return { success: true };
-            } catch (error) {
-                console.error("Erro ao atualizar tipo de usuário:", error);
-                displayMessage("Erro ao salvar tipo de usuário.");
-                return { success: false, error };
-            }
-        }
-
-        /**
-         * Atualiza as rotinas (food e training) do usuário
-         * @param {string} uid - User ID do Firebase Auth
-         * @param {string} foodRoutine - Texto do plano alimentar
-         * @param {string} trainingRoutine - Texto do plano de treino
-         */
-        async function updateRoutines(uid, foodRoutine, trainingRoutine) {
-            try {
-                const userRef = doc(db, "users", uid);
-                await updateDoc(userRef, {
-                    routines: {
-                        food: foodRoutine,
-                        training: trainingRoutine,
-                    }
-                });
-                return { success: true };
-            } catch (error) {
-                console.error("Erro ao atualizar rotinas:", error);
-                displayMessage("Erro ao salvar rotinas.");
-                return { success: false, error };
-            }
-        }
-
-
-        // --- Funções de Autenticação ---
-
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
+        function fillInfoForm(userData) {
+            document.getElementById('user-type-input').value = userData.userType || '';
+            document.getElementById('full-name').value = userData.fullName || '';
+            document.getElementById('age').value = userData.age || '';
+            document.getElementById('gender').value = userData.gender || '';
+            document.getElementById('objective').value = userData.objective || '';
+            document.getElementById('weight').value = userData.weight || '';
+            document.getElementById('height').value = userData.height || '';
             
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-            } catch (error) {
-                displayMessage(error.message.replace(/firebase: /i, '').replace(/\(auth.*\)/, ''));
-            }
-        });
+            // Exibe campos de aluno se o tipo for 'aluno'
+            const isAluno = userData.userType === 'aluno';
+            document.getElementById('aluno-fields').classList.toggle('hidden', !isAluno);
+            document.getElementById('aluno-metrics-fields').classList.toggle('grid-cols-2', isAluno);
+            document.getElementById('aluno-metrics-fields').classList.toggle('grid-cols-1', !isAluno);
+            
+            // Renderiza tags salvas no formulário
+            renderTags(userData.limitations || [], 'selected-limitations-tags', 'limitation');
+            renderTags(userData.foodRestrictions || [], 'selected-food-tags', 'food');
 
-        registerForm.addEventListener('submit', async (e) => {
+            // Salva as restrições para uso nos modais
+            currentStudent = userData;
+        }
+
+        // Handlers de Formulário e Botões
+        
+        function handleAuthError(error) {
+            console.error("Erro de Autenticação:", error);
+            let errorMessage = 'Ocorreu um erro de autenticação.';
+            if (error.code === 'auth/email-already-in-use') {
+                errorMessage = 'Este e-mail já está em uso. Tente fazer login.';
+            } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                errorMessage = 'E-mail ou senha inválidos.';
+            } else if (error.code === 'auth/weak-password') {
+                errorMessage = 'A senha deve ter no mínimo 6 caracteres.';
+            }
+            showMessage('error', errorMessage);
+            isSaving = false;
+        }
+
+        async function handleRegistration(e) {
             e.preventDefault();
-            const name = document.getElementById('register-name').value;
+            if (isSaving) return;
+            isSaving = true;
+
             const email = document.getElementById('register-email').value;
             const password = document.getElementById('register-password').value;
             const confirmPassword = document.getElementById('register-confirm-password').value;
-
-            if (password !== confirmPassword) {
-                displayMessage("As senhas não coincidem.");
-                return;
-            }
-            if (password.length < 6) {
-                displayMessage("A senha deve ter no mínimo 6 caracteres.");
-                return;
-            }
+            const fullName = document.getElementById('register-name').value;
             
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await createNewUserDoc(userCredential.user, name);
-                // O onAuthStateChanged cuidará da navegação para o formulário de info
-            } catch (error) {
-                displayMessage(error.message.replace(/firebase: /i, '').replace(/\(auth.*\)/, ''));
+            if (password !== confirmPassword) {
+                showMessage('error', 'As senhas não coincidem!');
+                isSaving = false;
+                return;
             }
-        });
-        
-        googleLoginBtn.addEventListener('click', signInWithGoogle);
+
+            try {
+                const response = await auth.createUserWithEmailAndPassword(email, password);
+                const user = response.user;
+                
+                await user.updateProfile({ displayName: fullName });
+                
+                await db.collection('users').doc(user.uid).set({
+                    uid: user.uid,
+                    email: user.email,
+                    fullName: fullName,
+                    userType: null, // Tipo de usuário será definido no próximo formulário
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                showMessage('success', 'Cadastro realizado com sucesso! Complete seu perfil.');
+                clearInputs('register-form');
+                // O onAuthStateChanged vai capturar e levar para o info-form-view
+            } catch (error) {
+                handleAuthError(error);
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            if (isSaving) return;
+            isSaving = true;
+
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                showMessage('success', 'Login realizado com sucesso!');
+                clearInputs('login-form');
+                // O onAuthStateChanged lida com a navegação
+            } catch (error) {
+                handleAuthError(error);
+            }
+        }
 
         async function signInWithGoogle() {
             try {
-                const result = await signInWithPopup(auth, googleProvider);
-                const user = result.user;
-                const userData = await fetchUserData(user.uid);
+                const response = await auth.signInWithPopup(googleProvider);
+                const user = response.user;
                 
-                if (!userData) {
-                    await createNewUserDoc(user, user.displayName || user.email);
+                const userRef = db.collection('users').doc(user.uid);
+                const doc = await userRef.get();
+                
+                if (!doc.exists) {
+                     // Cria o perfil inicial se for o primeiro login com Google
+                    await userRef.set({
+                        uid: user.uid,
+                        email: user.email,
+                        fullName: user.displayName,
+                        userType: null,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
                 }
-                // O onAuthStateChanged cuidará da navegação
+                
+                showMessage('success', 'Login com Google realizado com sucesso!');
+                // O onAuthStateChanged lida com a navegação
             } catch (error) {
-                // Tratamento de erro de login com Google
-                if (error.code === 'auth/popup-closed-by-user') {
-                    displayMessage("O pop-up de login do Google foi fechado.");
-                } else {
-                    displayMessage(error.message.replace(/firebase: /i, '').replace(/\(auth.*\)/, ''));
-                }
+                handleAuthError(error);
             }
         }
 
-        /**
-         * Lida com o logout
-         */
-        function handleLogout() {
-            signOut(auth).then(() => {
-                displayMessage("Você saiu com sucesso.", 'success');
-                toggleView('login');
-                // Limpa os estados dos modais e formulários
-                selectedFoodRestrictions = [];
-                selectedLimitations = [];
-                currentStudentData = null;
-                renderLimitationTags();
-                renderFoodTags();
-                document.getElementById('edit-student-routine-form').reset();
-                personalStudentProfile.classList.add('hidden');
-                document.getElementById('search-student-form').reset();
-            }).catch((error) => {
-                displayMessage("Erro ao sair: " + error.message);
-            });
-        }
-
-        // --- Funções do Formulário de Perfil ---
-
-        userTypeInput.addEventListener('change', (e) => {
-            const userType = e.target.value;
-            // Mostra os campos de métricas/restrições APENAS para Aluno
-            if (userType === 'aluno') {
-                alunoFields.classList.remove('hidden');
-                alunoMetricsFields.classList.remove('hidden');
-            } else {
-                alunoFields.classList.add('hidden');
-                alunoMetricsFields.classList.add('hidden');
-            }
-            // Torna Nome Completo editável para Personal
-            document.getElementById('full-name').disabled = userType !== 'personal';
-        });
-
-        infoForm.addEventListener('submit', async (e) => {
+        async function handleInfoFormSubmit(e) {
             e.preventDefault();
-            const user = auth.currentUser;
-            if (!user) return;
-
-            const name = document.getElementById('full-name').value.trim();
-            const userType = userTypeInput.value;
+            if (isSaving) return;
+            isSaving = true;
             
-            if (!userType || !name) {
-                displayMessage("Selecione seu papel e digite seu nome completo.");
+            const user = auth.currentUser;
+            if (!user) {
+                showMessage('error', 'Você precisa estar logado para salvar as informações.');
+                isSaving = false;
                 return;
             }
 
-            // 1. Salva o Tipo de Usuário e Nome
-            const updateTypeResult = await updateUserTypeAndName(user.uid, userType, name);
-            if (!updateTypeResult.success) return;
+            const userType = document.getElementById('user-type-input').value;
+            const fullName = document.getElementById('full-name').value;
+            
+            // Dados de Aluno
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const objective = document.getElementById('objective').value;
+            const weight = document.getElementById('weight').value;
+            const height = document.getElementById('height').value;
+            
+            // Dados de Limitações/Restrições (já estão em currentStudent)
+            const limitations = currentStudent.limitations || [];
+            const foodRestrictions = currentStudent.foodRestrictions || [];
+            
+            const userData = {
+                uid: user.uid,
+                email: user.email,
+                fullName: fullName,
+                userType: userType,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
 
             if (userType === 'aluno') {
-                // 2. Coleta e valida dados do Aluno
-                const age = parseInt(document.getElementById('age').value);
-                const gender = document.getElementById('gender').value;
-                const objective = document.getElementById('objective').value;
-                const weight = parseFloat(document.getElementById('weight').value);
-                const height = parseInt(document.getElementById('height').value);
-                
+                // Adiciona campos obrigatórios para aluno
+                Object.assign(userData, {
+                    age: parseInt(age) || null,
+                    gender: gender || null,
+                    objective: objective || null,
+                    weight: parseFloat(weight) || null,
+                    height: parseInt(height) || null,
+                    limitations: limitations,
+                    foodRestrictions: foodRestrictions
+                });
+
+                // Validação mínima
                 if (!age || !gender || !objective || !weight || !height) {
-                    displayMessage("Preencha todos os campos obrigatórios de Aluno (Idade, Gênero, Objetivo, Peso, Altura).");
+                    showMessage('error', 'Todos os campos de métricas (Idade, Peso, Altura, etc.) são obrigatórios para Alunos.');
+                    isSaving = false;
                     return;
                 }
-
-                const profileData = {
-                    age,
-                    gender,
-                    objective,
-                    weight,
-                    height,
-                    limitations: selectedLimitations,
-                    foodRestrictions: selectedFoodRestrictions,
-                };
-                
-                // 3. Salva os dados do Perfil
-                const updateProfileResult = await updateProfileData(user.uid, profileData, true);
-                if (!updateProfileResult.success) return;
-                
-                // 4. Inicia a Geração do Plano de Ação (Via IA)
-                await startPlanGeneration(user.uid, profileData);
-
-            } else if (userType === 'personal') {
-                // 5. Navega para o Dashboard do Personal Trainer
-                displayMessage("Perfil Personal Trainer salvo com sucesso!", 'success');
-                toggleView('personal-dashboard');
             }
-        });
-        
-        /**
-         * Preenche o formulário de edição de perfil com os dados atuais do usuário logado.
-         * @param {object} userData - Dados do usuário.
-         */
-        function fillInfoForm(userData) {
-            document.getElementById('full-name').value = userData.name || '';
-            
-            // Preenche e desabilita a edição do nome se for login social
-            if (auth.currentUser && (auth.currentUser.providerData.some(p => p.providerId === 'google.com'))) {
-                 document.getElementById('full-name').disabled = true;
-            } else {
-                 document.getElementById('full-name').disabled = false;
-            }
-            
-            if (userData.userType) {
-                userTypeInput.value = userData.userType;
-                
-                // Força o evento 'change' para esconder/mostrar campos
-                userTypeInput.dispatchEvent(new Event('change')); 
-
-                if (userData.userType === 'aluno' && userData.profile) {
-                    const profile = userData.profile;
-                    document.getElementById('age').value = profile.age || '';
-                    document.getElementById('gender').value = profile.gender || '';
-                    document.getElementById('objective').value = profile.objective || '';
-                    document.getElementById('weight').value = profile.weight || '';
-                    document.getElementById('height').value = profile.height || '';
-                    
-                    selectedLimitations = profile.limitations || [];
-                    selectedFoodRestrictions = profile.foodRestrictions || [];
-                    
-                    renderLimitationTags();
-                    renderFoodTags();
-                }
-            } else {
-                 // Reseta o estado
-                 userTypeInput.value = '';
-                 userTypeInput.dispatchEvent(new Event('change'));
-            }
-        }
-        
-        // --- Funções de Dashboard do Aluno ---
-
-        /**
-         * Popula o dashboard do aluno com os dados de perfil e rotina
-         * @param {object} userData - Dados do usuário.
-         */
-        function populateStudentDashboard(userData) {
-            const profile = userData.profile || {};
-            const routines = userData.routines || {};
-            
-            // Dados de Identificação
-            document.getElementById('student-dashboard-name').textContent = userData.name || 'N/A';
-            document.getElementById('student-dashboard-email').textContent = userData.email || 'N/A';
-            document.getElementById('student-dashboard-client-code').textContent = userData.shortUid || 'N/A';
-            
-            // Dados de Perfil
-            document.getElementById('student-dashboard-age').textContent = profile.age ? `${profile.age} anos` : 'N/A';
-            document.getElementById('student-dashboard-gender').textContent = profile.gender ? (profile.gender === 'masculino' ? 'Masculino' : 'Feminino') : 'N/A';
-            document.getElementById('student-dashboard-objective').textContent = profile.objective ? (profile.objective === 'emagrecer' ? 'Emagrecer' : 'Massa Muscular') : 'N/A';
-            document.getElementById('student-dashboard-weight').textContent = profile.weight ? `${profile.weight} kg` : 'N/A';
-            document.getElementById('student-dashboard-height').textContent = profile.height ? `${profile.height} cm` : 'N/A';
-            
-            // Limitações e Restrições
-            const limitationsDiv = document.getElementById('student-dashboard-limitations');
-            limitationsDiv.innerHTML = '';
-            if (profile.limitations && profile.limitations.length > 0) {
-                profile.limitations.forEach(limitation => {
-                    limitationsDiv.innerHTML += `<span class="food-tag bg-red-600/80">${limitation}</span>`;
-                });
-            } else {
-                limitationsDiv.textContent = 'Nenhuma limitação reportada.';
-            }
-
-            const restrictionsDiv = document.getElementById('student-dashboard-restrictions');
-            restrictionsDiv.innerHTML = '';
-            if (profile.foodRestrictions && profile.foodRestrictions.length > 0) {
-                profile.foodRestrictions.forEach(restriction => {
-                    restrictionsDiv.innerHTML += `<span class="food-tag bg-pink-600/80">${restriction}</span>`;
-                });
-            } else {
-                restrictionsDiv.textContent = 'Nenhuma restrição reportada.';
-            }
-
-            // Rotinas (Planos)
-            document.getElementById('student-food-routine').textContent = routines.food || 'Plano alimentar não gerado.';
-            document.getElementById('student-training-routine').textContent = routines.training || 'Plano de treino não gerado.';
-        }
-
-        editProfileBtn.addEventListener('click', () => {
-            toggleView('info-form');
-        });
-
-        // --- Funções do Dashboard do Personal ---
-
-        searchStudentForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const shortUid = document.getElementById('student-uid-search').value;
-            
-            // Simulação de busca: Se o Personal digitar "STUDENT", 
-            // simula que ele encontrou um aluno genérico para edição.
-            if (shortUid.toUpperCase() === 'STUDENT') {
-                const simulatedStudent = {
-                    name: 'Aluno Simulado',
-                    email: 'aluno@simulado.com',
-                    uid: `simulated_student_${shortUid.toUpperCase()}`,
-                    shortUid: shortUid.toUpperCase(),
-                    userType: 'aluno',
-                    isProfileComplete: true,
-                    profile: {
-                        age: 28,
-                        gender: 'feminino',
-                        objective: 'massa_muscular',
-                        weight: 65.0,
-                        height: 168,
-                        limitations: ['Problemas no Joelho', 'Asma'],
-                        foodRestrictions: ['Lactose (Leite de vaca)', 'Frutos do Mar'],
-                    },
-                    routines: {
-                        food: "Plano Alimentar atual do aluno Simulado...",
-                        training: "Plano de Treino atual do aluno Simulado...",
-                    }
-                };
-                currentStudentData = simulatedStudent;
-                populatePersonalStudentProfile(simulatedStudent);
-                personalStudentProfile.classList.remove('hidden');
-                displayMessage(`Aluno ${simulatedStudent.name} carregado com sucesso!`, 'success');
-                return;
-            }
-
-            // Lógica real de busca (com simulação, pois não há índice real)
-            const studentData = await fetchStudentByShortUid(shortUid);
-            
-            if (studentData && studentData.userType === 'aluno') {
-                currentStudentData = studentData;
-                populatePersonalStudentProfile(studentData);
-                personalStudentProfile.classList.remove('hidden');
-                displayMessage(`Aluno ${studentData.name} carregado com sucesso!`, 'success');
-            } else {
-                currentStudentData = null;
-                personalStudentProfile.classList.add('hidden');
-                displayMessage("Aluno não encontrado ou código inválido.", 'error');
-            }
-        });
-        
-        /**
-         * Popula a seção de edição do aluno no dashboard do personal.
-         * @param {object} studentData - Dados do aluno.
-         */
-        function populatePersonalStudentProfile(studentData) {
-            const profile = studentData.profile || {};
-            const routines = studentData.routines || {};
-            
-            document.getElementById('editing-student-name').textContent = studentData.name || 'N/A';
-            
-            // Dados de Perfil
-            document.getElementById('personal-student-email').textContent = studentData.email || 'N/A';
-            document.getElementById('personal-student-age').textContent = profile.age ? `${profile.age} anos` : 'N/A';
-            document.getElementById('personal-student-gender').textContent = profile.gender ? (profile.gender === 'masculino' ? 'Masculino' : 'Feminino') : 'N/A';
-            document.getElementById('personal-student-objective').textContent = profile.objective ? (profile.objective === 'emagrecer' ? 'Emagrecer' : 'Massa Muscular') : 'N/A';
-            document.getElementById('personal-student-weight').textContent = profile.weight ? `${profile.weight} kg` : 'N/A';
-            document.getElementById('personal-student-height').textContent = profile.height ? `${profile.height} cm` : 'N/A';
-
-            // Limitações e Restrições
-            const limitationsDiv = document.getElementById('personal-student-limitations');
-            limitationsDiv.innerHTML = '';
-            if (profile.limitations && profile.limitations.length > 0) {
-                profile.limitations.forEach(limitation => {
-                    limitationsDiv.innerHTML += `<span class="food-tag bg-red-600/80">${limitation}</span>`;
-                });
-            } else {
-                limitationsDiv.textContent = 'Nenhuma limitação reportada.';
-            }
-
-            const restrictionsDiv = document.getElementById('personal-student-restrictions');
-            restrictionsDiv.innerHTML = '';
-            if (profile.foodRestrictions && profile.foodRestrictions.length > 0) {
-                profile.foodRestrictions.forEach(restriction => {
-                    restrictionsDiv.innerHTML += `<span class="food-tag bg-pink-600/80">${restriction}</span>`;
-                });
-            } else {
-                restrictionsDiv.textContent = 'Nenhuma restrição reportada.';
-            }
-
-            // Rotinas para Edição
-            document.getElementById('edit-food-routine').value = routines.food || '';
-            document.getElementById('edit-training-routine').value = routines.training || '';
-        }
-
-        editStudentRoutineForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!currentStudentData) {
-                displayMessage("Nenhum aluno selecionado para salvar.", 'error');
-                return;
-            }
-            
-            const food = document.getElementById('edit-food-routine').value.trim();
-            const training = document.getElementById('edit-training-routine').value.trim();
-            
-            if (!food || !training) {
-                displayMessage("Os campos de plano alimentar e treino não podem estar vazios.", 'error');
-                return;
-            }
-            
-            // Atualiza as rotinas do aluno
-            const result = await updateRoutines(currentStudentData.uid, food, training);
-
-            if (result.success) {
-                displayMessage(`Plano do aluno ${currentStudentData.name} atualizado com sucesso!`, 'success');
-                // Atualiza o objeto local para refletir a mudança
-                currentStudentData.routines.food = food;
-                currentStudentData.routines.training = training;
-            }
-        });
-        
-        // --- Funções de Modal (Alimentos e Limitações) ---
-        
-        /**
-         * Renderiza as tags de restrições alimentares selecionadas no formulário de perfil.
-         */
-        function renderFoodTags() {
-            const container = document.getElementById('selected-food-tags');
-            container.innerHTML = '';
-            
-            if (selectedFoodRestrictions.length === 0) {
-                document.getElementById('no-foods-selected').classList.remove('hidden');
-                container.appendChild(document.getElementById('no-foods-selected'));
-            } else {
-                document.getElementById('no-foods-selected').classList.add('hidden');
-                selectedFoodRestrictions.forEach(food => {
-                    container.innerHTML += `<span class="food-tag bg-pink-600/80">${food}</span>`;
-                });
-            }
-        }
-        
-        /**
-         * Renderiza as tags de limitações físicas selecionadas no formulário de perfil.
-         */
-        function renderLimitationTags() {
-            const container = document.getElementById('selected-limitations-tags');
-            container.innerHTML = '';
-            
-            if (selectedLimitations.length === 0) {
-                document.getElementById('no-limitations-selected').classList.remove('hidden');
-                container.appendChild(document.getElementById('no-limitations-selected'));
-            } else {
-                document.getElementById('no-limitations-selected').classList.add('hidden');
-                selectedLimitations.forEach(limitation => {
-                    container.innerHTML += `<span class="food-tag bg-red-600/80">${limitation}</span>`;
-                });
-            }
-        }
-
-        /**
-         * Abre o modal de restrições alimentares e carrega as sugestões.
-         */
-        function openFoodModal() {
-            foodModal.classList.remove('hidden');
-            document.body.classList.add('overflow-hidden');
-            renderFoodSuggestions(PREDEFINED_FOODS, selectedFoodRestrictions);
-        }
-
-        /**
-         * Fecha o modal de restrições alimentares.
-         */
-        function closeFoodModal() {
-            foodModal.classList.add('hidden');
-            document.body.classList.remove('overflow-hidden');
-        }
-        
-        /**
-         * Renderiza as sugestões de alimentos e as tags de seleção no modal.
-         * @param {string[]} availableFoods - Lista de alimentos disponíveis.
-         * @param {string[]} currentSelection - Lista de alimentos já selecionados.
-         */
-        function renderFoodSuggestions(availableFoods, currentSelection) {
-            foodSuggestionsContainer.innerHTML = '';
-            currentFoodSelectionContainer.innerHTML = '';
-            const allFoods = [...new Set([...availableFoods, ...currentSelection])];
-            
-            // Renderiza as sugestões (chips que adicionam)
-            allFoods.sort().forEach(food => {
-                const isSelected = currentSelection.includes(food);
-                
-                if (isSelected) {
-                    // Renderiza tags selecionadas
-                    currentFoodSelectionContainer.innerHTML += `
-                        <button type="button" class="food-tag bg-pink-600/80 hover:bg-pink-700 transition duration-150" data-food="${food}">
-                            ${food} 
-                            <svg class="w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
-                    `;
-                } else {
-                    // Renderiza sugestões disponíveis
-                    foodSuggestionsContainer.innerHTML += `
-                        <button type="button" class="food-tag bg-indigo-600 hover:bg-indigo-700 transition duration-150" data-food="${food}">
-                            ${food} 
-                            <svg class="w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-                        </button>
-                    `;
-                }
-            });
-            
-            if (currentSelection.length === 0) {
-                 currentFoodSelectionContainer.innerHTML = `<span id="food-modal-no-selection" class="text-sm dark:text-gray-400">Nenhuma restrição selecionada.</span>`;
-            }
-
-            // Adiciona listeners para os botões de sugestão/seleção
-            foodSuggestionsContainer.querySelectorAll('button').forEach(button => {
-                button.addEventListener('click', handleFoodSelection);
-            });
-            currentFoodSelectionContainer.querySelectorAll('button').forEach(button => {
-                button.addEventListener('click', handleFoodDeselection);
-            });
-        }
-        
-        /**
-         * Lida com a seleção de um alimento (adiciona à lista)
-         * @param {Event} e 
-         */
-        function handleFoodSelection(e) {
-            const food = e.currentTarget.getAttribute('data-food');
-            if (!selectedFoodRestrictions.includes(food)) {
-                selectedFoodRestrictions.push(food);
-                renderFoodSuggestions(PREDEFINED_FOODS, selectedFoodRestrictions);
-            }
-        }
-        
-        /**
-         * Lida com a deseleção de um alimento (remove da lista)
-         * @param {Event} e 
-         */
-        function handleFoodDeselection(e) {
-            const food = e.currentTarget.getAttribute('data-food');
-            selectedFoodRestrictions = selectedFoodRestrictions.filter(f => f !== food);
-            renderFoodSuggestions(PREDEFINED_FOODS, selectedFoodRestrictions);
-        }
-
-        // Listener para o input de busca/novo alimento no modal
-        foodSearchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                const newFood = foodSearchInput.value.trim();
-                if (newFood && !selectedFoodRestrictions.includes(newFood)) {
-                    selectedFoodRestrictions.push(newFood);
-                    // Atualiza a lista de sugestões, adicionando o novo item se não estiver lá
-                    if (!PREDEFINED_FOODS.includes(newFood)) {
-                        PREDEFINED_FOODS.push(newFood);
-                    }
-                    renderFoodSuggestions(PREDEFINED_FOODS, selectedFoodRestrictions);
-                    foodSearchInput.value = '';
-                }
-            }
-        });
-        
-        // Listener para salvar as restrições e fechar o modal
-        saveFoodRestrictionsBtn.addEventListener('click', () => {
-            renderFoodTags();
-            closeFoodModal();
-        });
-
-
-        /**
-         * Abre o modal de limitações físicas e carrega as opções.
-         */
-        function openLimitationsModal() {
-            limitationsModal.classList.remove('hidden');
-            document.body.classList.add('overflow-hidden');
-            renderLimitationOptions(selectedLimitations);
-        }
-        
-        /**
-         * Fecha o modal de limitações físicas.
-         */
-        function closeLimitationsModal() {
-            limitationsModal.classList.add('hidden');
-            document.body.classList.remove('overflow-hidden');
-        }
-
-        /**
-         * Renderiza as opções de limitações (checkboxes) no modal.
-         * @param {string[]} currentSelection - Lista de limitações já selecionadas.
-         */
-        function renderLimitationOptions(currentSelection) {
-            limitationSuggestionsContainer.innerHTML = '';
-            currentLimitationsSelection.innerHTML = '';
-            
-            let currentLimitationTags = '';
-
-            PREDEFINED_LIMITATIONS.forEach(limitation => {
-                const isChecked = currentSelection.includes(limitation.label);
-                
-                // Renderiza a opção (checkbox)
-                limitationSuggestionsContainer.innerHTML += `
-                    <div class="flex items-center">
-                        <input id="${limitation.id}" type="checkbox" value="${limitation.label}" ${isChecked ? 'checked' : ''}
-                               class="w-4 h-4 text-indigo-600 bg-gray-700 border-gray-600 rounded focus:ring-indigo-500">
-                        <label for="${limitation.id}" class="ml-2 text-sm font-medium dark:text-gray-300 light:text-gray-900 cursor-pointer">${limitation.label}</label>
-                    </div>
-                `;
-
-                // Constrói as tags de visualização
-                if (isChecked) {
-                    currentLimitationTags += `<span class="food-tag bg-red-600/80">${limitation.label}</span>`;
-                }
-            });
-            
-            // Renderiza tags selecionadas na parte de baixo do modal
-            if (currentSelection.length === 0) {
-                 currentLimitationsSelection.innerHTML = `<span id="limitations-modal-no-selection" class="text-sm dark:text-gray-400">Nenhuma limitação selecionada.</span>`;
-            } else {
-                 currentLimitationsSelection.innerHTML = currentLimitationTags;
-            }
-        }
-        
-        // Listener para salvar as limitações e fechar o modal
-        saveLimitationsBtn.addEventListener('click', () => {
-            const checkboxes = limitationSuggestionsContainer.querySelectorAll('input[type="checkbox"]:checked');
-            selectedLimitations = Array.from(checkboxes).map(cb => cb.value);
-            renderLimitationTags();
-            closeLimitationsModal();
-        });
-
-        // --- Funções de Geração de Plano (GenAI) ---
-        
-        regeneratePlanBtn.addEventListener('click', async () => {
-            const user = auth.currentUser;
-            if (!user) return;
-            
-            const userData = await fetchUserData(user.uid);
-            if (!userData || !userData.isProfileComplete) {
-                 displayMessage("Por favor, complete seu perfil antes de gerar um plano.", 'warning');
-                 return;
-            }
-            
-            await startPlanGeneration(user.uid, userData.profile);
-        });
-        
-        regenerateStudentPlanBtn.addEventListener('click', () => {
-            if (!currentStudentData) {
-                displayMessage("Selecione um aluno primeiro.", 'error');
-                return;
-            }
-            openPersonalAiPlanModal();
-        });
-        
-        closeAiPlanModalBtn.addEventListener('click', closePersonalAiPlanModal);
-        
-        startAiGenerationBtn.addEventListener('click', async () => {
-            if (!currentStudentData || isGeneratingPlan) return;
-            
-            startAiGenerationBtn.disabled = true;
-            document.getElementById('ai-plan-modal-message').classList.remove('hidden');
-            document.getElementById('ai-plan-modal-message').textContent = 'Gerando plano... (Pode levar até 30 segundos)';
-            
-            const uid = currentStudentData.uid;
-            const profile = currentStudentData.profile;
-            
-            const { food, training } = await generatePlan(profile);
-            
-            if (food && training) {
-                // Preenche o formulário de edição do Personal
-                document.getElementById('edit-food-routine').value = food;
-                document.getElementById('edit-training-routine').value = training;
-                
-                document.getElementById('ai-plan-modal-message').textContent = 'Geração concluída! Copiado para o formulário de edição.';
-                displayMessage("Plano de IA gerado e copiado para edição. Lembre-se de SALVAR.", 'success');
-                
-                // Fecha o modal após um pequeno delay
-                setTimeout(closePersonalAiPlanModal, 3000);
-            } else {
-                 document.getElementById('ai-plan-modal-message').textContent = 'Falha na geração do plano. Tente novamente.';
-                 displayMessage("Falha na geração do plano de IA.", 'error');
-            }
-            
-            startAiGenerationBtn.disabled = false;
-        });
-
-        /**
-         * Abre o modal de geração de plano por IA (Personal Trainer)
-         */
-        function openPersonalAiPlanModal() {
-            personalAiPlanModal.classList.remove('hidden');
-            document.body.classList.add('overflow-hidden');
-            
-            document.getElementById('ai-plan-student-name').textContent = currentStudentData.name;
-            document.getElementById('ai-plan-student-objective').textContent = currentStudentData.profile.objective === 'emagrecer' ? 'Emagrecer' : 'Ganho de Massa Muscular';
-            document.getElementById('ai-plan-student-limitations').textContent = currentStudentData.profile.limitations.join(', ') || 'Nenhuma';
-            document.getElementById('ai-plan-student-restrictions').textContent = currentStudentData.profile.foodRestrictions.join(', ') || 'Nenhuma';
-            
-            document.getElementById('ai-plan-modal-message').classList.add('hidden');
-            startAiGenerationBtn.disabled = false;
-        }
-
-        /**
-         * Fecha o modal de geração de plano por IA (Personal Trainer)
-         */
-        function closePersonalAiPlanModal() {
-             personalAiPlanModal.classList.add('hidden');
-             document.body.classList.remove('overflow-hidden');
-        }
-
-        /**
-         * Inicia o fluxo de geração de plano de ação para o aluno
-         * @param {string} uid - User ID
-         * @param {object} profileData - Dados de perfil do aluno
-         */
-        async function startPlanGeneration(uid, profileData) {
-            if (isGeneratingPlan) return;
-            isGeneratingPlan = true;
-            toggleView('plan-generation');
             
             try {
-                const { food, training } = await generatePlan(profileData);
-                
-                if (food && training) {
-                    await updateRoutines(uid, food, training);
-                    const updatedUserData = await fetchUserData(uid);
-                    if (updatedUserData) {
-                        populateStudentDashboard(updatedUserData);
-                        displayMessage("Plano de ação gerado e salvo com sucesso!", 'success');
-                        toggleView('student-dashboard');
-                    } else {
-                         throw new Error("Erro ao recarregar dados após a geração.");
-                    }
-                } else {
-                    throw new Error("A IA não conseguiu gerar um plano completo.");
+                // Atualiza o display name no Auth se tiver sido alterado no form
+                if (user.displayName !== fullName) {
+                    await user.updateProfile({ displayName: fullName });
                 }
+
+                await db.collection('users').doc(user.uid).set(userData, { merge: true });
                 
+                showMessage('success', 'Informações salvas com sucesso!');
+                
+                // Redireciona para o dashboard correto
+                if (userType === 'aluno') {
+                    // Se for aluno e o plano não existir, ele será gerado automaticamente
+                    // na próxima chamada de renderStudentDashboard (feita no onAuthStateChanged)
+                    // Mas para garantir a fluidez, podemos forçar a renderização
+                    renderStudentDashboard(userData);
+                } else if (userType === 'personal') {
+                    renderPersonalDashboard();
+                }
             } catch (error) {
-                console.error("Erro no fluxo de geração de plano:", error);
-                displayMessage("Falha crítica na geração do plano: " + error.message + ". Por favor, tente novamente ou entre em contato com o suporte.", 'error');
-                // Em caso de falha, volta para o dashboard ou info form
-                const userData = await fetchUserData(uid);
-                if (userData && userData.userType === 'aluno') {
-                    if (userData.isProfileComplete) {
-                        toggleView('student-dashboard');
-                    } else {
-                        toggleView('info-form');
-                    }
-                } else {
-                    toggleView('info-form');
-                }
-                
+                console.error("Erro ao salvar informações:", error);
+                showMessage('error', 'Erro ao salvar informações. Tente novamente.');
             } finally {
-                isGeneratingPlan = false;
+                isSaving = false;
             }
         }
 
-        /**
-         * Gera o plano alimentar e de treino usando a IA (Gemini)
-         * @param {object} profile - Dados de perfil do aluno
-         * @returns {object} - { food: string, training: string }
-         */
-        async function generatePlan(profile) {
-            
-            const objectiveText = profile.objective === 'emagrecer' ? 'Emagrecimento (perda de peso)' : 'Ganho de Massa Muscular';
-            const genderText = profile.gender === 'masculino' ? 'Masculino' : 'Feminino';
-            const limitationsText = profile.limitations.length > 0 ? `com as seguintes limitações físicas/lesões: ${profile.limitations.join(', ')}.` : 'sem limitações físicas conhecidas.';
-            const restrictionsText = profile.foodRestrictions.length > 0 ? `com as seguintes restrições alimentares/alergias: ${profile.foodRestrictions.join(', ')}.` : 'sem restrições alimentares conhecidas.';
-            
-            const prompt = `Você é um Personal Trainer e Nutricionista de inteligência artificial. Sua tarefa é gerar um Plano de Ação completo e detalhado que inclui um Plano Alimentar e um Plano de Treino de 4 semanas.
-            
-            Os dados do aluno são:
-            - **Objetivo Principal:** ${objectiveText}
-            - **Idade:** ${profile.age} anos
-            - **Gênero:** ${genderText}
-            - **Peso:** ${profile.weight} kg
-            - **Altura:** ${profile.height} cm
-            - **Limitações Físicas:** ${limitationsText}
-            - **Restrições Alimentares:** ${restrictionsText}
-            
-            O resultado deve ser estritamente formatado como um JSON, contendo apenas dois campos de texto, 'food' e 'training'.
-            
-            **Instruções para o conteúdo:**
-            1.  **Plano Alimentar (food):** Crie uma rotina alimentar de 7 dias (Segunda a Domingo). Deve ser detalhada, focada no objetivo do aluno e respeitar TODAS as restrições alimentares. A dieta deve ser clara e direta (ex: "Café da manhã: 3 ovos mexidos, 1 copo de café preto, 1 fatia de pão integral").
-            2.  **Plano de Treino (training):** Crie um plano de treino de 4 dias (com 3 dias de descanso ativo/passivo), também focado no objetivo e respeitando TODAS as limitações físicas. Use a divisão: Dia 1: Peito e Tríceps, Dia 2: Costas e Bíceps, Dia 3: Descanso, Dia 4: Pernas e Ombros, Dia 5: Cardio, Dia 6 e 7: Descanso. Para cada exercício, inclua o nome, séries e repetições (ex: "Supino Reto (Halteres): 4 séries de 8-12 repetições"). Adicione uma seção de aquecimento e alongamento no final.
-            3.  **Formato de Saída:** O único output aceito é o JSON a seguir (sem qualquer texto introdutório ou explicativo):
-            
-            \`\`\`json
-            {
-              "food": "PLANO ALIMENTAR DETALHADO AQUI",
-              "training": "PLANO DE TREINO DETALHADO AQUI"
-            }
-            \`\`\`
-            `
-            
-            try {
-                const response = await ai.models.generateContent({
-                    model: model,
-                    contents: prompt,
-                    config: {
-                        responseMimeType: "application/json",
-                        responseSchema: {
-                            type: "object",
-                            properties: {
-                                food: { type: "string" },
-                                training: { type: "string" }
-                            }
-                        }
-                    }
-                });
-
-                // O SDK já retorna a resposta parseada como um objeto JS devido ao responseMimeType
-                const result = response.text;
-                
-                // Gemini retorna uma string que precisa ser parseada manualmente (depende da versão/SDK)
-                // Se a resposta.text for uma string JSON, tentamos o parse.
-                let jsonResult;
-                try {
-                    // Limpa o texto de qualquer \`\`\`json que o modelo possa ter adicionado
-                    const cleanedText = result.replace(/```json\s*|```/g, '').trim();
-                    jsonResult = JSON.parse(cleanedText);
-                } catch (parseError) {
-                    console.error("Erro ao fazer parse da resposta da IA:", parseError);
-                    throw new Error("Resposta da IA em formato inválido.");
-                }
-
-                if (jsonResult && jsonResult.food && jsonResult.training) {
-                    return jsonResult;
-                } else {
-                    throw new Error("Resposta da IA incompleta (falta plano alimentar ou de treino).");
-                }
-
-            } catch (error) {
-                console.error("Erro na chamada da API Gemini:", error);
-                throw new Error("Erro de comunicação com o serviço de IA.");
-            }
-        }
-
-
-        // --- Observador de Estado de Autenticação Principal ---
-
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                // Usuário logado
-                const userData = await fetchUserData(user.uid);
-                
-                if (userData) {
-                    // Se o documento existe no Firestore
-                    if (!userData.userType) {
-                        // Perfil novo, precisa preencher info (tipo de usuário)
-                        fillInfoForm(userData);
-                        toggleView('info-form');
-                    } else if (userData.userType === 'aluno') {
-                        // É aluno
-                        if (userData.isProfileComplete) {
-                            // Perfil completo, mostra dashboard
-                            populateStudentDashboard(userData);
-                            toggleView('student-dashboard');
-                        } else {
-                            // Perfil incompleto, volta para o formulário
-                            fillInfoForm(userData);
-                            toggleView('info-form');
-                        }
-                    } else if (userData.userType === 'personal') {
-                        // É personal trainer
-                        toggleView('personal-dashboard');
-                    }
-                } else {
-                    // Documento do Firestore não existe (ex: primeiro login social)
-                    // Cria o doc com os dados de Auth e vai para o formulário de info
-                    const newUserDoc = await createNewUserDoc(user, user.displayName || user.email);
-                    if (newUserDoc.success) {
-                         const newUserData = await fetchUserData(user.uid); // Recarrega os dados recém-criados
-                         fillInfoForm(newUserData);
-                         toggleView('info-form');
-                    } else {
-                         // Se falhar na criação do documento, desloga
-                         handleLogout();
-                    }
-                }
-            } else {
-                // Usuário deslogado
+        function handleLogout() {
+            auth.signOut().then(() => {
+                showMessage('success', 'Você saiu da sua conta.');
                 toggleView('login');
+                clearInputs('login-form');
+                clearInputs('register-form');
+            }).catch(error => {
+                showMessage('error', 'Erro ao sair: ' + error.message);
+            });
+        }
+        
+        async function handleSearchStudent(e) {
+            e.preventDefault();
+            const clientCode = document.getElementById('client-code-search').value.trim();
+            if (clientCode.length < 8) {
+                showMessage('error', 'O código do aluno deve ter no mínimo 8 caracteres.');
+                document.getElementById('student-info-section').classList.add('hidden');
+                return;
             }
+            
+            const studentInfoSection = document.getElementById('student-info-section');
+            studentInfoSection.classList.add('hidden');
+            showMessage('info', 'Buscando aluno...');
+
+            try {
+                // Como não podemos buscar diretamente por uid.substring(0, 8), 
+                // o ideal seria ter um campo de busca separado no Firestore.
+                // Aqui, faremos uma simulação/busca completa (não recomendado para apps grandes)
+                
+                // Busca um usuário cujo UID comece com o código
+                const snapshot = await db.collection('users')
+                    .where('userType', '==', 'aluno')
+                    .get();
+
+                const foundStudent = snapshot.docs.map(doc => doc.data()).find(student => 
+                    student.uid.startsWith(clientCode) // Checa se começa com o código
+                );
+                
+                if (foundStudent) {
+                    currentStudent = foundStudent;
+                    
+                    document.getElementById('personal-student-name').textContent = foundStudent.fullName;
+                    document.getElementById('personal-student-weight').textContent = foundStudent.weight ? `${foundStudent.weight} kg` : 'N/A';
+                    document.getElementById('personal-student-objective').textContent = foundStudent.objective ? (foundStudent.objective === 'massa_muscular' ? 'Ganho de Massa Muscular' : 'Emagrecimento') : 'N/A';
+                    
+                    renderTags(foundStudent.limitations || [], 'personal-student-limitations', 'limitation');
+                    renderTags(foundStudent.foodRestrictions || [], 'personal-student-restrictions', 'food');
+
+                    document.getElementById('edit-routine-text').value = foundStudent.routine || generatePersonalizedPlan(foundStudent).routine || '';
+                    document.getElementById('edit-food-routine-text').value = foundStudent.foodRoutine || generatePersonalizedPlan(foundStudent).diet || '';
+                    
+                    studentInfoSection.classList.remove('hidden');
+                    showMessage('success', `Aluno "${foundStudent.fullName}" encontrado!`);
+                } else {
+                    showMessage('error', 'Aluno não encontrado ou código incorreto.');
+                }
+            } catch (error) {
+                console.error("Erro na busca de aluno:", error);
+                showMessage('error', 'Erro interno ao buscar aluno.');
+            }
+        }
+
+        async function handleEditRoutineSubmit(e) {
+            e.preventDefault();
+            if (isSaving || !currentStudent || currentStudent.userType !== 'aluno') return;
+            isSaving = true;
+
+            const routine = document.getElementById('edit-routine-text').value;
+            const foodRoutine = document.getElementById('edit-food-routine-text').value;
+
+            try {
+                await db.collection('users').doc(currentStudent.uid).update({
+                    routine: routine,
+                    foodRoutine: foodRoutine
+                });
+                
+                // Atualiza o objeto local para refletir a mudança
+                currentStudent.routine = routine;
+                currentStudent.foodRoutine = foodRoutine;
+
+                showMessage('success', 'Planos do aluno salvos com sucesso!');
+            } catch (error) {
+                console.error("Erro ao salvar plano do aluno:", error);
+                showMessage('error', 'Erro ao salvar plano do aluno.');
+            } finally {
+                isSaving = false;
+            }
+        }
+        
+        function handleLimitationsFormSubmit(e) {
+            e.preventDefault();
+            const checkboxes = limitationsModal.querySelectorAll('input[type="checkbox"]:checked');
+            const selectedLimitations = Array.from(checkboxes).map(cb => cb.value);
+            
+            currentStudent.limitations = selectedLimitations;
+
+            db.collection('users').doc(currentStudent.uid).update({
+                limitations: selectedLimitations
+            }).then(() => {
+                renderTags(selectedLimitations, 'selected-limitations-tags', 'limitation');
+                // Se estiver no dashboard, atualiza o dashboard também
+                if (document.getElementById('student-dashboard-view').classList.contains('hidden') === false) {
+                     renderStudentDashboard(currentStudent); // Redesplay to update tags
+                }
+                closeLimitationsModal();
+                showMessage('success', 'Limitações salvas.');
+            }).catch(error => {
+                console.error("Erro ao salvar limitações:", error);
+                showMessage('error', 'Erro ao salvar limitações.');
+            });
+        }
+        
+        function handleFoodFormSubmit(e) {
+            e.preventDefault();
+            const checkboxes = foodModal.querySelectorAll('input[type="checkbox"]:checked');
+            const selectedFoods = Array.from(checkboxes).map(cb => cb.value);
+            
+            currentStudent.foodRestrictions = selectedFoods;
+
+            db.collection('users').doc(currentStudent.uid).update({
+                foodRestrictions: selectedFoods
+            }).then(() => {
+                renderTags(selectedFoods, 'selected-food-tags', 'food');
+                // Se estiver no dashboard, atualiza o dashboard também
+                 if (document.getElementById('student-dashboard-view').classList.contains('hidden') === false) {
+                    renderStudentDashboard(currentStudent); // Redesplay to update tags
+                 }
+                closeFoodModal();
+                showMessage('success', 'Restrições salvas.');
+            }).catch(error => {
+                console.error("Erro ao salvar restrições:", error);
+                showMessage('error', 'Erro ao salvar restrições.');
+            });
+        }
+        
+        // Listeners de Formulários
+        document.getElementById('register-form').addEventListener('submit', handleRegistration);
+        document.getElementById('login-form').addEventListener('submit', handleLogin);
+        document.getElementById('google-login-btn').addEventListener('click', signInWithGoogle);
+        document.getElementById('info-form').addEventListener('submit', handleInfoFormSubmit);
+        document.getElementById('limitations-form').addEventListener('submit', handleLimitationsFormSubmit);
+        document.getElementById('food-form').addEventListener('submit', handleFoodFormSubmit);
+
+
+        // Listener para alternar campos métricos
+        document.getElementById('user-type-input').addEventListener('change', (e) => {
+            const isAluno = e.target.value === 'aluno';
+            document.getElementById('aluno-fields').classList.toggle('hidden', !isAluno);
+            document.getElementById('aluno-metrics-fields').classList.toggle('grid-cols-2', isAluno);
+            document.getElementById('aluno-metrics-fields').classList.toggle('grid-cols-1', !isAluno);
         });
         
-        // --- Listeners Adicionais ---
+        // Listeners de Navegação/Ação
+        editProfileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleView('info-form');
+            fillInfoForm(currentStudent); // Preenche o formulário com dados atuais
+        });
         
-        // Listener para o botão de tema
+        regeneratePlanBtn.addEventListener('click', (e) => {
+             e.preventDefault();
+             if (currentStudent) {
+                 generatePlanAndDisplay(currentStudent);
+             } else {
+                 showMessage('error', 'Erro: Dados do usuário não disponíveis.');
+             }
+        });
+
+        // Listeners de Logout dos Dashboards
+        studentLogoutBtn.addEventListener('click', handleLogout);
+        personalLogoutBtn.addEventListener('click', handleLogout);
+        
+        // Adiciona o listener para o botão de tema
         document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode); 
 
         // Listeners para as funcionalidades de Alimentos e Limitações
@@ -1720,25 +1245,11 @@
         addLimitationBtn.addEventListener('click', openLimitationsModal);
         closeLimitationsModalBtn.addEventListener('click', closeLimitationsModal);
         
-        // Listeners de Logout dos Dashboards
-        studentLogoutBtn.addEventListener('click', handleLogout);
-        personalLogoutBtn.addEventListener('click', handleLogout);
-        
         // Listeners do Personal Trainer Dashboard
         searchStudentForm.addEventListener('submit', handleSearchStudent);
         editStudentRoutineForm.addEventListener('submit', handleEditRoutineSubmit);
 
-        // Funções temporárias para simular a chamada dos listeners, pois estão no escopo do módulo
-        function handleSearchStudent(e) {
-            e.preventDefault();
-            searchStudentForm.dispatchEvent(new Event('submit'));
-        }
-        function handleEditRoutineSubmit(e) {
-            e.preventDefault();
-            editStudentRoutineForm.dispatchEvent(new Event('submit'));
-        }
-        
-        
+
         document.getElementById('show-register-link').addEventListener('click', (e) => {
             e.preventDefault();
             toggleView('register');
@@ -1749,13 +1260,19 @@
             toggleView('login');
         });
 
-        if (!auth.currentUser) {
-             toggleView('login');
-        }
+        // Listener de Estado de Autenticação (Main Router)
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                // Usuário logado: buscar dados do perfil
+                fetchUserData(user);
+            } else {
+                // Usuário deslogado: volta para a tela de login
+                toggleView('login');
+            }
+        });
         
         // Renderização inicial
-        renderLimitationTags();
-        renderFoodTags();
+        // A renderização inicial das tags é chamada ao carregar o modal
     </script>
 </body>
 </html>
