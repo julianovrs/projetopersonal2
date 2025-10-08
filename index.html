@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login, Cadastro e Perfil com Persistência</title>
+    <title>Personal Trainer IA com Firebase (Simulado)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
@@ -244,7 +244,7 @@
                 </button>
             </form>
         </div>
-        
+
         <div id="plan-generation-view" class="view hidden text-center p-8">
             <svg class="mx-auto h-16 w-16 text-indigo-500 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -254,235 +254,179 @@
             <p class="mt-2 dark:text-gray-400 light:text-gray-600" id="generation-message-text">Estamos criando sua rotina alimentar e de treino, baseada em seus dados e restrições. Isso levará apenas alguns segundos.</p>
         </div>
 
-        <div id="student-dashboard-view" class="view hidden p-4 sm:p-8">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">Dashboard do Aluno</h2>
-            <p class="dark:text-gray-400 light:text-gray-600 mb-8 border-b border-gray-700/50 light:border-gray-300/50 pb-4">Seu resumo de saúde e planos de ação.</p>
+        <div id="student-dashboard-view" class="view hidden w-full max-w-4xl mx-auto p-4 sm:p-8 bg-gray-800 dark:bg-gray-800 light:bg-white rounded-xl shadow-2xl dark:shadow-none border border-gray-700 dark:border-gray-700 light:border-gray-300">
+            <header class="flex justify-between items-center mb-6 border-b pb-4 border-gray-700 dark:border-gray-700 light:border-gray-200">
+                <h1 class="text-3xl font-extrabold text-indigo-400 dark:text-indigo-400 light:text-indigo-600">Dashboard do Aluno</h1>
+                <button id="student-logout-btn" class="py-2 px-4 rounded-lg text-white font-semibold bg-red-600 hover:bg-red-700 transition duration-150 flex items-center text-sm">
+                    <svg class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Sair
+                </button>
+            </header>
 
-            <div class="space-y-8">
-                <div class="bg-gray-50 dark:bg-gray-700/70 p-6 rounded-xl shadow-xl dark:shadow-none border border-gray-200 dark:border-indigo-500/30">
-                    <h3 class="text-2xl font-semibold mb-4 dark:text-indigo-400 light:text-indigo-900 flex items-center">
-                        <svg class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        Acesso e Identificação
-                    </h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 text-base">
-                        <p><span class="font-medium text-gray-500 dark:text-gray-300">Nome:</span> <span id="student-dashboard-name" class="text-gray-900 dark:text-white block sm:inline"></span></p>
+            <section id="student-info-section" class="mb-8">
+                <h2 class="text-2xl font-bold mb-4 dark:text-white light:text-gray-900">Bem-vindo(a), <span id="student-dashboard-name" class="text-indigo-400"></span>!</h2>
+                
+                <div class="bg-gray-700/50 dark:bg-gray-700/50 light:bg-gray-100 p-6 rounded-xl shadow-lg border border-gray-600 dark:border-gray-600 light:border-gray-300">
+                    <h3 class="text-xl font-semibold mb-4 dark:text-white light:text-gray-800">Seus Dados de Perfil</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 dark:text-gray-200 light:text-gray-700">
                         <p><span class="font-medium text-gray-500 dark:text-gray-300">E-mail:</span> <span id="student-dashboard-email" class="text-gray-900 dark:text-white block sm:inline"></span></p>
-                        <div class="sm:col-span-2">
-                            <p class="font-medium text-gray-500 dark:text-gray-300 mb-1">Seu Código Único (Para Personal Trainer):</p>
-                            <span id="student-dashboard-client-code" class="font-mono bg-gray-200 dark:bg-gray-900/50 p-2 rounded text-sm text-green-700 dark:text-green-400 select-all break-all block"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-gray-50 dark:bg-gray-700/70 p-6 rounded-xl shadow-xl dark:shadow-none border border-gray-200 dark:border-indigo-500/30">
-                    <h3 class="text-2xl font-semibold mb-4 dark:text-indigo-400 light:text-indigo-900 flex items-center">
-                        <svg class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h7m0 0l-9 9" /></svg>
-                        Dados do Perfil
-                    </h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-y-4 gap-x-6 text-base mb-6">
                         <p><span class="font-medium text-gray-500 dark:text-gray-300">Idade:</span> <span id="student-dashboard-age" class="text-gray-900 dark:text-white block sm:inline"></span></p>
-                        <p><span class="font-medium text-gray-500 dark:text-gray-300">Gênero:</span> <span id="student-dashboard-gender" class="text-gray-900 dark:text-white block sm:inline"></span></p>
                         <p><span class="font-medium text-gray-500 dark:text-gray-300">Objetivo:</span> <span id="student-dashboard-objective" class="text-gray-900 dark:text-white block sm:inline"></span></p>
+                        <p><span class="font-medium text-gray-500 dark:text-gray-300">Gênero:</span> <span id="student-dashboard-gender" class="text-gray-900 dark:text-white block sm:inline"></span></p>
                         <p><span class="font-medium text-gray-500 dark:text-gray-300">Peso:</span> <span id="student-dashboard-weight" class="text-gray-900 dark:text-white block sm:inline"></span></p>
                         <p><span class="font-medium text-gray-500 dark:text-gray-300">Altura:</span> <span id="student-dashboard-height" class="text-gray-900 dark:text-white block sm:inline"></span></p>
                         <p><span class="font-medium text-gray-500 dark:text-gray-300">Meta Calórica:</span> <span id="student-dashboard-calorie-goal" class="text-gray-900 dark:text-white block sm:inline"></span></p>
-                        <div class="sm:col-span-3">
-                            <p class="font-medium text-gray-500 dark:text-gray-300 mb-1">Limitações Físicas:</p>
-                            <div id="student-dashboard-limitations" class="flex flex-wrap gap-2 pt-1"></div>
-                        </div>
-                        <div class="sm:col-span-3">
-                            <p class="font-medium text-gray-500 dark:text-gray-300 mb-1">Restrições Alimentares:</p>
-                            <div id="student-dashboard-restrictions" class="flex flex-wrap gap-2 pt-1"></div>
-                        </div>
-                    </div>
-                    <button id="edit-profile-btn" class="py-2 px-4 rounded-lg text-white font-semibold bg-indigo-600 hover:bg-indigo-700 transition duration-150 w-full sm:w-auto">
-                        Editar Informações do Perfil
-                    </button>
-                    <button id="regenerate-plan-btn" class="py-2 px-4 rounded-lg text-white font-semibold bg-green-600 hover:bg-green-700 transition duration-150 w-full sm:w-auto mt-2 sm:mt-0 sm:ml-4">
-                        Gerar Novo Plano
-                    </button>
-                </div>
-
-
-                <div class="space-y-6">
-                    <div class="bg-gray-50 dark:bg-gray-700/70 p-6 rounded-xl shadow-xl dark:shadow-none border border-gray-200 dark:border-pink-500/50">
-                        <h3 class="text-3xl font-bold mb-4 dark:text-pink-400 light:text-pink-900 flex items-center border-b border-gray-300 dark:border-gray-600 pb-2">
-                            <svg class="w-7 h-7 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 3h5v5M18 10a8 8 0 11-16 0 8 8 0 0116 0z" /></svg>
-                            Plano Alimentar
-                        </h3>
-                        <p class="text-lg font-bold mb-4 dark:text-pink-300 light:text-pink-800">
-                            Total de Calorias Estimado na Rotina: <span id="student-food-routine-calories" class="text-xl font-extrabold dark:text-white light:text-gray-900">Aguardando geração...</span>
-                        </p>
-                        <pre id="student-food-routine" class="text-base text-gray-900 dark:text-gray-200 whitespace-pre-wrap font-sans leading-relaxed p-4 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-400 dark:border-gray-600"></pre>
                     </div>
 
-                    <div class="bg-gray-50 dark:bg-gray-700/70 p-6 rounded-xl shadow-xl dark:shadow-none border border-gray-200 dark:border-green-500/50">
-                        <h3 class="text-3xl font-bold mb-4 dark:text-green-400 light:text-green-900 flex items-center border-b border-gray-300 dark:border-gray-600 pb-2">
-                            <svg class="w-7 h-7 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                            Plano de Treino
-                        </h3>
-                        <pre id="student-training-routine" class="text-base text-gray-900 dark:text-gray-200 whitespace-pre-wrap font-sans leading-relaxed p-4 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-400 dark:border-gray-600"></pre>
+                    <div class="mt-4 pt-4 border-t border-gray-600 dark:border-gray-600 light:border-gray-300">
+                        <p class="font-medium text-gray-500 dark:text-gray-300 mb-2">Restrições Alimentares:</p>
+                        <div id="student-dashboard-food-restrictions" class="flex flex-wrap gap-2 min-h-[20px]">
+                            <span class="dark:text-gray-400 light:text-gray-500">Nenhuma.</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-600 dark:border-gray-600 light:border-gray-300">
+                        <p class="font-medium text-gray-500 dark:text-gray-300 mb-2">Limitações Físicas:</p>
+                        <div id="student-dashboard-limitations" class="flex flex-wrap gap-2 min-h-[20px]">
+                            <span class="dark:text-gray-400 light:text-gray-500">Nenhuma.</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <button id="student-logout-btn" class="mt-10 py-3 px-6 rounded-lg text-white font-bold bg-red-600 hover:bg-red-700 transition duration-200 shadow-xl shadow-red-900/50 w-full tracking-wide">
-                Sair do Dashboard
-            </button>
+            <section id="student-routine-section" class="space-y-8">
+                
+                <h2 class="text-2xl font-bold mb-4 dark:text-white light:text-gray-900">Sua Rotina</h2>
+
+                <div class="bg-gray-50 dark:bg-gray-700/70 p-6 rounded-xl shadow-xl dark:shadow-none border border-gray-200 dark:border-pink-500/50">
+                    <h3 class="text-3xl font-bold mb-4 dark:text-pink-400 light:text-pink-900 flex items-center border-b border-gray-300 dark:border-gray-600 pb-2">
+                        <svg class="w-7 h-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-8v8m-4-8v8m6-12h-6a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2V6a2 2 0 00-2-2z" />
+                        </svg>
+                        Plano Alimentar
+                    </h3>
+                    <p class="text-lg font-bold mb-4 dark:text-pink-300 light:text-pink-800">
+                        Total de Calorias Estimado na Rotina: <span id="student-food-routine-calories" class="text-xl font-extrabold dark:text-white light:text-gray-900">Aguardando geração...</span>
+                    </p>
+                    <pre id="student-food-routine" class="whitespace-pre-wrap font-mono text-sm dark:text-gray-300 light:text-gray-800 bg-gray-600/50 dark:bg-gray-600/50 light:bg-gray-200 p-4 rounded-lg overflow-x-auto"></pre>
+                    <button id="generate-plan-btn" class="mt-4 py-2 px-4 rounded-lg text-white font-semibold bg-indigo-600 hover:bg-indigo-700 transition duration-150 w-full flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        Gerar Plano de Ação (Alimentar e Treino)
+                    </button>
+                    <p id="plan-status" class="mt-2 text-center text-sm dark:text-yellow-400 light:text-yellow-700 hidden"></p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-700/70 p-6 rounded-xl shadow-xl dark:shadow-none border border-gray-200 dark:border-green-500/50">
+                    <h3 class="text-3xl font-bold mb-4 dark:text-green-400 light:text-green-800 flex items-center border-b border-gray-300 dark:border-gray-600 pb-2">
+                        <svg class="w-7 h-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14v6m-3-3h6M11 20H4a2 2 0 01-2-2V6a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2h-4M10 9l-3 3 3 3" />
+                        </svg>
+                        Plano de Treino
+                    </h3>
+                    <pre id="student-training-routine" class="whitespace-pre-wrap font-mono text-sm dark:text-gray-300 light:text-gray-800 bg-gray-600/50 dark:bg-gray-600/50 light:bg-gray-200 p-4 rounded-lg overflow-x-auto"></pre>
+                </div>
+
+            </section>
         </div>
 
-        <div id="personal-dashboard-view" class="view hidden p-4 sm:p-8">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">Dashboard Personal Trainer</h2>
-            <p class="dark:text-gray-400 light:text-gray-600 mb-8 border-b border-gray-700/50 light:border-gray-300/50 pb-4">Gerencie e edite os planos de seus alunos.</p>
+        <div id="personal-dashboard-view" class="view hidden w-full max-w-4xl mx-auto p-4 sm:p-8 bg-gray-800 dark:bg-gray-800 light:bg-white rounded-xl shadow-2xl dark:shadow-none border border-gray-700 dark:border-gray-700 light:border-gray-300">
+            <header class="flex justify-between items-center mb-6 border-b pb-4 border-gray-700 dark:border-gray-700 light:border-gray-200">
+                <h1 class="text-3xl font-extrabold text-pink-400 dark:text-pink-400 light:text-pink-600">Dashboard do Personal</h1>
+                <button id="personal-logout-btn" class="py-2 px-4 rounded-lg text-white font-semibold bg-red-600 hover:bg-red-700 transition duration-150 flex items-center text-sm">
+                    <svg class="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Sair
+                </button>
+            </header>
 
-            <div class="bg-gray-50 dark:bg-gray-700/70 p-6 rounded-xl shadow-xl dark:shadow-none border border-gray-300 dark:border-indigo-500/50 mb-8">
-                <h3 class="text-2xl font-semibold mb-4 dark:text-indigo-400 light:text-indigo-900">
-                    Buscar Aluno
-                </h3>
+            <section id="personal-welcome-section" class="mb-8">
+                <h2 class="text-2xl font-bold mb-4 dark:text-white light:text-gray-900">Olá, <span id="personal-dashboard-name" class="text-pink-400"></span>!</h2>
+                <p class="dark:text-gray-300 light:text-gray-700">Utilize o campo abaixo para buscar e gerenciar os planos de seus alunos.</p>
+            </section>
+
+            <section id="search-student-section" class="mb-8 p-6 bg-gray-700/50 dark:bg-gray-700/50 light:bg-gray-100 rounded-xl shadow-lg border border-gray-600 dark:border-gray-600 light:border-gray-300">
+                <h3 class="text-xl font-semibold mb-4 dark:text-white light:text-gray-800">Buscar Aluno por ID</h3>
                 <form id="search-student-form" class="flex flex-col sm:flex-row gap-4">
-                    <input type="text" id="student-code-input" placeholder="Código Único do Aluno" required
-                           class="flex-grow px-4 py-2 border border-gray-600 dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 bg-gray-700 dark:bg-gray-700 light:bg-gray-100 text-white dark:text-white light:text-gray-900">
+                    <input type="text" id="student-id-input" placeholder="ID do Aluno (ex: 1234)" required
+                           class="flex-grow px-4 py-2 border border-gray-600 dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 transition duration-150 bg-gray-700 dark:bg-gray-700 light:bg-white text-white dark:text-white light:text-gray-900">
                     <button type="submit"
-                             class="py-2 px-4 rounded-lg text-white font-semibold bg-indigo-600 hover:bg-indigo-700 transition duration-150 w-full sm:w-auto">
+                             class="py-2 px-6 rounded-lg text-white font-semibold bg-pink-600 hover:bg-pink-700 transition duration-150 shadow-md">
                         Buscar
                     </button>
                 </form>
-            </div>
+                <p id="search-message" class="mt-3 text-sm dark:text-red-400 light:text-red-600 hidden"></p>
+            </section>
 
-            <div id="edit-routine-card" class="bg-gray-50 dark:bg-gray-700/70 p-6 rounded-xl shadow-xl dark:shadow-none border border-gray-300 dark:border-green-500/50 hidden">
-                <h3 class="text-2xl font-semibold mb-4 dark:text-green-400 light:text-green-900">
-                    Editar Rotina de: <span id="searched-student-name" class="font-extrabold"></span>
-                </h3>
-                <p class="text-sm dark:text-gray-400 light:text-gray-600 mb-4">Ajuste o plano de treino e/ou alimentar do aluno e salve as alterações. Meta Calórica: <span id="searched-student-calorie-goal" class="font-bold"></span></p>
+            <section id="edit-routine-section" class="hidden">
+                <h3 class="text-2xl font-bold mb-4 dark:text-white light:text-gray-900 border-b pb-2">Gerenciar: <span id="searched-student-name" class="text-pink-400"></span></h3>
+
+                <div class="dark:text-gray-300 light:text-gray-700 mb-6">
+                    <p class="mb-2"><span class="font-medium dark:text-gray-400 light:text-gray-500">E-mail:</span> <span id="searched-student-email"></span></p>
+                    <p class="mb-2"><span class="font-medium dark:text-gray-400 light:text-gray-500">Meta Calórica (Calculada):</span> <span id="searched-student-calorie-goal" class="font-extrabold text-pink-300 dark:text-pink-300"></span></p>
+                    <p class="font-medium dark:text-gray-400 light:text-gray-500">Restrições e Limitações: <span id="searched-student-details" class="font-normal"></span></p>
+                </div>
 
                 <form id="edit-student-routine-form" class="space-y-6">
                     <div>
-                        <label for="edit-food-routine" class="block text-lg font-medium mb-2 dark:text-gray-200 light:text-gray-900">Plano Alimentar</label>
-                        <textarea id="edit-food-routine" rows="10" placeholder="Plano alimentar detalhado..."
-                                  class="w-full px-4 py-2 border border-gray-600 dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 transition duration-150 bg-gray-700 dark:bg-gray-700 light:bg-gray-100 text-white dark:text-white light:text-gray-900"></textarea>
+                        <label for="edit-food-routine" class="block text-xl font-medium mb-2 dark:text-pink-400 light:text-pink-800">Plano Alimentar</label>
+                        <textarea id="edit-food-routine" rows="10" placeholder="Edite o plano alimentar aqui. Lembre-se de manter a frase 'Total de Calorias Estimado na Rotina: X Kcal' no final do plano se quiser atualizar a contagem de calorias."
+                                  class="w-full p-4 border border-gray-600 dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 transition duration-150 bg-gray-700 dark:bg-gray-700 light:bg-white text-white dark:text-white light:text-gray-900 text-sm font-mono"></textarea>
                     </div>
 
                     <div>
-                        <label for="edit-training-routine" class="block text-lg font-medium mb-2 dark:text-gray-200 light:text-gray-900">Plano de Treino</label>
-                        <textarea id="edit-training-routine" rows="10" placeholder="Plano de treino detalhado..."
-                                  class="w-full px-4 py-2 border border-gray-600 dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 transition duration-150 bg-gray-700 dark:bg-gray-700 light:bg-gray-100 text-white dark:text-white light:text-gray-900"></textarea>
+                        <label for="edit-training-routine" class="block text-xl font-medium mb-2 dark:text-green-400 light:text-green-800">Plano de Treino</label>
+                        <textarea id="edit-training-routine" rows="10" placeholder="Edite o plano de treino aqui."
+                                  class="w-full p-4 border border-gray-600 dark:border-gray-600 light:border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 transition duration-150 bg-gray-700 dark:bg-gray-700 light:bg-white text-white dark:text-white light:text-gray-900 text-sm font-mono"></textarea>
                     </div>
-                    
+
                     <button type="submit"
-                             class="w-full py-2 px-4 rounded-lg text-white font-semibold bg-green-600 hover:bg-green-700 transition duration-150 shadow-md">
-                        Salvar Rotinas Editadas
+                             class="w-full py-3 px-4 rounded-lg text-white font-semibold bg-pink-600 hover:bg-pink-700 transition duration-150 shadow-md">
+                        Salvar Alterações
                     </button>
+                    <p id="edit-message" class="mt-3 text-center text-sm dark:text-green-400 light:text-green-700 hidden"></p>
                 </form>
-            </div>
-            
-            <button id="personal-logout-btn" class="mt-10 py-3 px-6 rounded-lg text-white font-bold bg-red-600 hover:bg-red-700 transition duration-200 shadow-xl shadow-red-900/50 w-full tracking-wide">
-                Sair do Dashboard
-            </button>
+            </section>
         </div>
-
     </div>
 
-    <div id="limitations-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-gray-800 p-6 rounded-xl shadow-2xl max-w-md w-full border border-indigo-500/50">
-            <h3 class="text-2xl font-bold dark:text-indigo-400 mb-4 border-b border-gray-700 pb-2">Limitações Físicas</h3>
-            <p class="text-sm dark:text-gray-400 mb-4">Selecione todas as limitações que se aplicam a você:</p>
-            <form id="limitations-form" class="space-y-3 max-h-80 overflow-y-auto pr-3">
-                <label class="flex items-center space-x-3 dark:text-gray-300"><input type="checkbox" value="dor_lombar" class="rounded text-indigo-600 bg-gray-700 border-gray-600"> <span>Dor Lombar Crônica</span></label>
-                <label class="flex items-center space-x-3 dark:text-gray-300"><input type="checkbox" value="lesao_joelho" class="rounded text-indigo-600 bg-gray-700 border-gray-600"> <span>Lesão no Joelho (Especifique se for o caso)</span></label>
-                <label class="flex items-center space-x-3 dark:text-gray-300"><input type="checkbox" value="problemas_ombro" class="rounded text-indigo-600 bg-gray-700 border-gray-600"> <span>Problemas no Ombro (Ex: Manguito Rotador)</span></label>
-                <label class="flex items-center space-x-3 dark:text-gray-300"><input type="checkbox" value="hipertensao" class="rounded text-indigo-600 bg-gray-700 border-gray-600"> <span>Hipertensão (Pressão Alta)</span></label>
-                <label class="flex items-center space-x-3 dark:text-gray-300"><input type="checkbox" value="problemas_coluna" class="rounded text-indigo-600 bg-gray-700 border-gray-600"> <span>Problemas na Coluna (Ex: Hérnia de Disco)</span></label>
-                <label class="flex items-center space-x-3 dark:text-gray-300"><input type="checkbox" value="asma" class="rounded text-indigo-600 bg-gray-700 border-gray-600"> <span>Asma ou Problemas Respiratórios</span></label>
-                <label class="flex items-center space-x-3 dark:text-gray-300"><input type="checkbox" value="gravidez" class="rounded text-indigo-600 bg-gray-700 border-gray-600"> <span>Gravidez ou Pós-parto</span></label>
-                <label class="flex items-center space-x-3 dark:text-gray-300"><input type="checkbox" value="nenhuma" class="rounded text-indigo-600 bg-gray-700 border-gray-600"> <span>Nenhuma Limitação</span></label>
-                
-                <div class="pt-4">
-                    <label for="other-limitation" class="block text-sm font-medium mb-1 dark:text-gray-200">Outra (Especifique)</label>
-                    <input type="text" id="other-limitation" placeholder="Ex: Tendinite no punho esquerdo"
-                           class="w-full px-4 py-2 border border-gray-600 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-gray-700 text-white">
+    <div id="food-restriction-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50">
+        <div class="bg-gray-800 dark:bg-gray-800 light:bg-white rounded-xl shadow-2xl p-6 w-full max-w-lg">
+            <h3 class="text-2xl font-bold mb-4 dark:text-white light:text-gray-900">Restrições Alimentares</h3>
+            <div id="food-restriction-list" class="space-y-2 max-h-80 overflow-y-auto pr-2 mb-4 dark:text-gray-300 light:text-gray-700">
                 </div>
-            </form>
-            
-            <button id="close-limitations-modal-btn" class="mt-6 w-full py-2 px-4 rounded-lg text-white font-semibold bg-indigo-600 hover:bg-indigo-700 transition duration-150">
-                Confirmar Limitações
-            </button>
+            <button id="close-food-modal-btn" class="w-full py-2 px-4 rounded-lg text-white font-semibold bg-indigo-600 hover:bg-indigo-700 transition duration-150">Fechar</button>
         </div>
     </div>
-    
-    <div id="food-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-gray-800 p-6 rounded-xl shadow-2xl max-w-md w-full border border-indigo-500/50">
-            <h3 class="text-2xl font-bold dark:text-indigo-400 mb-4 border-b border-gray-700 pb-2">Restrições/Preferências Alimentares</h3>
-            <p class="text-sm dark:text-gray-400 mb-4">Digite um alimento por vez e clique em "Adicionar" ou pressione Enter:</p>
-            
-            <form id="add-food-form" class="flex gap-2 mb-4">
-                <input type="text" id="food-input" placeholder="Ex: Glúten, Leite, Amendoim, Brócolis" 
-                       class="flex-grow px-4 py-2 border border-gray-600 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-gray-700 text-white">
-                <button type="submit" class="py-2 px-4 rounded-lg text-white font-semibold bg-indigo-600 hover:bg-indigo-700 transition duration-150">
-                    Adicionar
-                </button>
-            </form>
-            
-            <div id="current-food-tags-container" class="flex flex-wrap gap-2 p-3 border border-gray-700 rounded-lg min-h-[40px] max-h-48 overflow-y-auto">
-                <span class="text-sm dark:text-gray-400">Restrições atuais aparecerão aqui.</span>
-            </div>
-            
-            <button id="close-food-modal-btn" class="mt-6 w-full py-2 px-4 rounded-lg text-white font-semibold bg-green-600 hover:bg-green-700 transition duration-150">
-                Confirmar Restrições
-            </button>
+
+    <div id="limitations-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50">
+        <div class="bg-gray-800 dark:bg-gray-800 light:bg-white rounded-xl shadow-2xl p-6 w-full max-w-lg">
+            <h3 class="text-2xl font-bold mb-4 dark:text-white light:text-gray-900">Limitações Físicas</h3>
+            <div id="limitations-list" class="space-y-2 max-h-80 overflow-y-auto pr-2 mb-4 dark:text-gray-300 light:text-gray-700">
+                </div>
+            <button id="close-limitations-modal-btn" class="w-full py-2 px-4 rounded-lg text-white font-semibold bg-indigo-600 hover:bg-indigo-700 transition duration-150">Fechar</button>
         </div>
     </div>
+
 
     <script type="module">
-        // Importações do Firebase SDK e Gemini API (Assumindo que estas bibliotecas já estão configuradas no ambiente de execução)
-        // Se você estiver rodando isso localmente, certifique-se de ter os scripts do Firebase e Gemini disponíveis.
-        
-        // *******************************************************************************************************************
-        // CONFIGURAÇÃO DO FIREBASE (ADICIONE SUAS CHAVES AQUI)
-        // *******************************************************************************************************************
-        // A chave API do Gemini precisa ser definida como variável de ambiente no servidor (Ex: Vercel)
-        // ou diretamente no código se estiver em um ambiente de desenvolvimento NÃO-PRODUTIVO.
-        
-        // Importações simuladas para o ambiente de execução:
-        // import { initializeApp } from "firebase/app";
-        // import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-        // import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
-        // import { GoogleGenerativeAI } from "@google/genai"; // Ou a SDK que você está usando.
+        // Simulação do SDK do Firebase e Geração de Planos com IA (Gemini)
 
-        // Simulação de variáveis globais do Firebase/Gemini
-        const firebaseConfig = {
-            // [SUAS CONFIGURAÇÕES DO FIREBASE AQUI]
-            apiKey: "AIzaSy...",
-            authDomain: "...",
-            projectId: "...",
-            storageBucket: "...",
-            messagingSenderId: "...",
-            appId: "..."
-        };
+        // Variáveis de Mocks/Simulação
+        const MOCK_DB = {};
+        const MOCK_AUTH_STATE = { currentUser: null };
 
-        // const app = initializeApp(firebaseConfig);
-        // const auth = getAuth(app);
-        // const db = getFirestore(app);
-        // const gemini_api_key = import.meta.env.VITE_GEMINI_API_KEY; // Usando variável de ambiente
-        // const ai = new GoogleGenerativeAI(gemini_api_key);
+        // --- Simulação de Funções Firebase ---
 
-        // VARIÁVEIS SIMULADAS (Substitua pelos imports e inicializações reais)
         const auth = {
             currentUser: null,
-            signInWithEmailAndPassword: async (email, password) => {
-                // Simulação de login bem-sucedido
-                auth.currentUser = { uid: email.split('@')[0], email: email, displayName: 'Aluno Teste', userType: 'aluno' };
-                return { user: auth.currentUser };
-            },
-            createUserWithEmailAndPassword: async (email, password) => {
-                // Simulação de registro bem-sucedido
-                auth.currentUser = { uid: email.split('@')[0], email: email, displayName: 'Novo Usuário', userType: null };
-                return { user: auth.currentUser };
-            },
-            signOut: async () => {
-                auth.currentUser = null;
-            },
-            // Simulação de onAuthStateChanged
             onAuthStateChanged: (callback) => {
+                // Simula o estado inicial
+                MOCK_AUTH_STATE.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                auth.currentUser = MOCK_AUTH_STATE.currentUser;
                 callback(auth.currentUser);
             }
         };
@@ -490,477 +434,862 @@
         const db = {
             collection: (name) => ({
                 doc: (id) => ({
-                    set: async (data, options) => {
-                        console.log(`Saving ${name}/${id}:`, data);
-                        localStorage.setItem(`db-${name}-${id}`, JSON.stringify(data));
-                    },
                     get: async () => {
-                        const data = localStorage.getItem(`db-${name}-${id}`);
-                        if (data) {
-                            return { exists: true, data: () => JSON.parse(data) };
+                        return {
+                            exists: !!MOCK_DB[name]?.[id],
+                            data: () => MOCK_DB[name]?.[id] || null
+                        };
+                    },
+                    set: async (data, options = {}) => {
+                        if (!MOCK_DB[name]) MOCK_DB[name] = {};
+                        if (options.merge) {
+                            MOCK_DB[name][id] = { ...MOCK_DB[name][id], ...data };
+                        } else {
+                            MOCK_DB[name][id] = data;
                         }
-                        return { exists: false, data: () => null };
+                        // Persistir no localStorage
+                        localStorage.setItem(name, JSON.stringify(MOCK_DB[name]));
+                        return true;
                     }
                 })
             })
         };
 
-        const ai = {
-            getGenerativeModel: (config) => ({
-                generateContent: async (prompt) => {
-                    console.log("--- AI PROMPT ---");
-                    console.log(prompt);
-                    console.log("-----------------");
+        async function initializeMockDB() {
+            MOCK_DB.users = JSON.parse(localStorage.getItem('users')) || {};
+            MOCK_DB.studentProfiles = JSON.parse(localStorage.getItem('studentProfiles')) || {};
+        }
 
-                    // Simulação de resposta da IA
-                    const isFoodPlan = prompt.includes('**PLANO ALIMENTAR**');
-                    let text = "Resposta simulada da IA.";
-                    let calories = '2100'; // Valor simulado
+        async function mockSignIn(email, password) {
+            await initializeMockDB();
+            const userId = Object.keys(MOCK_DB.users).find(id => MOCK_DB.users[id].email === email && MOCK_DB.users[id].password === password);
+            if (userId) {
+                const user = MOCK_DB.users[userId];
+                MOCK_AUTH_STATE.currentUser = { uid: userId, email: user.email, userType: user.userType };
+                auth.currentUser = MOCK_AUTH_STATE.currentUser;
+                localStorage.setItem('currentUser', JSON.stringify(auth.currentUser));
+                return { user: MOCK_AUTH_STATE.currentUser };
+            }
+            throw new Error("E-mail ou senha inválidos.");
+        }
+
+        async function mockSignUp(email, password, fullName) {
+            await initializeMockDB();
+            const existingUser = Object.values(MOCK_DB.users).find(user => user.email === email);
+            if (existingUser) {
+                throw new Error("Este e-mail já está cadastrado.");
+            }
+            const userId = `user_${Date.now()}`;
+            MOCK_DB.users[userId] = { userId, email, password, fullName, userType: null };
+            localStorage.setItem('users', JSON.stringify(MOCK_DB.users));
+            return { user: { uid: userId, email, userType: null } };
+        }
+
+        function mockSignOut() {
+            MOCK_AUTH_STATE.currentUser = null;
+            auth.currentUser = null;
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('currentStudentSearch'); // Limpa busca do Personal
+        }
+
+        async function saveUserData(userId, data) {
+            await initializeMockDB();
+            MOCK_DB.users[userId] = { ...MOCK_DB.users[userId], ...data };
+            localStorage.setItem('users', JSON.stringify(MOCK_DB.users));
+            
+            // Atualiza o userType no estado de autenticação se for alterado
+            if (data.userType) {
+                auth.currentUser.userType = data.userType;
+                localStorage.setItem('currentUser', JSON.stringify(auth.currentUser));
+            }
+        }
+
+        async function saveStudentProfileData(data) {
+            const userId = auth.currentUser.uid;
+            await initializeMockDB();
+            MOCK_DB.studentProfiles[userId] = { ...MOCK_DB.studentProfiles[userId], ...data, userId };
+            localStorage.setItem('studentProfiles', JSON.stringify(MOCK_DB.studentProfiles));
+        }
+
+        async function getStudentProfileData(userId) {
+            await initializeMockDB();
+            return MOCK_DB.studentProfiles[userId] || null;
+        }
+
+
+        // --- Simulação da IA (Gemini) ---
+
+        // Dados estáticos para simular o Gemini
+        const MOCK_GEMINI_RESPONSES = {
+            'emagrecer': {
+                'MOCK_PLAN_1': {
+                    food: `**PLANO ALIMENTAR**
                     
-                    if (prompt.includes('Objetivo Principal: emagrecer')) {
-                        calories = '1850';
-                    } else if (prompt.includes('Objetivo Principal: obter_massa_muscular')) {
-                        calories = '2300';
-                    }
+**Distribuição Macro**: 40% Carboidratos, 35% Proteínas, 25% Gorduras.
 
-                    if (isFoodPlan) {
-                        text = `**PLANO ALIMENTAR**
+**Café da Manhã (7h00)**
+* 1x Omelete (2 ovos) com espinafre.
+* 1x Fatia de pão integral com 1 colher de chá de azeite.
+* 1x Xícara de café preto.
 
-## DIA 1: Foco na Redução de Carboidratos
-* **Café da Manhã (7:00h):** Omelete (3 ovos), Espinafre refogado, 1 xícara de café.
-* **Lanche da Manhã (10:00h):** 1 punhado de Amêndoas (30g).
-* **Almoço (13:00h):** Peito de frango grelhado (150g), Salada verde variada à vontade, 1/2 batata doce (média).
-* **Lanche da Tarde (16:30h):** Iogurte natural integral (170g) com 1 colher de sopa de sementes de chia.
-* **Jantar (20:00h):** Salmão assado (120g) com aspargos no vapor.
-* **Total de Calorias Estimado na Rotina: ${calories} Calorias**
+**Almoço (12h30)**
+* 1x Porção de peito de frango grelhado (120g).
+* 4x Colheres de sopa de arroz integral.
+* 1x Prato grande de salada verde e tomate.
+* 1x Colher de sopa de azeite extra virgem.
 
-**PLANO DE TREINO**
+**Lanche da Tarde (16h00)**
+* 1x Pote de iogurte natural desnatado (170g).
+* 1x Porção pequena de morangos.
 
-## DIA 1: Membros Inferiores
-* **Aquecimento:** 10 minutos de Bicicleta ou Elíptico.
-* **Treino:** Agachamento Livre (4x12), Leg Press (3x15), Extensora (3x12), Flexora (3x15).
-* **Abdominais:** 3x20 (Prancha 45s).
-`;
-                    }
+**Jantar (20h00)**
+* 1x Porção de salmão assado (100g).
+* 1x Porção de batata doce cozida (100g).
+* Brócolis e Couve-flor cozidos à vontade.
 
-                    return {
-                        text: () => text
-                    };
+**Total de Calorias Estimado na Rotina: 1550 Kcal**`,
+                    training: `**PLANO DE TREINO**
+
+**Objetivo:** Déficit Calórico e Preservação de Massa Magra (4 dias/semana)
+
+**Dia 1: Membros Inferiores (Força)**
+1.  Aquecimento: 10 minutos de Bicicleta Estacionária.
+2.  Agachamento Livre: 4 séries de 10 repetições.
+3.  Leg Press 45°: 3 séries de 12 repetições.
+4.  Cadeira Extensora: 3 séries de 15 repetições (curta pausa).
+5.  Resfriamento: 5 minutos de alongamento focado nas pernas.
+
+**Dia 2: Membros Superiores (Peito/Tríceps)**
+1.  Supino Reto com Halteres: 4 séries de 8 repetições.
+2.  Crossover (Polia Alta): 3 séries de 15 repetições.
+3.  Tríceps Corda (Polia): 3 séries de 15 repetições.
+
+**Dia 3: Cardio Moderado (30 minutos)**
+* Corrida/Caminhada Rápida na Esteira (Inclinação 2.0).
+
+**Dia 4: Dorsais e Bíceps**
+1.  Puxada Alta (Lat Pulldown): 4 séries de 10 repetições.
+2.  Remada Curvada: 3 séries de 12 repetições.
+3.  Rosca Direta com Barra: 3 séries de 12 repetições.
+4.  Rosca Martelo: 3 séries de 15 repetições.
+
+**Dia 5: Descanso Ativo/Descanso**
+* (Foque no descanso e recuperação muscular.)`
                 }
-            })
+            },
+            'massa_muscular': {
+                'MOCK_PLAN_2': {
+                    food: `**PLANO ALIMENTAR**
+                    
+**Distribuição Macro**: 50% Carboidratos, 30% Proteínas, 20% Gorduras.
+Este plano é focado em superávit calórico e alta ingestão proteica.
+
+**Café da Manhã (7h00)**
+* Vitamina (1x dose de Whey Protein, 1x banana, 300ml de leite integral, 50g de aveia).
+* 3x Ovos mexidos.
+
+**Lanche da Manhã (10h00)**
+* 2x Fatias de pão integral com pasta de amendoim e mel.
+
+**Almoço (13h00)**
+* 1x Porção de carne vermelha magra (150g).
+* 8x Colheres de sopa de arroz branco.
+* 1x Concha de feijão.
+* Salada mista.
+
+**Pré-Treino (17h00)**
+* 1x Batata doce cozida média.
+
+**Pós-Treino (19h00)**
+* 1x Dose de Whey Protein com água.
+* 2x Bananas.
+
+**Jantar (21h00)**
+* 1x Porção grande de frango desfiado (150g).
+* Macarrão integral à bolonhesa (porção generosa).
+
+**Total de Calorias Estimado na Rotina: 2800 Kcal**`,
+                    training: `**PLANO DE TREINO**
+
+**Objetivo:** Hipertrofia Máxima (5 dias/semana)
+
+**Dia 1: Peito e Tríceps**
+1.  Aquecimento: Rotação de ombros.
+2.  Supino Inclinado com Barra: 4 séries de 8-10.
+3.  Supino Reto Halteres: 3 séries de 8-10.
+4.  Crucifixo: 3 séries de 12.
+5.  Tríceps Testa: 3 séries de 10.
+6.  Tríceps Coice: 3 séries de 12.
+
+**Dia 2: Dorsais e Bíceps**
+1.  Puxada Frente (Pegada Aberta): 4 séries de 8-10.
+2.  Remada Cavalinho: 3 séries de 8-10.
+3.  Pullover: 3 séries de 12.
+4.  Rosca Alternada: 3 séries de 10 por braço.
+5.  Rosca Concentrada: 3 séries de 12.
+
+**Dia 3: Descanso**
+
+**Dia 4: Membros Inferiores (Quadríceps e Panturrilha)**
+1.  Agachamento Smith: 4 séries de 10 (carga alta).
+2.  Hack Machine: 3 séries de 12.
+3.  Extensora: 3 séries de 15 (drop-set na última).
+4.  Gêmeos em Pé: 4 séries de 20.
+
+**Dia 5: Ombros e Posteriores**
+1.  Desenvolvimento Militar: 4 séries de 8-10.
+2.  Elevação Lateral: 3 séries de 12-15.
+3.  Posterior de Ombro (Máquina): 3 séries de 15.
+4.  Cadeira Flexora: 4 séries de 10.
+5.  Stiff com Halteres: 3 séries de 12.
+6.  Resfriamento: Alongamento geral.
+`
+                }
+            }
         };
-        const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" }); 
-        // *******************************************************************************************************************
-        
-        
-        // *******************************************************************************************************************
-        // VARIÁVEIS E CONSTANTES GLOBAIS
-        // *******************************************************************************************************************
-        
-        // Referências aos elementos de UI
-        const authCard = document.getElementById('auth-card');
+
+        let lastMockPlanIndex = 0;
+
+        async function mockGeminiGeneratePlan(prompt) {
+            console.log("Chamando mockGeminiGeneratePlan com o prompt melhorado...");
+            // Extrai o Objetivo Principal do prompt para selecionar o mock
+            let objectiveMatch = prompt.match(/Objetivo Principal:\s*\*\*(.*?)\*\*/i);
+            const objective = objectiveMatch ? objectiveMatch[1].toLowerCase().includes('emagrecer') ? 'emagrecer' : 'massa_muscular' : 'emagrecer';
+
+            // Seleciona o plano mock com base no objetivo
+            const plans = MOCK_GEMINI_RESPONSES[objective];
+            const planKeys = Object.keys(plans);
+            const planKey = planKeys[lastMockPlanIndex % planKeys.length];
+            const mockPlan = plans[planKey];
+            lastMockPlanIndex++; // Altera o índice para variar o plano (se houver mais)
+
+            let foodRoutine = mockPlan.food;
+            const trainingRoutine = mockPlan.training;
+
+            // Substitui o valor Kcal do mock pelo valor da Meta Calórica do prompt para SIMULAR A ADERÊNCIA DA IA
+            const calorieGoalMatch = prompt.match(/Meta Calórica Diária \(TMB Ajustada\):\s*(\d+)\s*calorias/i);
+            if (calorieGoalMatch && calorieGoalMatch[1]) {
+                const requiredCalorie = calorieGoalMatch[1];
+                // Substitui o valor no mock para simular a resposta personalizada da IA
+                foodRoutine = foodRoutine.replace(/Total de Calorias Estimado na Rotina:\s*(\d+)\s*Kcal/i, `Total de Calorias Estimado na Rotina: ${requiredCalorie} Kcal`);
+            }
+
+            // Simula um delay
+            await new Promise(resolve => setTimeout(resolve, 2500)); 
+
+            return foodRoutine + "\n\n" + trainingRoutine;
+        }
+
+
+        // --- Implementação do Calorie Goal (NOVA LÓGICA) ---
+
+        // Função para calcular a Taxa Metabólica Basal (TMB) usando a fórmula de Harris-Benedict
+        function calculateTMB(gender, weight, height, age) {
+            if (gender === 'feminino') {
+                return 655.1 + (9.563 * weight) + (1.850 * height) - (4.676 * age);
+            } else if (gender === 'masculino') {
+                return 66.5 + (13.75 * weight) + (5.003 * height) - (6.755 * age);
+            }
+            return 0;
+        }
+
+        // Fator de Atividade (assumindo moderado para fins de geração de plano)
+        const ACTIVITY_FACTOR = 1.55; 
+
+        // Função para calcular a Meta Calórica Ajustada
+        function calculateCalorieGoal(gender, weight, height, age, objective) {
+            const tmb = calculateTMB(gender, weight, height, age);
+            const maintenanceCalories = tmb * ACTIVITY_FACTOR;
+
+            if (objective === 'emagrecer') {
+                // Déficit calórico de 15%
+                return Math.round(maintenanceCalories * 0.85); 
+            } else if (objective === 'massa_muscular') {
+                // Superávit calórico de 15%
+                return Math.round(maintenanceCalories * 1.15); 
+            }
+            return Math.round(maintenanceCalories); // Manutenção
+        }
+
+
+        // --- Variáveis DOM e Inicialização ---
+
         const loginView = document.getElementById('login-view');
         const registerView = document.getElementById('register-view');
         const infoFormView = document.getElementById('info-form-view');
         const studentDashboardView = document.getElementById('student-dashboard-view');
         const personalDashboardView = document.getElementById('personal-dashboard-view');
         const planGenerationView = document.getElementById('plan-generation-view');
+        const authCard = document.getElementById('auth-card');
         const messageArea = document.getElementById('message-area');
-        
-        // Inputs de Login/Cadastro
+
+        // Forms e Inputs de Autenticação
         const loginForm = document.getElementById('login-form');
         const registerForm = document.getElementById('register-form');
         const googleLoginBtn = document.getElementById('google-login-btn');
-        
-        // Formulário de Perfil (InfoForm)
+
+        // Inputs e Botões do Formulário de Informações
         const infoForm = document.getElementById('info-form');
         const userTypeInput = document.getElementById('user-type-input');
-        const fullNameInput = document.getElementById('full-name');
-        const ageInput = document.getElementById('age');
-        const genderInput = document.getElementById('gender');
-        const objectiveInput = document.getElementById('objective');
-        const weightInput = document.getElementById('weight');
-        const heightInput = document.getElementById('height');
         const alunoFields = document.getElementById('aluno-fields');
         const alunoMetricsFields = document.getElementById('aluno-metrics-fields');
+        const fullNameInput = document.getElementById('full-name');
+        
+        // Modals
+        const foodRestrictionModal = document.getElementById('food-restriction-modal');
+        const closeFoodModalBtn = document.getElementById('close-food-modal-btn');
+        const addFoodRestrictionBtn = document.getElementById('add-food-restriction-btn');
+        const selectedFoodTags = document.getElementById('selected-food-tags');
+        const noFoodsSelected = document.getElementById('no-foods-selected');
+        const foodRestrictionList = document.getElementById('food-restriction-list');
+        
+        const limitationsModal = document.getElementById('limitations-modal');
+        const closeLimitationsModalBtn = document.getElementById('close-limitations-modal-btn');
+        const addLimitationBtn = document.getElementById('add-limitation-btn');
+        const selectedLimitationsTags = document.getElementById('selected-limitations-tags');
+        const noLimitationsSelected = document.getElementById('no-limitations-selected');
+        const limitationsList = document.getElementById('limitations-list');
 
-        // Dashboard do Aluno (DashboardStudentView)
+        // Student Dashboard Elements
+        const studentLogoutBtn = document.getElementById('student-logout-btn');
         const studentDashboardName = document.getElementById('student-dashboard-name');
         const studentDashboardEmail = document.getElementById('student-dashboard-email');
-        const studentDashboardClientCode = document.getElementById('student-dashboard-client-code');
         const studentDashboardAge = document.getElementById('student-dashboard-age');
-        const studentDashboardGender = document.getElementById('student-dashboard-gender');
         const studentDashboardObjective = document.getElementById('student-dashboard-objective');
+        const studentDashboardGender = document.getElementById('student-dashboard-gender');
         const studentDashboardWeight = document.getElementById('student-dashboard-weight');
         const studentDashboardHeight = document.getElementById('student-dashboard-height');
+        const studentDashboardFoodRestrictions = document.getElementById('student-dashboard-food-restrictions');
         const studentDashboardLimitations = document.getElementById('student-dashboard-limitations');
-        const studentDashboardRestrictions = document.getElementById('student-dashboard-restrictions');
-        const studentDashboardCalorieGoal = document.getElementById('student-dashboard-calorie-goal'); // Novo: Meta Calórica
         const studentFoodRoutine = document.getElementById('student-food-routine');
         const studentTrainingRoutine = document.getElementById('student-training-routine');
-        const studentFoodRoutineCalories = document.getElementById('student-food-routine-calories'); // Novo: Total de Calorias da Rotina
-        const studentLogoutBtn = document.getElementById('student-logout-btn');
-        const editProfileBtn = document.getElementById('edit-profile-btn');
-        const regeneratePlanBtn = document.getElementById('regenerate-plan-btn');
+        const generatePlanBtn = document.getElementById('generate-plan-btn');
+        const planStatus = document.getElementById('plan-status');
 
-        // Dashboard do Personal Trainer
+        // NOVOS ELEMENTOS DO DASHBOARD DO ALUNO (CALORIAS)
+        const studentDashboardCalorieGoal = document.getElementById('student-dashboard-calorie-goal'); 
+        const studentFoodRoutineCalories = document.getElementById('student-food-routine-calories'); 
+
+        // Personal Dashboard Elements
         const personalLogoutBtn = document.getElementById('personal-logout-btn');
+        const personalDashboardName = document.getElementById('personal-dashboard-name');
         const searchStudentForm = document.getElementById('search-student-form');
-        const studentCodeInput = document.getElementById('student-code-input');
-        const editRoutineCard = document.getElementById('edit-routine-card');
+        const studentIdInput = document.getElementById('student-id-input');
+        const searchMessage = document.getElementById('search-message');
+        const editRoutineSection = document.getElementById('edit-routine-section');
         const searchedStudentName = document.getElementById('searched-student-name');
-        const searchedStudentCalorieGoal = document.getElementById('searched-student-calorie-goal');
+        const searchedStudentEmail = document.getElementById('searched-student-email');
+        const searchedStudentDetails = document.getElementById('searched-student-details');
+        const searchedStudentCalorieGoal = document.getElementById('searched-student-calorie-goal'); // Novo
         const editStudentRoutineForm = document.getElementById('edit-student-routine-form');
         const editFoodRoutine = document.getElementById('edit-food-routine');
         const editTrainingRoutine = document.getElementById('edit-training-routine');
-        
-        // Modais de Seleção
-        const limitationsModal = document.getElementById('limitations-modal');
-        const addLimitationBtn = document.getElementById('add-limitation-btn');
-        const closeLimitationsModalBtn = document.getElementById('close-limitations-modal-btn');
-        const limitationsForm = document.getElementById('limitations-form');
-        const otherLimitationInput = document.getElementById('other-limitation');
-        
-        const foodModal = document.getElementById('food-modal');
-        const addFoodRestrictionBtn = document.getElementById('add-food-restriction-btn');
-        const closeFoodModalBtn = document.getElementById('close-food-modal-btn');
-        const addFoodForm = document.getElementById('add-food-form');
-        const foodInput = document.getElementById('food-input');
-        const currentFoodTagsContainer = document.getElementById('current-food-tags-container');
+        const editMessage = document.getElementById('edit-message');
 
-        // Estado Global
-        let selectedLimitations = [];
+        // Dados Compartilhados
         let selectedFoodRestrictions = [];
-        let searchedStudentData = null; // Armazena os dados do aluno buscado pelo Personal
+        let selectedLimitations = [];
+        let searchedStudentData = null; // Para armazenar os dados do aluno buscado pelo Personal
 
-        // *******************************************************************************************************************
-        // FUNÇÕES AUXILIARES DE UI/UX
-        // *******************************************************************************************************************
-        
-        /** Alterna a visualização principal do aplicativo. */
-        function toggleView(viewName) {
+        const ALL_FOOD_RESTRICTIONS = [
+            'Glúten', 'Lactose', 'Ovos', 'Amendoim', 'Oleaginosas (Nozes, Amêndoas)', 
+            'Frutos do Mar', 'Soja', 'Trigo', 'Carne Vermelha', 'Vegetariano', 'Vegano',
+            'Comida Japonesa', 'Fast Food', 'Refrigerantes'
+        ];
+        const ALL_LIMITATIONS = [
+            'Dor Lombar Crônica', 'Dor no Joelho (Condromalácia)', 'Dor no Ombro', 
+            'Problemas Cardíacos', 'Lesão no Manguito Rotador', 'Hérnia de Disco', 
+            'Pressão Alta', 'Diabetes'
+        ];
+
+
+        // --- Funções de UI ---
+
+        function toggleView(view) {
             const views = {
-                login: loginView,
-                register: registerView,
-                info_form: infoFormView,
-                student_dashboard: studentDashboardView,
-                personal_dashboard: personalDashboardView,
-                plan_generation: planGenerationView,
+                'login': loginView,
+                'register': registerView,
+                'info': infoFormView,
+                'student': studentDashboardView,
+                'personal': personalDashboardView,
+                'generation': planGenerationView
             };
-
-            // Esconde todas as views
-            Object.values(views).forEach(view => view.classList.add('hidden'));
-
-            // Exibe a view desejada
-            const targetView = views[viewName];
-            if (targetView) {
-                targetView.classList.remove('hidden');
-                
-                // Ajusta o tamanho do auth-card (para login/register/info-form) ou esconde-o (para dashboards)
-                if (viewName === 'login' || viewName === 'register' || viewName === 'info_form') {
-                    authCard.classList.remove('max-w-4xl', 'w-full', 'mx-auto', 'p-4', 'sm:p-8');
-                    authCard.classList.add('max-w-md');
-                } else {
-                    authCard.classList.add('max-w-4xl', 'w-full', 'mx-auto', 'p-4', 'sm:p-8');
-                    authCard.classList.remove('max-w-md');
-                }
-            }
-        }
-        
-        /** Exibe uma mensagem de feedback na tela. */
-        function showMessage(message, type = 'error') {
-            messageArea.textContent = message;
-            messageArea.classList.remove('hidden', 'bg-red-900', 'text-red-300', 'bg-green-900', 'text-green-300', 'opacity-0');
             
-            if (type === 'error') {
-                messageArea.className = 'mb-4 p-3 rounded-lg text-sm transition-opacity duration-300 bg-red-900 text-red-300';
-            } else if (type === 'success') {
-                messageArea.className = 'mb-4 p-3 rounded-lg text-sm transition-opacity duration-300 bg-green-900 text-green-300';
-            } else if (type === 'info') {
-                messageArea.className = 'mb-4 p-3 rounded-lg text-sm transition-opacity duration-300 bg-indigo-900 text-indigo-300';
-            }
-            
-            // Oculta após 5 segundos
-            setTimeout(() => {
-                messageArea.classList.add('hidden', 'opacity-0');
-            }, 5000);
-        }
-
-        /** Alterna entre dark/light mode. */
-        function toggleDarkMode() {
-            const html = document.documentElement;
-            const sunIcon = document.getElementById('sun-icon');
-            const moonIcon = document.getElementById('moon-icon');
-            
-            if (html.classList.contains('dark')) {
-                html.classList.remove('dark');
-                html.classList.add('light');
-                sunIcon.classList.remove('hidden');
-                moonIcon.classList.add('hidden');
+            // Redimensiona o card principal para as telas de login/registro/info
+            const isSmallCard = ['login', 'register', 'info'].includes(view);
+            if (isSmallCard) {
+                authCard.classList.add('max-w-md');
+                authCard.classList.remove('max-w-4xl');
             } else {
-                html.classList.remove('light');
-                html.classList.add('dark');
-                sunIcon.classList.add('hidden');
-                moonIcon.classList.remove('hidden');
+                authCard.classList.remove('max-w-md');
+                authCard.classList.add('max-w-4xl');
+            }
+
+            // Oculta todas as views e mostra a view atual
+            Object.values(views).forEach(v => v.classList.add('hidden'));
+            if (views[view]) {
+                views[view].classList.remove('hidden');
+            }
+        }
+
+        function displayMessage(type, text) {
+            messageArea.textContent = text;
+            messageArea.classList.remove('hidden', 'bg-red-500', 'bg-green-500', 'text-white');
+            if (type === 'error') {
+                messageArea.classList.add('bg-red-500', 'text-white');
+            } else if (type === 'success') {
+                messageArea.classList.add('bg-green-500', 'text-white');
             }
         }
         
-        // *******************************************************************************************************************
-        // LÓGICA DE AUTENTICAÇÃO
-        // *******************************************************************************************************************
+        function clearMessage() {
+            messageArea.classList.add('hidden');
+        }
+
+        function toggleDarkMode() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+                document.getElementById('sun-icon').classList.remove('hidden');
+                document.getElementById('moon-icon').classList.add('hidden');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.classList.remove('light');
+                document.documentElement.classList.add('dark');
+                document.getElementById('sun-icon').classList.add('hidden');
+                document.getElementById('moon-icon').classList.remove('hidden');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+                document.getElementById('sun-icon').classList.remove('hidden');
+                document.getElementById('moon-icon').classList.add('hidden');
+            }
+        }
+
+        // --- Funções de Limitações e Restrições (Modais) ---
+
+        function renderTags(container, dataArray, tagClass) {
+            container.innerHTML = '';
+            if (dataArray.length === 0) {
+                container.innerHTML = `<span class="text-sm dark:text-gray-400 light:text-gray-500">Nenhum(a) selecionado(a).</span>`;
+                return;
+            }
+            dataArray.forEach(item => {
+                const tag = document.createElement('span');
+                tag.className = `${tagClass} food-tag flex items-center bg-indigo-600 dark:bg-indigo-600 light:bg-indigo-500`;
+                tag.innerHTML = `${item}`;
+                container.appendChild(tag);
+            });
+        }
+
+        function renderCheckboxes(listElement, allItems, selectedItems, type) {
+            listElement.innerHTML = '';
+            allItems.forEach(item => {
+                const isChecked = selectedItems.includes(item);
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'flex items-center';
+                itemDiv.innerHTML = `
+                    <input id="${type}-${item.replace(/\s/g, '-')}" type="checkbox" value="${item}" ${isChecked ? 'checked' : ''}
+                           class="w-4 h-4 text-indigo-600 bg-gray-600 border-gray-500 rounded focus:ring-indigo-500">
+                    <label for="${type}-${item.replace(/\s/g, '-')}" class="ml-2 text-sm font-medium dark:text-gray-300 light:text-gray-700">${item}</label>
+                `;
+                itemDiv.querySelector('input').addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        if (!selectedItems.includes(item)) selectedItems.push(item);
+                    } else {
+                        const index = selectedItems.indexOf(item);
+                        if (index > -1) selectedItems.splice(index, 1);
+                    }
+                    if (type === 'food') {
+                        renderTags(selectedFoodTags, selectedFoodRestrictions, 'food-tag');
+                    } else {
+                        renderTags(selectedLimitationsTags, selectedLimitations, 'limitation-tag');
+                    }
+                });
+                listElement.appendChild(itemDiv);
+            });
+        }
+
+        function renderFoodTags() {
+            renderTags(selectedFoodTags, selectedFoodRestrictions, 'food-tag');
+            renderCheckboxes(foodRestrictionList, ALL_FOOD_RESTRICTIONS, selectedFoodRestrictions, 'food');
+        }
+
+        function openFoodModal() {
+            renderCheckboxes(foodRestrictionList, ALL_FOOD_RESTRICTIONS, selectedFoodRestrictions, 'food');
+            foodRestrictionModal.classList.remove('hidden');
+        }
+        function closeFoodModal() {
+            foodRestrictionModal.classList.add('hidden');
+        }
+
+        function renderLimitationTags() {
+            renderTags(selectedLimitationsTags, selectedLimitations, 'limitation-tag');
+            renderCheckboxes(limitationsList, ALL_LIMITATIONS, selectedLimitations, 'limitation');
+        }
+        function openLimitationsModal() {
+            renderCheckboxes(limitationsList, ALL_LIMITATIONS, selectedLimitations, 'limitation');
+            limitationsModal.classList.remove('hidden');
+        }
+        function closeLimitationsModal() {
+            limitationsModal.classList.add('hidden');
+        }
         
-        /** Trata o login com e-mail e senha. */
-        async function handleLogin(e) {
+        // --- Funções Principais de Roteamento/Renderização ---
+
+        function updateInfoForm(userData) {
+            fullNameInput.value = userData.fullName || '';
+            userTypeInput.value = userData.userType || '';
+            
+            // Campos de Aluno
+            if (userData.userType === 'aluno') {
+                alunoFields.classList.remove('hidden');
+                document.getElementById('age').value = userData.age || '';
+                document.getElementById('gender').value = userData.gender || '';
+                document.getElementById('objective').value = userData.objective || '';
+                document.getElementById('weight').value = userData.weight || '';
+                document.getElementById('height').value = userData.height || '';
+                
+                selectedFoodRestrictions = userData.foodRestrictions || [];
+                selectedLimitations = userData.limitations || [];
+                renderFoodTags();
+                renderLimitationTags();
+            } else {
+                 alunoFields.classList.add('hidden');
+                 // Limpa dados de aluno no formulário se o tipo for Personal
+                 document.getElementById('age').value = '';
+                 document.getElementById('gender').value = '';
+                 document.getElementById('objective').value = '';
+                 document.getElementById('weight').value = '';
+                 document.getElementById('height').value = '';
+            }
+        }
+
+        async function renderStudentDashboard(userData, profileData) {
+            studentDashboardName.textContent = userData.fullName || userData.email;
+            studentDashboardEmail.textContent = userData.email;
+
+            if (profileData) {
+                studentDashboardAge.textContent = profileData.age ? `${profileData.age} anos` : 'N/A';
+                studentDashboardObjective.textContent = profileData.objective || 'N/A';
+                studentDashboardGender.textContent = profileData.gender || 'N/A';
+                studentDashboardWeight.textContent = profileData.weight ? `${profileData.weight} kg` : 'N/A';
+                studentDashboardHeight.textContent = profileData.height ? `${profileData.height} cm` : 'N/A';
+                
+                // NOVO: Meta Calórica
+                studentDashboardCalorieGoal.textContent = profileData.calorieGoal ? `${profileData.calorieGoal} Kcal` : 'N/A';
+                
+                // Rotinas
+                studentFoodRoutine.textContent = profileData.foodRoutine || 'Aguardando geração do plano.';
+                studentTrainingRoutine.textContent = profileData.trainingRoutine || 'Aguardando geração do plano.';
+                
+                // NOVO: Total de Calorias da Rotina
+                studentFoodRoutineCalories.textContent = profileData.totalRoutineCalories ? `${profileData.totalRoutineCalories} Kcal` : 'Aguardando geração...';
+                
+                // Restrições e Limitações
+                renderTags(studentDashboardFoodRestrictions, profileData.foodRestrictions || [], 'food-tag');
+                renderTags(studentDashboardLimitations, profileData.limitations || [], 'limitation-tag');
+                
+                generatePlanBtn.disabled = !profileData.age || !profileData.objective; // Desabilita se faltarem dados essenciais
+            } else {
+                // Limpa campos se não houver profileData
+                studentDashboardAge.textContent = studentDashboardObjective.textContent = studentDashboardGender.textContent = studentDashboardWeight.textContent = studentDashboardHeight.textContent = 'N/A';
+                studentDashboardCalorieGoal.textContent = 'N/A';
+                studentFoodRoutine.textContent = studentTrainingRoutine.textContent = 'Aguardando preenchimento do perfil para gerar o plano.';
+                studentFoodRoutineCalories.textContent = 'Aguardando geração...';
+                studentDashboardFoodRestrictions.innerHTML = '<span class="dark:text-gray-400 light:text-gray-500">Nenhuma.</span>';
+                studentDashboardLimitations.innerHTML = '<span class="dark:text-gray-400 light:text-gray-500">Nenhuma.</span>';
+                generatePlanBtn.disabled = true;
+            }
+            toggleView('student');
+        }
+
+        async function renderPersonalDashboard(userData) {
+            personalDashboardName.textContent = userData.fullName || userData.email;
+            toggleView('personal');
+
+            // Limpa a busca anterior ao entrar no dashboard
+            editRoutineSection.classList.add('hidden');
+            searchMessage.classList.add('hidden');
+            searchedStudentData = null;
+        }
+
+        async function handleAuthStateChange(user) {
+            clearMessage();
+            if (user) {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                const userData = userDoc.data();
+                
+                if (!userData || !userData.userType) {
+                    // Novo usuário ou usuário sem informações de perfil
+                    toggleView('info');
+                    // Tenta pré-popular o nome se estiver disponível na mock auth (Google)
+                    fullNameInput.value = userData?.fullName || ''; 
+                    
+                } else if (userData.userType === 'aluno') {
+                    const profileData = await getStudentProfileData(user.uid);
+                    await renderStudentDashboard({ ...userData, ...profileData }, { ...userData, ...profileData });
+                } else if (userData.userType === 'personal') {
+                    await renderPersonalDashboard(userData);
+                }
+            } else {
+                toggleView('login');
+            }
+        }
+
+        // --- Funções de Event Handlers ---
+
+        function handleLogout() {
+            mockSignOut();
+            handleAuthStateChange(null);
+            clearMessage();
+        }
+
+        // --- Formulários de Autenticação ---
+
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            clearMessage();
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             
             try {
-                // Simulação de chamada de API Firebase
-                // await signInWithEmailAndPassword(auth, email, password);
-                await auth.signInWithEmailAndPassword(email, password);
-                showMessage('Login bem-sucedido!', 'success');
-                // onAuthStateChanged irá chamar checkUserState
+                await mockSignIn(email, password);
+                handleAuthStateChange(auth.currentUser);
             } catch (error) {
-                showMessage(`Erro no login: ${error.message}`);
+                displayMessage('error', error.message);
             }
-        }
-        
-        /** Trata o registro com e-mail e senha. */
-        async function handleRegister(e) {
+        });
+
+        registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const name = document.getElementById('register-name').value;
+            clearMessage();
             const email = document.getElementById('register-email').value;
             const password = document.getElementById('register-password').value;
             const confirmPassword = document.getElementById('register-confirm-password').value;
-            
+            const fullName = document.getElementById('register-name').value;
+
+            if (password.length < 6) {
+                return displayMessage('error', 'A senha deve ter no mínimo 6 caracteres.');
+            }
             if (password !== confirmPassword) {
-                showMessage('As senhas não coincidem.');
-                return;
+                return displayMessage('error', 'As senhas não coincidem.');
             }
             
             try {
-                // Simulação de chamada de API Firebase
-                // const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                
-                // Salva o nome inicial e marca como novo usuário
-                await db.collection('studentProfiles').doc(userCredential.user.uid).set({
-                    fullName: name,
-                    email: email,
-                    isNewUser: true,
-                    userType: null, // Tipo de usuário será definido no próximo formulário
-                    clientCode: userCredential.user.uid.substring(0, 8).toUpperCase()
-                });
-                
-                showMessage('Conta criada com sucesso! Preencha seu perfil.', 'success');
-                // onAuthStateChanged irá chamar checkUserState
+                await mockSignUp(email, password, fullName);
+                // Após o cadastro, faz login e direciona para o form de info
+                await mockSignIn(email, password);
+                handleAuthStateChange(auth.currentUser);
             } catch (error) {
-                showMessage(`Erro no registro: ${error.message}`);
+                displayMessage('error', error.message);
             }
-        }
-        
-        /** Trata o login com Google. */
-        async function signInWithGoogle() {
-            // Implementação de GoogleAuthProvider e signInWithPopup
-            showMessage('Login com Google não implementado nesta simulação.', 'info');
-        }
+        });
 
-        /** Trata o logout do usuário. */
-        async function handleLogout() {
-            try {
-                // await signOut(auth);
-                await auth.signOut();
-                showMessage('Sessão encerrada.', 'info');
-                toggleView('login');
-                // Limpa o estado global
-                searchedStudentData = null;
+        // Simulação de Login com Google (apenas simula o login no sistema)
+        googleLoginBtn.addEventListener('click', async () => {
+             // Simula um login de sucesso para um usuário 'google_user'
+             const email = 'google_user@mock.com';
+             const password = 'mockpassword';
+             const fullName = 'Usuário Google Mock';
+
+             try {
+                // Tenta fazer login, se falhar (usuário novo), cadastra e loga
+                await mockSignIn(email, password);
             } catch (error) {
-                showMessage(`Erro ao sair: ${error.message}`);
+                if (error.message.includes('inválidos')) {
+                    // Usuário não existe, cadastra
+                    await mockSignUp(email, password, fullName);
+                    await mockSignIn(email, password);
+                } else {
+                    return displayMessage('error', error.message);
+                }
             }
-        }
+            handleAuthStateChange(auth.currentUser);
+        });
+
+        // --- Formulário de Informações de Perfil ---
+
+        userTypeInput.addEventListener('change', (e) => {
+            if (e.target.value === 'aluno') {
+                alunoFields.classList.remove('hidden');
+                alunoMetricsFields.querySelectorAll('input, select').forEach(el => el.setAttribute('required', ''));
+            } else {
+                alunoFields.classList.add('hidden');
+                alunoMetricsFields.querySelectorAll('input, select').forEach(el => el.removeAttribute('required'));
+            }
+        });
+
+        infoForm.addEventListener('submit', handleInfoFormSubmit);
         
-        // *******************************************************************************************************************
-        // LÓGICA DE DADOS DO PERFIL (FORMULÁRIO E SALVAMENTO)
-        // *******************************************************************************************************************
-        
-        /** Lógica de cálculo da Taxa Metabólica Basal (TMB) e Meta Calórica. */
-        function calculateBMR(age, gender, weight, height) {
-            let bmr;
-            const s = gender === 'masculino' ? 5 : -161;
-            
-            // Fórmula Mifflin-St Jeor
-            bmr = (10 * weight) + (6.25 * height) - (5 * age) + s;
-            return Math.round(bmr);
-        }
-
-        /** Ajusta a TMB para a meta calórica do usuário (usando fator de atividade 1.375 - Moderadamente Ativo). */
-        function calculateCalorieGoal(bmr, objective) {
-            const activityFactor = 1.375; 
-            let goal = bmr * activityFactor;
-            
-            // Ajuste pela meta
-            if (objective === 'emagrecer') {
-                goal -= 500; // Déficit calórico
-            } else if (objective === 'massa_muscular') {
-                goal += 500; // Superávit calórico
-            }
-            
-            return Math.round(goal);
-        }
-
-        /** Salva os dados do perfil do aluno no Firestore. */
-        async function saveStudentProfileData(userData) {
-            try {
-                const userRef = db.collection('studentProfiles').doc(auth.currentUser.uid);
-                await userRef.set(userData, { merge: true });
-                return true;
-            } catch (error) {
-                showMessage(`Erro ao salvar perfil: ${error.message}`);
-                return false;
-            }
-        }
-
-        /** Trata o envio do formulário de informações do perfil. */
         async function handleInfoFormSubmit(e) {
             e.preventDefault();
+            clearMessage();
+
             const userType = userTypeInput.value;
             const fullName = fullNameInput.value;
-
-            if (userType === 'personal') {
-                 // Salva apenas o tipo de usuário e o nome para Personal Trainer
-                 const success = await saveStudentProfileData({ 
-                    userType, 
-                    fullName 
-                 });
-                 if (success) {
-                    showMessage('Perfil de Personal Trainer salvo! Redirecionando...', 'success');
-                    checkUserState(auth.currentUser);
-                 }
-                 return;
-            }
-
-            // Lógica para Aluno
-            const age = parseInt(ageInput.value);
-            const gender = genderInput.value;
-            const objective = objectiveInput.value;
-            const weight = parseFloat(weightInput.value);
-            const height = parseInt(heightInput.value);
+            const userId = auth.currentUser.uid;
             
-            if (!age || !gender || !objective || !weight || !height) {
-                showMessage('Preencha todos os campos obrigatórios.');
-                return;
-            }
-
-            const bmr = calculateBMR(age, gender, weight, height);
-            const calorieGoal = calculateCalorieGoal(bmr, objective);
-
+            // Dados básicos
             const userData = {
                 userType,
-                fullName,
-                age,
-                gender,
-                objective,
-                weight,
-                height,
-                bmr,
-                calorieGoal,
-                limitations: selectedLimitations,
-                foodRestrictions: selectedFoodRestrictions,
-                isNewUser: false // Marcar como preenchido
+                fullName
             };
-
-            const success = await saveStudentProfileData(userData);
             
-            if (success) {
-                showMessage('Perfil do aluno salvo! Gerando seu primeiro plano...', 'success');
-                // Após salvar, gera o primeiro plano
-                toggleView('plan_generation');
-                await generateUniquePlan(userData, calorieGoal);
-                checkUserState(auth.currentUser); // Redireciona para o dashboard
+            // Dados de Perfil do Aluno (se aplicável)
+            let profileData = {};
+            let calorieGoal = null;
+            if (userType === 'aluno') {
+                const age = document.getElementById('age').value;
+                const gender = document.getElementById('gender').value;
+                const objective = document.getElementById('objective').value;
+                const weight = document.getElementById('weight').value;
+                const height = document.getElementById('height').value;
+                
+                // Validações básicas
+                if (!age || !gender || !objective || !weight || !height) {
+                    return displayMessage('error', 'Por favor, preencha todos os campos métricos obrigatórios para o Aluno.');
+                }
+                
+                // CALCULA A META CALÓRICA (NOVA LÓGICA)
+                calorieGoal = calculateCalorieGoal(gender, parseFloat(weight), parseFloat(height), parseInt(age), objective);
+
+
+                profileData = {
+                    age: parseInt(age),
+                    gender,
+                    objective,
+                    weight: parseFloat(weight),
+                    height: parseInt(height),
+                    foodRestrictions: selectedFoodRestrictions,
+                    limitations: selectedLimitations,
+                    calorieGoal: calorieGoal, // NOVO CAMPO
+                    // Mantém rotina existente ou inicia como nulo
+                    foodRoutine: (await getStudentProfileData(userId))?.foodRoutine || null,
+                    trainingRoutine: (await getStudentProfileData(userId))?.trainingRoutine || null,
+                    totalRoutineCalories: (await getStudentProfileData(userId))?.totalRoutineCalories || null, // NOVO CAMPO
+                };
+            }
+
+            try {
+                // Salva os dados básicos (Nome e Tipo)
+                await saveUserData(userId, userData);
+
+                if (userType === 'aluno') {
+                    // Salva os dados de perfil do aluno (incluindo calorieGoal)
+                    await saveStudentProfileData(profileData);
+                    await renderStudentDashboard({ ...auth.currentUser, ...userData }, profileData);
+
+                } else if (userType === 'personal') {
+                    await renderPersonalDashboard({ ...auth.currentUser, ...userData });
+                }
+
+                displayMessage('success', 'Informações salvas com sucesso!');
+                
+            } catch (error) {
+                displayMessage('error', 'Erro ao salvar informações: ' + error.message);
             }
         }
 
-        // *******************************************************************************************************************
-        // LÓGICA DE GERAÇÃO DE PLANOS (IA)
-        // *******************************************************************************************************************
+        // --- Geração de Plano (IA - Gemini) ---
 
-        /** * Lógica principal para gerar o plano alimentar e de treino usando a IA (Gemini).
-         * @param {Object} userData - Dados do perfil do aluno.
-         * @param {number} calorieGoal - Meta calórica diária ajustada.
-         */
-        async function generateUniquePlan(userData, calorieGoal) {
-            toggleView('plan_generation');
+        generatePlanBtn.addEventListener('click', handleGeneratePlan);
+
+        async function handleGeneratePlan() {
+            const userId = auth.currentUser.uid;
+            const userData = await db.collection('users').doc(userId).get().then(doc => doc.data());
+            const profileData = await getStudentProfileData(userId);
+
+            if (!profileData || !profileData.age || !profileData.objective || !profileData.calorieGoal) {
+                planStatus.textContent = 'Erro: Faltam dados essenciais (Idade, Objetivo, Meta Calórica) para gerar o plano.';
+                planStatus.classList.remove('hidden');
+                return;
+            }
+
+            generatePlanBtn.disabled = true;
+            generatePlanBtn.innerHTML = `
+                <svg class="w-5 h-5 mr-2 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Gerando...
+            `;
+            planStatus.textContent = 'Gerando plano... isso pode levar alguns segundos.';
+            planStatus.classList.remove('hidden');
             
-            try {
-                const restrictions = userData.foodRestrictions || [];
-                const limitations = userData.limitations || [];
-                const objectiveDescription = userData.objective === 'emagrecer' ? 'Emagrecer/Perder Peso' : 'Obter Massa Muscular/Hipertrofia';
+            const objectiveDescription = profileData.objective === 'emagrecer' ? 'Emagrecimento e Definição Muscular' : 'Ganho de Massa Muscular (Hipertrofia)';
+            const restrictions = profileData.foodRestrictions || [];
+            const limitations = profileData.limitations || [];
+            const calorieGoal = profileData.calorieGoal || '2000';
 
-                const foodRestrictionsText = restrictions.length > 0 ? `Ele(a) possui restrições alimentares severas: ${restrictions.join(', ')}.` : 'Ele(a) não possui restrições alimentares notáveis.';
-                const physicalLimitationsText = limitations.length > 0 ? `Ele(a) tem as seguintes limitações físicas que DEVEM ser consideradas no treino: ${limitations.join(', ')}.` : 'Ele(a) não possui limitações físicas, o treino pode ser completo.';
-                
-                // PROMPT MELHORADO PARA GARANTIR ESTRUTURA E CALORIAS TOTAIS
-                const prompt = `Você é um Personal Trainer e Nutricionista IA avançado. Sua missão é gerar um plano completo (alimentar e de treino) para um aluno com base nos seguintes dados, garantindo que o plano seja motivacional, seguro e eficaz.
+            const foodRestrictionsText = restrictions.length > 0 ? `Ele(a) possui restrições alimentares severas: ${restrictions.join(', ')}.` : 'Ele(a) não possui restrições alimentares notáveis.';
+            const physicalLimitationsText = limitations.length > 0 ? `Ele(a) tem as seguintes limitações físicas que DEVEM ser consideradas no treino: ${limitations.join(', ')}.` : 'Ele(a) não possui limitações físicas, o treino pode ser completo.';
+
+            // PROMPT MELHORADO PARA GARANTIR ESTRUTURA, PERSONALIZAÇÃO E CALORIAS TOTAIS
+            const prompt = `Você é um Personal Trainer e Nutricionista IA avançado. Sua missão é gerar um plano **altamente personalizado** e completo (alimentar e de treino) para um aluno com base nos seguintes dados, garantindo que o plano seja motivacional, seguro e eficaz.
 
 ---
 **DADOS DO ALUNO:**
 - Nome: ${userData.fullName}
-- Idade: ${userData.age} anos
-- Gênero: ${userData.gender}
-- Peso: ${userData.weight} kg
-- Altura: ${userData.height} cm
-- Objetivo Principal: ${objectiveDescription}
+- Idade: ${profileData.age} anos
+- Gênero: ${profileData.gender}
+- Peso: ${profileData.weight} kg
+- Altura: ${profileData.height} cm
+- Objetivo Principal: **${objectiveDescription}**
 - **Meta Calórica Diária (TMB Ajustada): ${calorieGoal} calorias.**
 - Restrições Alimentares: ${foodRestrictionsText}
 - Limitações Físicas: ${physicalLimitationsText}
 ---
 
-**REQUISITOS OBRIGATÓRIOS:**
+**REQUISITOS OBRIGATÓRIOS PARA O PLANO ALIMENTAR:**
 
-1.  **Plano Alimentar (Rotina Alimentar):**
-    * Deve ser uma rotina diária detalhada e variada, com base em alimentos saudáveis.
-    * O total de calorias estimado desta rotina deve ser o mais próximo possível da meta de **${calorieGoal} calorias**.
-    * **NO FINAL da rotina alimentar, inclua obrigatoriamente a frase exata: "Total de Calorias Estimado na Rotina: X Calorias", substituindo X pelo valor total calculado (apenas o número).**
-    * Estrutura em Markdown.
+1.  **Individualização:** O plano deve ser único e focado em alimentos que se adequam ao **Objetivo Principal** e **Meta Calórica** do aluno. Use ${foodRestrictionsText} para evitar alimentos proibidos.
+2.  **Distribuição de Macronutrientes:** Sugira uma distribuição macro (ex: Proteína/Gordura/Carboidrato) que apoie o objetivo.
+3.  **Contagem Calórica:** O total de calorias estimado desta rotina deve ser o mais próximo possível da meta de **${calorieGoal} calorias**.
+4.  **FORMATO OBRIGATÓRIO (para extração de dados):** No **FINAL** da rotina alimentar (e *apenas* nesta seção), inclua **obrigatoriamente** a frase exata: **"Total de Calorias Estimado na Rotina: X Kcal"**, substituindo **X** pelo valor total da rotina (apenas o número).
 
-2.  **Plano de Treino (Rotina de Treino):**
-    * Sugira uma rotina semanal de 4 a 5 dias, com foco no objetivo principal.
-    * Inclua uma breve explicação para cada dia/grupo muscular (Ex: Aquecimento, 3-4 exercícios, Repetições/Séries).
-    * Leve em consideração as limitações físicas.
-    * Estrutura em Markdown.
+**REQUISITOS OBRIGATÓRIOS PARA O PLANO DE TREINO:**
+
+1.  **Personalização:** Sugira uma rotina semanal de 4 a 5 dias. Leve em consideração as ${physicalLimitationsText}.
+2.  **Estrutura:** Inclua Aquecimento, Exercícios (com séries/repetições) e Resfriamento.
 
 **FORMATO DE SAÍDA:**
 
 Sua resposta DEVE ser dividida em duas seções principais usando os títulos **exatos** abaixo. Mantenha os títulos em negrito no topo de cada seção.
 
 **PLANO ALIMENTAR**
-[Conteúdo do plano alimentar detalhado, seguindo os requisitos acima, com o total calórico no final.]
+[Conteúdo do plano alimentar detalhado, seguindo os requisitos acima, terminando com a frase de contagem calórica.]
 
 **PLANO DE TREINO**
 [Conteúdo do plano de treino detalhado, seguindo os requisitos acima.]
 `;
-                
-                // Simulação de chamada da API Gemini
-                const result = await model.generateContent(prompt);
-                const responseText = result.text.trim();
-                
-                // Tratamento e extração do plano
-                const [foodSection, trainingSection] = responseText.split('**PLANO DE TREINO**');
 
-                if (!foodSection || !trainingSection) {
-                    throw new Error("Formato de resposta da IA inválido. Tente novamente.");
-                }
+            try {
+                const resultText = await mockGeminiGeneratePlan(prompt);
+                
+                const parts = resultText.split('**PLANO DE TREINO**');
+                if (parts.length < 2) throw new Error('O formato da resposta da IA está incorreto.');
 
+                const foodSection = parts[0];
+                const trainingSection = parts[1];
+
+                // Remove o título do plano de treino e a quebra de linha
                 const foodRoutine = foodSection.replace('**PLANO ALIMENTAR**', '').trim();
                 const trainingRoutine = trainingSection.trim();
-                
+
                 // LÓGICA DE EXTRAÇÃO DO TOTAL DE CALORIAS DA ROTINA
                 let totalRoutineCalories = 'N/A';
-                const calorieMatch = foodRoutine.match(/Total de Calorias Estimado na Rotina:\s*(\d+)\s*Calorias/i);
+                // Expressão regular para encontrar a frase obrigatória, capturando o número X (apenas dígitos)
+                const calorieMatch = foodRoutine.match(/Total de Calorias Estimado na Rotina:\s*(\d+)\s*Kcal/i);
                 
                 if (calorieMatch && calorieMatch[1]) {
-                    totalRoutineCalories = calorieMatch[1];
+                    totalRoutineCalories = calorieMatch[1]; // Captura o número
                 }
 
                 // Salva o novo plano e o total de calorias
@@ -969,416 +1298,144 @@ Sua resposta DEVE ser dividida em duas seções principais usando os títulos **
                     trainingRoutine,
                     totalRoutineCalories // NOVO CAMPO SALVO
                 });
-                
-                showMessage('Plano de Ação gerado e salvo com sucesso!', 'success');
+
+                // Atualiza o dashboard
+                await renderStudentDashboard(userData, { ...profileData, foodRoutine, trainingRoutine, totalRoutineCalories });
+
+                planStatus.textContent = 'Plano gerado e salvo com sucesso!';
+                planStatus.classList.remove('hidden');
 
             } catch (error) {
-                showMessage(`Erro ao gerar plano de ação: ${error.message}. Verifique a API Key e tente novamente.`);
+                console.error('Erro na geração do plano:', error);
+                planStatus.textContent = 'Erro ao gerar o plano. Tente novamente.';
+                planStatus.classList.remove('hidden');
             } finally {
-                // Força o recarregamento do estado para exibir o dashboard
-                checkUserState(auth.currentUser);
+                generatePlanBtn.disabled = false;
+                generatePlanBtn.innerHTML = `
+                    <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    Gerar Plano de Ação (Alimentar e Treino)
+                `;
             }
         }
-        
-        // *******************************************************************************************************************
-        // LÓGICA DE DASHBOARD (RENDERIZAÇÃO)
-        // *******************************************************************************************************************
 
-        /** Carrega os dados do usuário logado. */
-        async function loadUserData(user) {
-            const docRef = db.collection('studentProfiles').doc(user.uid);
-            // Simulação de getDoc
-            const docSnap = await docRef.get();
-            
-            if (docSnap.exists) {
-                const userData = docSnap.data();
-                // Garante que o email de autenticação está nos dados
-                if (!userData.email) {
-                    userData.email = user.email;
-                }
-                return userData;
-            }
-            
-            // Caso o documento não exista após o registro (erro de sincronização)
-            return { email: user.email, isNewUser: true, clientCode: user.uid.substring(0, 8).toUpperCase() };
-        }
-        
-        /** Renderiza o dashboard do aluno com os dados. */
-        function renderStudentDashboard(userData) {
-            // Preenche os dados de Acesso
-            studentDashboardName.textContent = userData.fullName || 'Não definido';
-            studentDashboardEmail.textContent = userData.email;
-            studentDashboardClientCode.textContent = userData.clientCode || 'N/A';
+        // --- Funções do Personal Trainer ---
 
-            // Preenche os Dados do Perfil
-            studentDashboardAge.textContent = userData.age ? `${userData.age} anos` : 'N/A';
-            studentDashboardGender.textContent = userData.gender || 'N/A';
-            studentDashboardObjective.textContent = userData.objective || 'N/A';
-            studentDashboardWeight.textContent = userData.weight ? `${userData.weight} kg` : 'N/A';
-            studentDashboardHeight.textContent = userData.height ? `${userData.height} cm` : 'N/A';
-            // NOVO: Meta Calórica
-            studentDashboardCalorieGoal.textContent = userData.calorieGoal ? `${userData.calorieGoal} Kcal` : 'N/A';
-
-            // Preenche Limitações
-            studentDashboardLimitations.innerHTML = '';
-            if (userData.limitations && userData.limitations.length > 0) {
-                userData.limitations.forEach(limitation => {
-                    const span = document.createElement('span');
-                    span.className = 'food-tag bg-indigo-500/80';
-                    span.textContent = limitation.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-                    studentDashboardLimitations.appendChild(span);
-                });
-            } else {
-                studentDashboardLimitations.textContent = 'Nenhuma limitação reportada.';
-            }
-
-            // Preenche Restrições
-            studentDashboardRestrictions.innerHTML = '';
-            if (userData.foodRestrictions && userData.foodRestrictions.length > 0) {
-                userData.foodRestrictions.forEach(restriction => {
-                    const span = document.createElement('span');
-                    span.className = 'food-tag bg-pink-500/80';
-                    span.textContent = restriction.charAt(0).toUpperCase() + restriction.slice(1);
-                    studentDashboardRestrictions.appendChild(span);
-                });
-            } else {
-                studentDashboardRestrictions.textContent = 'Nenhuma restrição reportada.';
-            }
-
-            // Preenche Planos
-            studentFoodRoutine.textContent = userData.foodRoutine || 'Nenhum plano alimentar gerado. Clique em "Gerar Novo Plano".';
-            studentTrainingRoutine.textContent = userData.trainingRoutine || 'Nenhum plano de treino gerado. Clique em "Gerar Novo Plano".';
-            
-            // NOVO: Total de Calorias da Rotina
-            studentFoodRoutineCalories.textContent = userData.totalRoutineCalories ? `${userData.totalRoutineCalories} Kcal` : 'Aguardando geração...';
-
-            // Listener para regenerar plano (usando os dados atuais)
-            regeneratePlanBtn.onclick = () => generateUniquePlan(userData, userData.calorieGoal);
-
-            toggleView('student_dashboard');
-        }
-
-        // *******************************************************************************************************************
-        // LÓGICA DO PERSONAL TRAINER
-        // *******************************************************************************************************************
-        
-        /** Trata a busca de um aluno pelo Personal Trainer. */
         async function handleSearchStudent(e) {
             e.preventDefault();
-            const clientCode = studentCodeInput.value.trim().toUpperCase();
-            
-            if (clientCode.length < 1) {
-                showMessage('Digite o código do aluno.', 'error');
-                return;
-            }
-            
-            try {
-                // Busca o aluno que tenha o clientCode correspondente
-                // Simulação: Procurar por todos os docs e filtrar (Em um sistema real, seria uma consulta indexada)
-                const storedData = localStorage.getItem(`db-studentProfiles-${clientCode.toLowerCase()}`);
-                if (!storedData) {
-                    showMessage('Aluno não encontrado ou código inválido.', 'error');
-                    editRoutineCard.classList.add('hidden');
-                    return;
-                }
-                
-                const data = JSON.parse(storedData);
-                if (data.userType !== 'aluno') {
-                    showMessage('O código pertence a um Personal Trainer, não a um Aluno.', 'error');
-                    editRoutineCard.classList.add('hidden');
-                    return;
-                }
-                
-                searchedStudentData = data;
-                
-                // Preenche o formulário de edição
-                searchedStudentName.textContent = data.fullName || 'Aluno Sem Nome';
-                searchedStudentCalorieGoal.textContent = data.calorieGoal ? `${data.calorieGoal} Kcal` : 'N/A';
-                editFoodRoutine.value = data.foodRoutine || 'Rotina Alimentar não gerada automaticamente.';
-                editTrainingRoutine.value = data.trainingRoutine || 'Rotina de Treino não gerada automaticamente.';
-                editRoutineCard.classList.remove('hidden');
-                
-                showMessage(`Aluno ${data.fullName} encontrado com sucesso.`, 'success');
+            searchMessage.classList.add('hidden');
+            editRoutineSection.classList.add('hidden');
 
-            } catch (error) {
-                showMessage(`Erro ao buscar aluno: ${error.message}`, 'error');
+            const studentId = studentIdInput.value;
+            if (!studentId) return;
+
+            // Busca os dados do aluno na coleção de perfis e depois na de usuários para o nome/email
+            const profileDoc = await db.collection('studentProfiles').doc(studentId).get();
+            const userDoc = await db.collection('users').doc(studentId).get();
+            
+            const profileData = profileDoc.data();
+            const userData = userDoc.data();
+
+            if (profileData && userData && userData.userType === 'aluno') {
+                searchedStudentData = { ...userData, ...profileData };
+                
+                searchedStudentName.textContent = searchedStudentData.fullName;
+                searchedStudentEmail.textContent = searchedStudentData.email;
+                searchedStudentCalorieGoal.textContent = searchedStudentData.calorieGoal ? `${searchedStudentData.calorieGoal} Kcal` : 'N/A';
+                
+                // Exibe restrições e limitações de forma legível
+                const restrictions = (searchedStudentData.foodRestrictions || []).join(', ') || 'Nenhuma';
+                const limitations = (searchedStudentData.limitations || []).join(', ') || 'Nenhuma';
+                searchedStudentDetails.textContent = `Restrições: ${restrictions}. Limitações: ${limitations}.`;
+
+                editFoodRoutine.value = searchedStudentData.foodRoutine || 'Plano Alimentar não gerado. Clique em "Salvar Alterações" para iniciar o plano.';
+                editTrainingRoutine.value = searchedStudentData.trainingRoutine || 'Plano de Treino não gerado. Clique em "Salvar Alterações" para iniciar o plano.';
+
+                editRoutineSection.classList.remove('hidden');
+                editMessage.classList.add('hidden');
+                
+                // Salva o ID da busca atual para uso no Submit (caso o Personal modifique e salve)
+                localStorage.setItem('currentStudentSearch', studentId);
+
+            } else {
+                searchMessage.textContent = 'Aluno não encontrado ou ID inválido.';
+                searchMessage.classList.remove('hidden');
+                editRoutineSection.classList.add('hidden');
             }
         }
-        
-        /** Trata o envio do formulário de edição de rotina pelo Personal. */
+
         async function handleEditRoutineSubmit(e) {
             e.preventDefault();
-            
-            if (!searchedStudentData) {
-                showMessage('Nenhum aluno selecionado para edição.', 'error');
+            editMessage.classList.add('hidden');
+
+            const studentId = localStorage.getItem('currentStudentSearch');
+            if (!studentId || !searchedStudentData) {
+                editMessage.textContent = 'Erro: Nenhum aluno selecionado para edição.';
+                editMessage.classList.remove('hidden', 'dark:text-green-400');
+                editMessage.classList.add('dark:text-red-400', 'light:text-red-600');
                 return;
             }
             
             const newFoodRoutine = editFoodRoutine.value;
             const newTrainingRoutine = editTrainingRoutine.value;
-            
+
             try {
                 // LÓGICA DE EXTRAÇÃO DO TOTAL DE CALORIAS DA ROTINA EDITADA
                 let totalRoutineCalories = searchedStudentData.totalRoutineCalories || 'N/A';
                 // Tenta extrair o novo valor calórico, se o Personal o incluiu no formato certo
-                const calorieMatch = newFoodRoutine.match(/Total de Calorias Estimado na Rotina:\s*(\d+)\s*Calorias/i);
+                const calorieMatch = newFoodRoutine.match(/Total de Calorias Estimado na Rotina:\s*(\d+)\s*Kcal/i);
                 
                 if (calorieMatch && calorieMatch[1]) {
                     totalRoutineCalories = calorieMatch[1];
-                } else if (!totalRoutineCalories) {
-                     // Se o Personal não incluiu o formato, tenta manter o valor antigo se existir
-                     totalRoutineCalories = searchedStudentData.totalRoutineCalories || 'N/A';
+                } else {
+                    // Se o Personal não incluiu o formato, mantém o valor antigo se existir
+                    totalRoutineCalories = searchedStudentData.totalRoutineCalories || 'N/A';
                 }
 
                 // Salva os dados editados
-                const studentId = searchedStudentData.email.split('@')[0]; // Simulação de UID a partir do email
                 await db.collection('studentProfiles').doc(studentId).set({
                     foodRoutine: newFoodRoutine,
                     trainingRoutine: newTrainingRoutine,
                     totalRoutineCalories: totalRoutineCalories // Salva o novo valor ou o antigo
                 }, { merge: true });
 
-                showMessage(`Rotinas de ${searchedStudentData.fullName} salvas com sucesso!`, 'success');
-                editRoutineCard.classList.add('hidden');
-                searchedStudentData = null; // Limpa o aluno buscado
-                studentCodeInput.value = '';
+                // Atualiza os dados locais de busca
+                searchedStudentData.foodRoutine = newFoodRoutine;
+                searchedStudentData.trainingRoutine = newTrainingRoutine;
+                searchedStudentData.totalRoutineCalories = totalRoutineCalories;
+                
+                editMessage.textContent = 'Rotina e contagem calórica atualizadas com sucesso!';
+                editMessage.classList.remove('hidden', 'dark:text-red-400', 'light:text-red-600');
+                editMessage.classList.add('dark:text-green-400', 'light:text-green-700');
 
             } catch (error) {
-                showMessage(`Erro ao salvar rotinas: ${error.message}`, 'error');
+                editMessage.textContent = 'Erro ao salvar alterações: ' + error.message;
+                editMessage.classList.remove('hidden', 'dark:text-green-400', 'light:text-green-700');
+                editMessage.classList.add('dark:text-red-400', 'light:text-red-600');
             }
-        }
-        
-        // *******************************************************************************************************************
-        // LÓGICA DE MODAIS (Limitações e Restrições)
-        // *******************************************************************************************************************
-        
-        /** Abre o modal de limitações e carrega o estado atual. */
-        function openLimitationsModal() {
-            // Limpa o formulário e carrega as seleções atuais
-            limitationsForm.reset();
-            otherLimitationInput.value = '';
-            
-            selectedLimitations.forEach(limitation => {
-                const checkbox = limitationsForm.querySelector(`input[value="${limitation}"]`);
-                if (checkbox) {
-                    checkbox.checked = true;
-                } else if (limitation !== 'nenhuma') {
-                    // Preenche o campo "Outra" se for uma limitação customizada
-                    otherLimitationInput.value = limitation;
-                }
-            });
-            
-            limitationsModal.classList.remove('hidden');
-        }
-        
-        /** Fecha o modal de limitações e salva o estado. */
-        function closeLimitationsModal() {
-            selectedLimitations = [];
-            const checkboxes = limitationsForm.querySelectorAll('input[type="checkbox"]:checked');
-            
-            checkboxes.forEach(checkbox => {
-                selectedLimitations.push(checkbox.value);
-            });
-            
-            const otherLimitation = otherLimitationInput.value.trim();
-            if (otherLimitation) {
-                selectedLimitations.push(otherLimitation);
-            }
-            
-            // Remove duplicações e 'nenhuma' se outras foram selecionadas
-            selectedLimitations = [...new Set(selectedLimitations)];
-            if (selectedLimitations.length > 1 && selectedLimitations.includes('nenhuma')) {
-                selectedLimitations = selectedLimitations.filter(item => item !== 'nenhuma');
-            }
-            
-            renderLimitationTags();
-            limitationsModal.classList.add('hidden');
-        }
-        
-        /** Renderiza as tags de limitações selecionadas no formulário principal. */
-        function renderLimitationTags() {
-            const container = document.getElementById('selected-limitations-tags');
-            container.innerHTML = '';
-            
-            if (selectedLimitations.length === 0) {
-                container.innerHTML = '<span id="no-limitations-selected" class="text-sm dark:text-gray-400 light:text-gray-500">Nenhuma limitação selecionada.</span>';
-                return;
-            }
-            
-            selectedLimitations.forEach(limitation => {
-                const span = document.createElement('span');
-                span.className = 'food-tag bg-indigo-500/80 cursor-default';
-                span.textContent = limitation.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-                container.appendChild(span);
-            });
         }
 
-        /** Abre o modal de restrições alimentares e carrega o estado atual. */
-        function openFoodModal() {
-            renderCurrentFoodTags();
-            foodModal.classList.remove('hidden');
-            foodInput.focus();
-        }
-        
-        /** Fecha o modal de restrições alimentares. */
-        function closeFoodModal() {
-            renderFoodTags();
-            foodModal.classList.add('hidden');
-        }
 
-        /** Adiciona uma restrição alimentar. */
-        function handleAddFoodRestriction(e) {
+        // --- Listeners e Inicialização ---
+
+        // Inicia a verificação do estado de autenticação e carrega o tema
+        auth.onAuthStateChanged(handleAuthStateChange);
+        loadTheme();
+        
+        // Listeners de Forms
+        loginForm.addEventListener('submit', (e) => e.preventDefault()); // Re-adicionado para garantir
+        registerForm.addEventListener('submit', (e) => e.preventDefault()); // Re-adicionado para garantir
+        infoForm.addEventListener('submit', (e) => e.preventDefault()); // Re-adicionado para garantir
+
+        // Listeners de Login
+        document.getElementById('show-register-link').addEventListener('click', (e) => {
             e.preventDefault();
-            const food = foodInput.value.trim().toLowerCase();
-            
-            if (food && !selectedFoodRestrictions.includes(food)) {
-                selectedFoodRestrictions.push(food);
-                foodInput.value = '';
-                renderCurrentFoodTags();
-            }
-        }
-        
-        /** Remove uma restrição alimentar. */
-        function removeFoodRestriction(food) {
-            selectedFoodRestrictions = selectedFoodRestrictions.filter(item => item !== food);
-            renderCurrentFoodTags();
-        }
-
-        /** Renderiza as tags de restrições alimentares no modal. */
-        function renderCurrentFoodTags() {
-            currentFoodTagsContainer.innerHTML = '';
-            
-            if (selectedFoodRestrictions.length === 0) {
-                currentFoodTagsContainer.innerHTML = '<span class="text-sm dark:text-gray-400">Restrições atuais aparecerão aqui.</span>';
-                return;
-            }
-            
-            selectedFoodRestrictions.forEach(food => {
-                const span = document.createElement('span');
-                span.className = 'food-tag bg-pink-500/80 cursor-pointer';
-                span.textContent = food.charAt(0).toUpperCase() + food.slice(1);
-                
-                // Botão de remoção
-                const closeBtn = document.createElement('button');
-                closeBtn.innerHTML = '<svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>';
-                closeBtn.className = 'ml-1 focus:outline-none';
-                closeBtn.onclick = (e) => {
-                    e.stopPropagation(); // Evita que o clique se propague (embora desnecessário no span)
-                    removeFoodRestriction(food);
-                };
-                
-                span.appendChild(closeBtn);
-                currentFoodTagsContainer.appendChild(span);
-            });
-        }
-        
-        /** Renderiza as tags de restrições alimentares no formulário principal. */
-        function renderFoodTags() {
-            const container = document.getElementById('selected-food-tags');
-            container.innerHTML = '';
-            
-            if (selectedFoodRestrictions.length === 0) {
-                container.innerHTML = '<span id="no-foods-selected" class="text-sm dark:text-gray-400 light:text-gray-500">Nenhum alimento selecionado.</span>';
-                return;
-            }
-            
-            selectedFoodRestrictions.forEach(food => {
-                const span = document.createElement('span');
-                span.className = 'food-tag bg-pink-500/80 cursor-default';
-                span.textContent = food.charAt(0).toUpperCase() + food.slice(1);
-                container.appendChild(span);
-            });
-        }
-
-
-        // *******************************************************************************************************************
-        // LÓGICA PRINCIPAL DE ESTADO
-        // *******************************************************************************************************************
-        
-        /** Verifica o estado do usuário (logado ou não, novo ou existente). */
-        async function checkUserState(user) {
-            if (user) {
-                const userData = await loadUserData(user);
-
-                // Preenche o formulário de info com dados existentes (para o caso de edição)
-                if (userData.fullName) fullNameInput.value = userData.fullName;
-                if (userData.userType) userTypeInput.value = userData.userType;
-                
-                if (userData.userType === 'personal') {
-                    // Renderiza o Dashboard do Personal
-                    toggleView('personal_dashboard');
-                } else if (!userData.userType || userData.isNewUser) {
-                    // Novo usuário ou usuário que ainda não definiu o tipo/preencheu info
-                    // Preenche campos se existirem
-                    if (userData.age) ageInput.value = userData.age;
-                    if (userData.gender) genderInput.value = userData.gender;
-                    if (userData.objective) objectiveInput.value = userData.objective;
-                    if (userData.weight) weightInput.value = userData.weight;
-                    if (userData.height) heightInput.value = userData.height;
-                    selectedLimitations = userData.limitations || [];
-                    selectedFoodRestrictions = userData.foodRestrictions || [];
-                    renderLimitationTags();
-                    renderFoodTags();
-
-                    toggleView('info_form');
-                } else {
-                    // Usuário Aluno com perfil completo.
-                    if (userData.foodRoutine && userData.trainingRoutine) {
-                        renderStudentDashboard(userData);
-                    } else {
-                        // Usuário com perfil, mas sem plano (primeiro acesso após preenchimento)
-                        toggleView('plan_generation');
-                        await generateUniquePlan(userData, userData.calorieGoal);
-                        renderStudentDashboard(userData);
-                    }
-                }
-            } else {
-                toggleView('login');
-            }
-        }
-        
-        // *******************************************************************************************************************
-        // LISTENERS
-        // *******************************************************************************************************************
-        
-        // Listeners de Autenticação
-        loginForm.addEventListener('submit', handleLogin);
-        registerForm.addEventListener('submit', handleRegister);
-        googleLoginBtn.addEventListener('click', signInWithGoogle);
-        
-        // Listener do Formulário de Informações
-        infoForm.addEventListener('submit', handleInfoFormSubmit);
-        
-        // Listener de mudança no tipo de usuário
-        userTypeInput.addEventListener('change', (e) => {
-            if (e.target.value === 'aluno') {
-                alunoFields.classList.remove('hidden');
-                alunoMetricsFields.classList.remove('grid-cols-2');
-                alunoMetricsFields.classList.add('grid-cols-2'); // Mantém o grid
-            } else {
-                alunoFields.classList.add('hidden');
-                alunoMetricsFields.classList.add('grid-cols-2');
-            }
+            toggleView('register');
         });
-
-        // Listener para o botão de Edição de Perfil
-        editProfileBtn.addEventListener('click', async () => {
-            // Recarrega os dados mais recentes antes de ir para o formulário
-            const userData = await loadUserData(auth.currentUser);
-            // Preenche o formulário de info (a função checkUserState já faz isso, mas aqui garantimos a navegação)
-            if (userData.fullName) fullNameInput.value = userData.fullName;
-            if (userData.userType) userTypeInput.value = userData.userType;
-            if (userData.age) ageInput.value = userData.age;
-            if (userData.gender) genderInput.value = userData.gender;
-            if (userData.objective) objectiveInput.value = userData.objective;
-            if (userData.weight) weightInput.value = userData.weight;
-            if (userData.height) heightInput.value = userData.height;
-            selectedLimitations = userData.limitations || [];
-            selectedFoodRestrictions = userData.foodRestrictions || [];
-            renderLimitationTags();
-            renderFoodTags();
-            
-            toggleView('info_form');
+        document.getElementById('show-login-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleView('login');
         });
         
         // Listeners de Logout dos Dashboards
@@ -1391,8 +1448,6 @@ Sua resposta DEVE ser dividida em duas seções principais usando os títulos **
         // Listeners para as funcionalidades de Alimentos e Limitações
         addFoodRestrictionBtn.addEventListener('click', openFoodModal);
         closeFoodModalBtn.addEventListener('click', closeFoodModal);
-        addFoodForm.addEventListener('submit', handleAddFoodRestriction);
-
         addLimitationBtn.addEventListener('click', openLimitationsModal);
         closeLimitationsModalBtn.addEventListener('click', closeLimitationsModal);
         
@@ -1400,20 +1455,6 @@ Sua resposta DEVE ser dividida em duas seções principais usando os títulos **
         searchStudentForm.addEventListener('submit', handleSearchStudent);
         editStudentRoutineForm.addEventListener('submit', handleEditRoutineSubmit);
 
-
-        document.getElementById('show-register-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            toggleView('register');
-        });
-
-        document.getElementById('show-login-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            toggleView('login');
-        });
-
-        // Simulação de inicialização do estado do usuário (substituir por onAuthStateChanged)
-        checkUserState(auth.currentUser);
-        
         // Renderização inicial
         renderLimitationTags();
         renderFoodTags();
