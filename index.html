@@ -870,6 +870,7 @@ Este plano é focado em superávit calórico e alta ingestão proteica.
                 document.getElementById('sun-icon').classList.remove('hidden');
                 document.getElementById('moon-icon').classList.add('hidden');
             }
+            // Se for 'dark', as classes iniciais já cuidam disso.
         }
 
         // --- Funções de Limitações e Restrições (Modais) ---
@@ -982,14 +983,14 @@ Este plano é focado em superávit calórico e alta ingestão proteica.
                 studentDashboardWeight.textContent = profileData.weight ? `${profileData.weight} kg` : 'N/A';
                 studentDashboardHeight.textContent = profileData.height ? `${profileData.height} cm` : 'N/A';
                 
-                // NOVO: Meta Calórica
+                // Meta Calórica
                 studentDashboardCalorieGoal.textContent = profileData.calorieGoal ? `${profileData.calorieGoal} Kcal` : 'N/A';
                 
                 // Rotinas
                 studentFoodRoutine.textContent = profileData.foodRoutine || 'Aguardando geração do plano.';
                 studentTrainingRoutine.textContent = profileData.trainingRoutine || 'Aguardando geração do plano.';
                 
-                // NOVO: Total de Calorias da Rotina
+                // Total de Calorias da Rotina
                 studentFoodRoutineCalories.textContent = profileData.totalRoutineCalories ? `${profileData.totalRoutineCalories} Kcal` : 'Aguardando geração...';
                 
                 // Restrições e Limitações
@@ -1423,10 +1424,10 @@ Sua resposta DEVE ser dividida em duas seções principais usando os títulos **
         auth.onAuthStateChanged(handleAuthStateChange);
         loadTheme();
         
-        // Listeners de Forms
-        loginForm.addEventListener('submit', (e) => e.preventDefault()); // Re-adicionado para garantir
-        registerForm.addEventListener('submit', (e) => e.preventDefault()); // Re-adicionado para garantir
-        infoForm.addEventListener('submit', (e) => e.preventDefault()); // Re-adicionado para garantir
+        // Listeners de Forms: REMOÇÃO DOS LISTENERS CONFLITANTES AQUI.
+        // loginForm.addEventListener('submit', (e) => e.preventDefault()); // REMOVIDO
+        // registerForm.addEventListener('submit', (e) => e.preventDefault()); // REMOVIDO
+        // infoForm.addEventListener('submit', (e) => e.preventDefault()); // REMOVIDO
 
         // Listeners de Login
         document.getElementById('show-register-link').addEventListener('click', (e) => {
