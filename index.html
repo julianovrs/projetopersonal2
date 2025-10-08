@@ -460,6 +460,8 @@
             { value: "coentro", label: "Coentro (Cilantro)" },
             { value: "sardinha", label: "Sardinha" },
             { value: "ostra", label: "Ostra" },
+            { value: "gluten", label: "Glúten" },
+            { value: "camarao", label: "Camarão" },
         ];
         
         // --- Dados de Limitações Físicas ---
@@ -845,86 +847,214 @@
 
         // --- Funções de Geração e Renderização ---
         function getRestrictionLabels(values) {
-             return values.map(value => {
-                const item = FOOD_OPTIONS.find(f => f.value === value);
-                return item ? item.label : value;
-             });
-        }
+    // Mantida a funcionalidade original para buscar labels
+    return values.map(value => {
+        const item = FOOD_OPTIONS.find(f => f.value === value);
+        return item ? item.label : value;
+    });
+}
         
-        function getLimitationLabels(values) {
-             return values.map(value => {
-                const item = LIMITATION_OPTIONS.find(l => l.value === value);
-                return item ? item.label : value;
-             });
-        }
+function getLimitationLabels(values) {
+    // Mantida a funcionalidade original para buscar labels
+    return values.map(value => {
+        const item = LIMITATION_OPTIONS.find(l => l.value === value);
+        return item ? item.label : value;
+    });
+}
         
-        function getObjectiveLabel(value) {
-            if (value === 'emagrecer') return 'Emagrecer';
-            if (value === 'massa_muscular') return 'Ganho de Massa Muscular';
-            return 'N/A';
+function getObjectiveLabel(value) {
+    if (value === 'emagrecer') return 'Emagrecer';
+    if (value === 'massa_muscular') return 'Ganho de Massa Muscular';
+    return 'N/A';
+}
+
+/**
+ * NOVO: Estima a Taxa Metabólica Basal (TMB) usando a fórmula de Mifflin-St Jeor.
+ */
+function estimateTMB(userData) {
+    const { gender, weight, height, age } = userData;
+    
+    if (!weight || !height || !age || !gender) return 'N/A';
+
+    let tmb;
+    // Fórmula de Mifflin-St Jeor
+    if (gender === 'masculino') {
+        // TMB = (10 * peso) + (6.25 * altura) - (5 * idade) + 5
+        tmb = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+    } else if (gender === 'feminino') {
+        // TMB = (10 * peso) + (6.25 * altura) - (5 * idade) - 161
+        tmb = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+    } else {
+        return 'N/A';
+    }
+
+    return Math.round(tmb);
+}
+
+// ----------------------------------------------------
+// Função para calcular a Meta Calórica (para uso em generateUniquePlan e no Dashboard)
+// ----------------------------------------------------
+function calculateCalorieGoal(tmb, objective) {
+    if (tmb === 'N/A' || !objective) return 'N/A';
+
+    let goal;
+    if (objective === 'massa_muscular') {
+        // Superávit calórico controlado
+        goal = tmb + 400; 
+    } else if (objective === 'emagrecer') {
+        // Déficit calórico moderado
+        goal = tmb - 400; 
+    } else {
+        // Manutenção
+        goal = tmb; 
+    }
+
+    return `${goal.toFixed(0)} Kcal/dia`;
+}
+
+/**
+ * Função central para personalizar os planos de acordo com os dados detalhados do aluno.
+ */
+function generateUniquePlan(userData) {
+    const age = userData.age || 25;
+    const weight = userData.weight || 70;
+    const height = userData.height || 175;
+    const gender = userData.gender || 'não informado';
+    const objective = getObjectiveLabel(userData.objective);
+    
+    const rawLimitations = userData.physicalLimitations.filter(l => l !== 'nenhuma');
+    const restrictions = getRestrictionLabels(userData.foodRestrictions);
+    const limitations = getLimitationLabels(rawLimitations);
+    
+    const isBulking = userData.objective === 'massa_muscular';
+    const isCutting = userData.objective === 'emagrecer';
+    
+    // Dados Calculados
+    const imc = (weight / ((height / 100) ** 2)).toFixed(1);
+    const tmb = estimateTMB(userData);
+    const tmbText = tmb !== 'N/A' ? `${tmb} Kcal/dia` : 'Não Calculada (Dados Insuficientes)';
+    
+    // MUDANÇA 1: Calcular a meta calórica
+    const calorieGoal = calculateCalorieGoal(tmb, userData.objective);
+    
+    // Verificações de Restrições
+    const hasLactoseRestriction = userData.foodRestrictions.includes('lactose');
+    const hasGlutenRestriction = userData.foodRestrictions.includes('gluten');
+    
+    // --- Lógica para o Plano Alimentar (FOOD ROUTINE) ---
+    
+    let foodPlan = `## Plano Alimentar Sugerido\n`;
+    foodPlan += `\n**Perfil:** ${objective} | **Gênero:** ${gender.charAt(0).toUpperCase() + gender.slice(1)} | **Idade:** ${age} anos.\n`;
+    foodPlan += `**Estimativas:** IMC ${imc} | TMB Estimada: ${tmbText}.\n`;
+    foodPlan += `**Meta Calórica:** ${calorieGoal}.\n`; // Exibição da Meta Calórica no Plano
+    foodPlan += `Restrições Alimentares: ${restrictions.length > 0 ? restrictions.join(', ') : 'Nenhuma.'}\n`;
+    
+    // ... (restante da geração do foodPlan) ...
+
+    foodPlan += "\n### Exemplo de Rotina Diária (3 Refeições):\n";
+
+    // 1. Café da Manhã Personalizado por Restrição e Objetivo
+    let breakfastSuggestion = "- Ovos mexidos (2-3 unid.)";
+    if (isBulking) {
+        breakfastSuggestion += " + Aveia com whey protein (Mais calorias/proteínas).";
+    } else {
+        if (hasGlutenRestriction) {
+             breakfastSuggestion += " + Tapioca com Queijo Branco (ou Tofu se houver restrição láctea).";
+        } else {
+             breakfastSuggestion += " + Iogurte natural (ou vegetal) com frutas e chia.";
         }
+    }
+    if (hasLactoseRestriction) {
+        breakfastSuggestion += " (Lembre-se de usar opções vegetais se for consumir laticínios).";
+    }
+    foodPlan += `- Café da Manhã: ${breakfastSuggestion}\n`;
 
-        function generateUniquePlan(userData) {
-            const age = userData.age || 25;
-            const weight = userData.weight || 70;
-            const height = userData.height || 175;
-            const gender = userData.gender;
-            const objective = getObjectiveLabel(userData.objective); // Usa o label
-            const limitations = userData.physicalLimitations.filter(l => l !== 'nenhuma');
-            const restrictions = userData.foodRestrictions; 
+    // 2. Almoço Personalizado por Objetivo (Foco em Macro)
+    if (isBulking) {
+        foodPlan += "- Almoço: Porção generosa de Proteína + **2 fontes de Carboidratos** (ex: Arroz e Batata) + Salada mista. (Alto Carbo)\n";
+    } else { // Emagrecer ou Padrão
+        foodPlan += "- Almoço: Proteína magra + **1 fonte de Carboidrato de baixo IG** (ex: Lentilha ou Quinoa) + Salada verde à vontade. (Baixo Carbo, Alta Fibra)\n";
+    }
+
+    // 3. Jantar Personalizado por Objetivo
+    if (isBulking) {
+        foodPlan += "- Jantar: Opção leve e proteica (frango/peixe) com legumes e azeite extra virgem. **Evitar excesso de carboidratos complexos** no jantar.\n";
+    } else { // Emagrecer ou Padrão
+        foodPlan += "- Jantar: Sopa de legumes (foco nos não-amiláceos) ou Peixe grelhado/Omelete com vegetais cozidos (Foco em Leveza).\n";
+    }
+    
+    foodPlan += `\n(ATENÇÃO: Este plano é uma sugestão. Siga as orientações calóricas e evite os alimentos restritos: ${restrictions.join(', ')}).`;
+
+    // --- Lógica para o Plano de Treino (TRAINING ROUTINE) ---
+    
+    let trainingPlan = `## Plano de Treino Individualizado\n`;
+    trainingPlan += `Foco: ${objective}.\n`;
+    trainingPlan += `Limitações Físicas: ${limitations.join(', ') || 'Nenhuma.'}\n`;
+    trainingPlan += `\n### Rotina Semanal (${isCutting ? 'Foco em Volume/Cardio' : 'Foco em Intensidade/Carga'})\n`;
+
+    if (isCutting) { // Plano com foco em Emagrecimento (3-4x na semana)
+        trainingPlan += `Segunda: Treino Full Body (Resistência) + 30min de Cardio Moderado.\n`;
+        trainingPlan += `Terça: Descanso Ativo ou Cardio de Longa Duração (45-60min).\n`;
+        trainingPlan += `Quarta: Treino Full Body (Circuito) + Treino de Core.\n`;
+        trainingPlan += `Quinta: Descanso ou HIIT (20min de alta intensidade).\n`;
+        trainingPlan += `Sexta: Treino Full Body (Força/Técnica).\n`;
+    } else { // Plano com foco em Massa Muscular (4-5x na semana)
+        trainingPlan += `Segunda: Treino A - Peito, Ombro Frontal e Tríceps (Foco em **Carga e Progressão**)\n`;
+        trainingPlan += `Terça: Treino B - Costas, Bíceps e Abdômen\n`;
+        trainingPlan += `Quarta: Descanso ou Foco em Flexibilidade.\n`;
+        trainingPlan += `Quinta: Treino C - Pernas (Ênfase Quadríceps/Glúteos) e Panturrilhas\n`;
+        trainingPlan += `Sexta: Treino D - Ombros Laterais/Posteriores, Trapézio e Core Avançado\n`;
+    }
             
-            let foodPlan = `Objetivo: ${objective}. IMC Estimado: ${(weight / ((height / 100) ** 2)).toFixed(1)}.\n`;
-            foodPlan += `\nRestrições Alimentares: ${restrictions.length > 0 ? restrictions.join(', ') : 'Nenhuma.'}\n`;
-            foodPlan += "\nExemplo de Rotina Diária (3 Refeições):\n";
-
-            if (userData.objective === 'massa_muscular') {
-                foodPlan += "- Café da Manhã: Ovos mexidos (3 unid.) + Aveia com whey protein. (Alto teor proteico)\n";
-                foodPlan += "- Almoço: Grande porção de proteína (frango/carne) + Arroz integral + Batata doce + Salada. (Excesso calórico controlado)\n";
-                foodPlan += "- Jantar: Salmão ou Atum com legumes e azeite extra virgem.\n";
-            } else { // Emagrecer ou Padrão
-                foodPlan += "- Café da Manhã: Ovos mexidos (2 unid.) + 1 fatia de pão integral e café. (Se houver restrição de Laticínios, use bebida vegetal.)\n";
-                foodPlan += "- Almoço: 1 porção de proteína magra + Quinoa/Lentilha + Salada verde à vontade. (Controle de Carboidratos)\n";
-                foodPlan += "- Jantar: Sopa de legumes (exceto os restritos) ou peixe grelhado com vegetais cozidos.\n";
-            }
-            foodPlan += `\n(Evitar alimentos da sua lista de restrições: ${restrictions.join(', ')}).`;
-
-
-            let trainingPlan = `Foco: ${objective}.\n`;
-            trainingPlan += `\nLimitações Físicas: ${limitations.length > 0 ? limitations.join(', ') : 'Nenhuma.'}\n`;
-            trainingPlan += `\nRotina Semanal Sugerida:\n`;
-            trainingPlan += `Segunda: Treino (A) - Peito e Bíceps (Foco: Força)\n`;
-            trainingPlan += `Terça: Treino (B) - Pernas e Ombros (Foco: Hipertrofia)\n`;
-            trainingPlan += `Quarta: Descanso ou Cardio Leve (30min)\n`;
-            trainingPlan += `Quinta: Treino (A) - Peito e Bíceps (Foco: Repetições)\n`;
-            trainingPlan += `Sexta: Treino (B) - Pernas e Ombros (Foco: Volume)\n`;
-            
-            if (limitations.includes('joelho')) {
-                trainingPlan += `\nNOTA: Para Agachamento e Leg Press, utilize carga reduzida e foco em execução perfeita devido à limitação no Joelho. Prefira Extensora e Flexora.\n`;
-            } else if (limitations.includes('coluna')) {
-                trainingPlan += `\nNOTA: Evite exercícios que comprimam a Coluna (ex: Agachamento com barra nas costas). Prefira máquina Smith ou exercícios focados no Core.\n`;
-            } else if (limitations.includes('ombro')) {
-                trainingPlan += `\nNOTA: Evite elevações laterais acima de 90 graus e treine ombros com baixa carga para preservar a articulação.\n`;
-            }
+    // Adição de Notas de Limitação Específicas (mantendo a checagem original)
+    if (rawLimitations.includes('joelho')) {
+        trainingPlan += `\nNOTA - JOELHOS: Para Agachamento/Leg Press, use **carga reduzida e execução controlada**. Prefira Extensora e Flexora. Evite saltos.\n`;
+    } 
+    if (rawLimitations.includes('coluna')) {
+        trainingPlan += `\nNOTA - COLUNA: Evite exercícios que comprimam a Coluna (ex: Agachamento com barra nas costas). Use cinto de proteção. Foco no fortalecimento do Core.\n`;
+    } 
+    if (rawLimitations.includes('ombro')) {
+        trainingPlan += `\nNOTA - OMBROS: Evite elevações laterais acima de 90 graus. Treine com baixa carga e foco total na técnica.\n`;
+    }
+    
+    // PERSONALIZAÇÃO ÚNICA POR IDADE E GÊNERO
+    if (age > 45) {
+        trainingPlan += `\n**NOTA IDADE:** Priorize exercícios com pouco impacto. Inclua 15 minutos de aquecimento cardiovascular e alongamento dinâmico antes de cada sessão para preservar as articulações.\n`;
+    }
+    if (gender === 'feminino') {
+        trainingPlan += `\n**NOTA GÊNERO:** Dê ênfase ao fortalecimento dos glúteos e do core, fundamentais para a estabilidade pélvica e postura.\n`;
+    } else if (gender === 'masculino') {
+        trainingPlan += `\n**NOTA GÊNERO:** Considere adicionar mais ênfase em ombros e trapézio, e mantenha uma rotina robusta de mobilidade torácica.\n`;
+    }
 
 
-            return { foodRoutine: foodPlan, trainingRoutine: trainingPlan };
-        }
+    // MUDANÇA 2: Retornar a meta calórica no objeto
+    return { foodRoutine: foodPlan, trainingRoutine: trainingPlan, calorieGoal: calorieGoal };
+}
         
-        function renderStudentDashboard(data, email, clientCode) {
-            studentDashboardName.textContent = data.displayName || 'Aluno';
-            studentDashboardEmail.textContent = email;
-            studentDashboardClientCode.textContent = clientCode || 'N/A';
+function renderStudentDashboard(data, email, clientCode) {
+    // É necessário executar generateUniquePlan para obter a meta calórica
+    const plans = generateUniquePlan(data);
+
+    studentDashboardName.textContent = data.displayName || 'Aluno';
+    studentDashboardEmail.textContent = email;
+    studentDashboardClientCode.textContent = clientCode || 'N/A';
             
-            // Novos Campos de Perfil
-            studentDashboardAge.textContent = data.age ? `${data.age} anos` : 'N/A';
-            studentDashboardGender.textContent = data.gender ? data.gender.charAt(0).toUpperCase() + data.gender.slice(1) : 'N/A';
-            studentDashboardObjective.textContent = getObjectiveLabel(data.objective);
-            studentDashboardWeight.textContent = data.weight ? `${data.weight} kg` : 'N/A';
-            studentDashboardHeight.textContent = data.height ? `${data.height} cm` : 'N/A';
+    // Campos de Perfil
+    studentDashboardAge.textContent = data.age ? `${data.age} anos` : 'N/A';
+    studentDashboardGender.textContent = data.gender ? data.gender.charAt(0).toUpperCase() + data.gender.slice(1) : 'N/A';
+    studentDashboardObjective.textContent = getObjectiveLabel(data.objective);
+    studentDashboardWeight.textContent = data.weight ? `${data.weight} kg` : 'N/A';
+    studentDashboardHeight.textContent = data.height ? `${data.height} cm` : 'N/A';
+    
+    // NOVO CAMPO: Meta Calórica no Dashboard (assumindo que 'studentDashboardCalorieGoal' existe)
+    // Se o cálculo falhar (retorna 'N/A'), exibe 'N/A'
+    studentDashboardCalorieGoal.textContent = plans.calorieGoal === 'N/A' ? 'N/A' : plans.calorieGoal;
             
-            // Tags (Limitações e Restrições) - Os dados já vêm como labels do Firestore
-            renderDashboardTags(studentDashboardLimitations, data.physicalLimitations, 'blue');
-            renderDashboardTags(studentDashboardRestrictions, data.foodRestrictions, 'indigo');
+    // Tags (Limitações e Restrições)
+    renderDashboardTags(studentDashboardLimitations, data.physicalLimitations, 'blue');
+    renderDashboardTags(studentDashboardRestrictions, data.foodRestrictions, 'indigo');
+}
 
             // Rotinas
             studentFoodRoutine.textContent = data.foodRoutine || 'Seu Personal Trainer ainda não definiu um plano alimentar.';
