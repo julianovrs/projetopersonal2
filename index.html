@@ -931,60 +931,60 @@
             studentTrainingRoutine.textContent = data.trainingRoutine || 'Seu Personal Trainer ainda não definiu um plano de treino.';
         }
         
+ // Importações necessárias (verifique se você as tem no início do seu script)
+// import { db } from './firebase-config.js'; // Assumindo que você usa um arquivo de config
+// import { doc, getDoc, setDoc, collection, query, where, getDocs } from "firebase/firestore"; 
+
         async function handleSearchStudent(e) {
             e.preventDefault();
             messageArea.classList.add('hidden');
-            const searchClientCode = studentUidSearchInput.value.trim().toUpperCase(); // Busca pelo código simplificado
+            const searchClientCode = studentUidSearchInput.value.trim().toUpperCase(); 
             
             if (!searchClientCode || searchClientCode.length !== 7) {
                 displayMessage('Insira um Código Único de Aluno (7 caracteres).', 'error');
+                personalStudentProfile.classList.add('hidden');
                 return;
             }
             
-            // Lógica para buscar pelo 'clientCode' no Firestore
-            // Para simplificar e evitar queries mais complexas, vamos manter a busca pelo Firestore UID, 
-            // mas o campo de busca no Personal será o clientCode. 
-            // Para o MVP, vou simular a busca, já que a busca por campo diferente do doc ID exige indexação.
-            // Para manter a funcionalidade simples, buscaremos *todos* os alunos e encontraremos o UID pelo clientCode.
-            
-            // NOTE: A busca direta por clientCode no Firestore é a forma correta, mas exigiria reestruturar a DB ou uma Query. 
-            // Vou manter o uso do UID como referência de documento e adicionar um alerta sobre isso, mas farei uma busca simples por UID (o que não é o clientCode de 7 chars). 
-            // Para atender a REQUISIÇÃO, vou fingir que o clientCode é o UID do Firebase (o que quebra a regra de 7 chars)
-            // OU: Busco o documento pelo clientCode no campo clientCode (que deve ser o ID do documento na DB, mas o Firebase ID é longo).
-            
-            // Para manter a promessa do UID de 7 caracteres, vou reverter a estratégia e garantir que o UID do Firebase seja o ID do documento, mas vamos buscar pelo clientCode no campo clientCode.
-            // Isso requer busca por coleção. Mantenho a implementação anterior, mas ajusto a mensagem.
+            // Oculta a área de edição enquanto busca
+            personalStudentProfile.classList.add('hidden');
 
             try {
-                // A Busca é feita pelo UID, mas o campo de input é o clientCode de 7 caracteres. 
-                // A Busca pelo clientCode no campo clientCode é a correta.
-                // Como não temos a busca por coleção, a simulação de busca por UID será feita usando o *clientCode* como campo. 
+                // 1. Cria a query para buscar na coleção 'users_data' onde o campo 'clientCode'
+                //    é igual ao código digitado (searchClientCode)
+                const usersRef = collection(db, "users_data");
+                const q = query(usersRef, where("clientCode", "==", searchClientCode));
                 
-                // Opção 1: Buscar o UID longo no Firestore usando o ClientCode. (Complexo para este escopo).
-                // Opção 2: Simplesmente buscamos pelo valor do campo. (Quebra a regra da estrutura do Firestore).
+                // 2. Executa a query
+                const querySnapshot = await getDocs(q);
                 
-                // A Busca de aluno será feita pelo ClientCode armazenado no documento.
-                // Simplesmente buscarei o documento cujo ID (UID do Firebase) contenha o ClientCode (isso é uma simulação incorreta, mas funcional para este escopo)
-                
-                const docRef = doc(db, "users_data", searchClientCode); // AQUI DEVERIA SER O UID DO FIREBASE
-                const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists() && docSnap.data().userType === 'aluno') {
-                    const data = docSnap.data();
-                    currentEditingStudentUid = searchClientCode; // Mantém a referência do documento
-                    editingStudentName.textContent = data.displayName || 'Aluno';
-                    editFoodRoutineTextarea.value = data.foodRoutine || '';
-                    editTrainingRoutineTextarea.value = data.trainingRoutine || '';
-                    personalStudentProfile.classList.remove('hidden');
-                    displayMessage(`Perfil do aluno ${data.displayName} carregado.`, 'success');
-                } else {
+                if (querySnapshot.empty) {
+                    // Nenhuma correspondência de clientCode encontrada
                     displayMessage('Aluno não encontrado, código inválido ou não é um aluno.', 'error');
-                    personalStudentProfile.classList.add('hidden');
+                    return;
                 }
+                
+                // 3. Pega o primeiro (e único, se a lógica de criação estiver correta) documento
+                const docSnap = querySnapshot.docs[0];
+                const data = docSnap.data();
+                
+                // 4. Verifica se o usuário encontrado é de fato um aluno
+                if (data.userType !== 'aluno') {
+                    displayMessage('O código pertence a um usuário, mas ele não está cadastrado como aluno.', 'error');
+                    return;
+                }
+                
+                // Aluno encontrado e verificado
+                currentEditingStudentUid = docSnap.id; // IMPORTANTE: Agora usamos o ID REAL do documento do Firestore
+                editingStudentName.textContent = data.displayName || 'Aluno';
+                editFoodRoutineTextarea.value = data.foodRoutine || '';
+                editTrainingRoutineTextarea.value = data.trainingRoutine || '';
+                personalStudentProfile.classList.remove('hidden');
+                displayMessage(`Perfil do aluno ${data.displayName} carregado.`, 'success');
 
             } catch (error) {
-                 console.error("Erro ao buscar aluno:", error);
-                 displayMessage('Erro ao buscar o aluno. Verifique o código e a conexão (e as regras do Firestore).', 'error');
+                console.error("Erro ao buscar aluno:", error);
+                displayMessage('Erro ao buscar o aluno. Verifique o código e a conexão (e as regras do Firestore).', 'error');
             }
         }
         
@@ -992,6 +992,8 @@
             e.preventDefault();
             messageArea.classList.add('hidden');
             
+            // O código de handleEditRoutineSubmit usa currentEditingStudentUid, que agora
+            // está sendo corretamente preenchido com o ID do documento do Firestore
             if (!currentEditingStudentUid) {
                  displayMessage('Nenhum aluno selecionado para edição.', 'error');
                  return;
