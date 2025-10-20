@@ -416,7 +416,7 @@
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         
         // Importa funções do Firestore
-        import {getFirestore, collection, query, where, getDocs, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, query, where, getDocs, doc, setDoc }   from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
         // Sua configuração do Firebase (Mantenha este bloco de código com as variáveis de configuração)
         const firebaseConfig = {
@@ -941,81 +941,90 @@
                 return;
             }
             
-            // Lógica para buscar pelo 'clientCode' no Firestore
-            // Para simplificar e evitar queries mais complexas, vamos manter a busca pelo Firestore UID, 
-            // mas o campo de busca no Personal será o clientCode. 
-            // Para o MVP, vou simular a busca, já que a busca por campo diferente do doc ID exige indexação.
-            // Para manter a funcionalidade simples, buscaremos *todos* os alunos e encontraremos o UID pelo clientCode.
-            
-            // NOTE: A busca direta por clientCode no Firestore é a forma correta, mas exigiria reestruturar a DB ou uma Query. 
-            // Vou manter o uso do UID como referência de documento e adicionar um alerta sobre isso, mas farei uma busca simples por UID (o que não é o clientCode de 7 chars). 
-            // Para atender a REQUISIÇÃO, vou fingir que o clientCode é o UID do Firebase (o que quebra a regra de 7 chars)
-            // OU: Busco o documento pelo clientCode no campo clientCode (que deve ser o ID do documento na DB, mas o Firebase ID é longo).
-            
-            // Para manter a promessa do UID de 7 caracteres, vou reverter a estratégia e garantir que o UID do Firebase seja o ID do documento, mas vamos buscar pelo clientCode no campo clientCode.
-            // Isso requer busca por coleção. Mantenho a implementação anterior, mas ajusto a mensagem.
+         // Variável global (necessária para que a função de salvamento saiba qual aluno editar)
+let currentEditingStudentUid = null; 
 
-            try {
-                // A Busca é feita pelo UID, mas o campo de input é o clientCode de 7 caracteres. 
-                // A Busca pelo clientCode no campo clientCode é a correta.
-                // Como não temos a busca por coleção, a simulação de busca por UID será feita usando o *clientCode* como campo. 
-                
-                // Opção 1: Buscar o UID longo no Firestore usando o ClientCode. (Complexo para este escopo).
-                // Opção 2: Simplesmente buscamos pelo valor do campo. (Quebra a regra da estrutura do Firestore).
-                
-                // A Busca de aluno será feita pelo ClientCode armazenado no documento.
-                // Simplesmente buscarei o documento cujo ID (UID do Firebase) contenha o ClientCode (isso é uma simulação incorreta, mas funcional para este escopo)
-                
-                const docRef = doc(db, "users_data", searchClientCode); // AQUI DEVERIA SER O UID DO FIREBASE
-                const docSnap = await getDoc(docRef);
+// A função de busca corrigida, usando Collection Query para encontrar o aluno pelo campo 'clientCode'
+async function handleSearchStudent(e) {
+    e.preventDefault();
+    messageArea.classList.add('hidden');
+    // Você precisará definir 'studentUidSearchInput' com o elemento de input real.
+    const searchClientCode = studentUidSearchInput.value.trim().toUpperCase(); 
+    
+    // 1. Validação do Input
+    if (!searchClientCode || searchClientCode.length !== 7) {
+        displayMessage('Insira um Código Único de Aluno (7 caracteres).', 'error');
+        personalStudentProfile.classList.add('hidden'); 
+        return;
+    }
 
-                if (docSnap.exists() && docSnap.data().userType === 'aluno') {
-                    const data = docSnap.data();
-                    currentEditingStudentUid = searchClientCode; // Mantém a referência do documento
-                    editingStudentName.textContent = data.displayName || 'Aluno';
-                    editFoodRoutineTextarea.value = data.foodRoutine || '';
-                    editTrainingRoutineTextarea.value = data.trainingRoutine || '';
-                    personalStudentProfile.classList.remove('hidden');
-                    displayMessage(`Perfil do aluno ${data.displayName} carregado.`, 'success');
-                } else {
-                    displayMessage('Aluno não encontrado, código inválido ou não é um aluno.', 'error');
-                    personalStudentProfile.classList.add('hidden');
-                }
+    try {
+        // 2. Busca CORRETA: Query no campo 'clientCode'
+        const usersRef = collection(db, "users_data");
+        // Cria a Query: buscar documentos onde o campo 'clientCode' é igual ao valor de input.
+        const q = query(usersRef, where("clientCode", "==", searchClientCode));
+        const querySnapshot = await getDocs(q);
 
-            } catch (error) {
-                 console.error("Erro ao buscar aluno:", error);
-                 displayMessage('Erro ao buscar o aluno. Verifique o código e a conexão (e as regras do Firestore).', 'error');
+        if (!querySnapshot.empty) {
+            const docSnap = querySnapshot.docs[0];
+            const data = docSnap.data();
+
+            // 3. Verifica se é um aluno
+            if (data.userType === 'aluno') {
+                // CORREÇÃO ESSENCIAL: Armazena o ID REAL do documento do Firebase (UID longo)
+                currentEditingStudentUid = docSnap.id; 
+                
+                // 4. Carrega os dados na interface
+                editingStudentName.textContent = data.displayName || 'Aluno';
+                editFoodRoutineTextarea.value = data.foodRoutine || '';
+                editTrainingRoutineTextarea.value = data.trainingRoutine || '';
+                personalStudentProfile.classList.remove('hidden');
+                displayMessage(`Perfil do aluno ${data.displayName} carregado.`, 'success');
+            } else {
+                displayMessage('Usuário encontrado, mas não é um aluno.', 'error');
+                personalStudentProfile.classList.add('hidden');
             }
+        } else {
+            // Nenhuma correspondência encontrada
+            displayMessage('Aluno não encontrado ou código inválido.', 'error');
+            personalStudentProfile.classList.add('hidden');
         }
-        
-        async function handleEditRoutineSubmit(e) {
-            e.preventDefault();
-            messageArea.classList.add('hidden');
-            
-            if (!currentEditingStudentUid) {
-                 displayMessage('Nenhum aluno selecionado para edição.', 'error');
-                 return;
-            }
-            
-            try {
-                const foodRoutine = editFoodRoutineTextarea.value;
-                const trainingRoutine = editTrainingRoutineTextarea.value;
-                
-                const docRef = doc(db, "users_data", currentEditingStudentUid);
-                await setDoc(docRef, {
-                    foodRoutine: foodRoutine,
-                    trainingRoutine: trainingRoutine,
-                    updatedAt: new Date(),
-                }, { merge: true });
-                
-                displayMessage(`Rotina do aluno ${editingStudentName.textContent} salva com sucesso!`, 'success');
 
-            } catch (error) {
-                 console.error("Erro ao salvar rotina do aluno:", error);
-                 displayMessage('Erro ao salvar a rotina do aluno. Tente novamente (e verifique as regras do Firestore).', 'error');
-            }
-        }
+    } catch (error) {
+        console.error("Erro ao buscar aluno:", error);
+        displayMessage('Erro ao buscar o aluno. Verifique o código e a conexão (e se o **índice** de "clientCode" existe no Firestore).', 'error');
+    }
+}
+        
+// A função de salvamento, que é mantida
+async function handleEditRoutineSubmit(e) {
+    e.preventDefault();
+    messageArea.classList.add('hidden');
+    
+    if (!currentEditingStudentUid) {
+        displayMessage('Nenhum aluno selecionado para edição.', 'error');
+        return;
+    }
+    
+    try {
+        const foodRoutine = editFoodRoutineTextarea.value;
+        const trainingRoutine = editTrainingRoutineTextarea.value;
         
+        // Usa o UID longo (armazenado pela função de busca corrigida) para fazer o update
+        const docRef = doc(db, "users_data", currentEditingStudentUid);
+        await setDoc(docRef, {
+            foodRoutine: foodRoutine,
+            trainingRoutine: trainingRoutine,
+            updatedAt: new Date(),
+        }, { merge: true });
+        
+        displayMessage(`Rotina do aluno ${editingStudentName.textContent} salva com sucesso!`, 'success');
+
+    } catch (error) {
+        console.error("Erro ao salvar rotina do aluno:", error);
+        displayMessage('Erro ao salvar a rotina do aluno. Tente novamente (e verifique as regras do Firestore).', 'error');
+    }
+}
         // --- Funções de Carregamento e Persistência ---
 
         async function saveStudentProfileData(isRegenerate = false) {
